@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
+//lets do this 
 @Entity
 public class Donation implements Serializable {
 	private static final long serialVersionUID = 3152690779535828408L;
