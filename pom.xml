@@ -17,10 +17,10 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <name>consomitounsi</name>
+    <name>ConsomiTounsi</name>
     <modelVersion>4.0.0</modelVersion>
     <groupId>tn.esprit</groupId>
-    <artifactId>consomitounsi</artifactId>
+    <artifactId>ConsomiTounsi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -33,9 +33,9 @@
         </license>
     </licenses>
     <modules>
-        <module>consomitounsi-ejb</module>
-        <module>consomitounsi-web</module>
-        <module>consomitounsi-ear</module>
+        <module>ConsomiTounsi-ejb</module>
+        <module>ConsomiTounsi-web</module>
+        <module>ConsomiTounsi-ear</module>
     </modules>
 
     <properties>
@@ -73,7 +73,7 @@
                 to repeat ourselves in every module -->
             <dependency>
                 <groupId>tn.esprit</groupId>
-                <artifactId>consomitounsi-ejb</artifactId>
+                <artifactId>ConsomiTounsi-ejb</artifactId>
                 <version>${project.version}</version>
                 <type>ejb</type>
             </dependency>
@@ -82,7 +82,7 @@
                 ourselves in every module -->
             <dependency>
                 <groupId>tn.esprit</groupId>
-                <artifactId>consomitounsi-web</artifactId>
+                <artifactId>ConsomiTounsi-web</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
                 <scope>compile</scope>
