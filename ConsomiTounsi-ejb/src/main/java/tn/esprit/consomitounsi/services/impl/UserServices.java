@@ -82,4 +82,20 @@ public class UserServices implements IUserServicesRemote {
 		return null;
 	}
 
+	@Override
+	public boolean userExist(User newUser) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username=:username OR u.email=:email", User.class);
+		query.setParameter("username", newUser.getUsername());
+		query.setParameter("email", newUser.getEmail());
+		try {
+			if(query.getResultList().size()!=0) {
+				System.out.println("exists");
+				return true;
+			}
+		} catch (Exception e) {
+			System.out.println("Erreur : " + e);
+		}
+		return false;
+	}
+
 }
