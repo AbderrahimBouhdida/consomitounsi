@@ -16,7 +16,7 @@ import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 
 
 
-@Path("/User")
+@Path("/user")
 @RequestScoped
 public class UserRest {
 	@EJB
@@ -28,8 +28,10 @@ public class UserRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response adduser(User us) {
+		if(users.userExist(us))
+			return Response.status(Response.Status.BAD_REQUEST).entity("User exist").build();
 		users.addUser(us);
-		return Response.ok(users.findAllUsers()).build();
+		return Response.ok(us).build();
 	}
 	@POST
 	@Path("/log")
