@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.User;
+import tn.esprit.consomitounsi.sec.LoginToken;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 
@@ -45,7 +46,8 @@ public class UserRest {
 			carts.addCart(cr);
 			System.out.println("cart created !");
 		}
-		return Response.ok(us).build();	
+		String token = LoginToken.createJWT("ConsomiTounsi", user.getUsername(), 0);
+		return Response.ok(us).header("AUTHORIZATION", "Bearer " + token).build();	
 	}
 	
 	
