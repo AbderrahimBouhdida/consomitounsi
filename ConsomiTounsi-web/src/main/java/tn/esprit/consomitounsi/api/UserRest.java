@@ -16,7 +16,7 @@ import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 
 
 
-@Path("/login")
+@Path("/User")
 @RequestScoped
 public class UserRest {
 	@EJB
@@ -24,7 +24,7 @@ public class UserRest {
 	@EJB
 	ICartServicesRemote carts;
 	@POST
-	@Path("/addUser")
+	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response adduser(User us) {
