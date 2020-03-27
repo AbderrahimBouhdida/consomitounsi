@@ -5,7 +5,7 @@ package tn.esprit.consomitounsi.api;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-//import javax.ws.rs.DELETE;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -50,7 +50,7 @@ public class CollectionResource {
     }
     
     
-    @POST
+    @DELETE
     @Path("/del/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
