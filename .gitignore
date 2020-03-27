@@ -6,3 +6,7 @@ ConsomiTounsi-ear/target/m2e-wtp/ear-resources/META-INF/
 ConsomiTounsi-ejb/target/classes/META-INF/
 
 *.class
+
+ConsomiTounsi-ejb/target/test-classes/
+
+*.properties
