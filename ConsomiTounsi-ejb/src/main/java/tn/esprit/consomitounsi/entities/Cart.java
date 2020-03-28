@@ -2,15 +2,16 @@ package tn.esprit.consomitounsi.entities;
 
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+
 
 @Entity
 public class Cart implements Serializable{
@@ -23,8 +24,8 @@ public class Cart implements Serializable{
 	private int idCart;
 	@ManyToOne
 	private User user;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<CartItem> items;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Product> products;
 	private int totalQty;
 	private float totalPrice;
 	private boolean isCurrent; 
@@ -41,9 +42,9 @@ public class Cart implements Serializable{
 
 
 
-	public Cart(User user, List<CartItem> items, int totalQty, float totalPrice, boolean isCurrent) {
+	public Cart(User user, List<Product> products, int totalQty, float totalPrice, boolean isCurrent) {
 		this.user = user;
-		this.items = items;
+		this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
@@ -51,28 +52,22 @@ public class Cart implements Serializable{
 
 
 
-	public Cart(int idCart, User user, List<CartItem> items, int totalQty, float totalPrice, boolean isCurrent) {
+	public Cart(int idCart, User user, List<Product> products, int totalQty, float totalPrice, boolean isCurrent) {
 		this.idCart = idCart;
 		this.user = user;
-		this.items = items;
+		this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
 	}
 
 
-
-	public boolean isCurrent() {
-		return isCurrent;
-	}
-
-	public void setCurrent(boolean isCurrent) {
-		this.isCurrent = isCurrent;
-	}
 
 	public int getIdCart() {
 		return idCart;
 	}
+
+
 
 	public void setIdCart(int idCart) {
 		this.idCart = idCart;
@@ -92,29 +87,54 @@ public class Cart implements Serializable{
 
 
 
-	public List<CartItem> getItems() {
-		return items;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setItems(List<CartItem> items) {
-		this.items = items;
+
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
+
+
 
 	public int getTotalQty() {
 		return totalQty;
 	}
 
+
+
 	public void setTotalQty(int totalQty) {
 		this.totalQty = totalQty;
 	}
+
+
 
 	public float getTotalPrice() {
 		return totalPrice;
 	}
 
+
+
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
+
+
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+
+
+
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+
+
+
+
 	
 }

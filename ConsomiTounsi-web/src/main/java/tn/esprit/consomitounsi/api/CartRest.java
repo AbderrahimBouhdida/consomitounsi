@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,7 +34,7 @@ public class CartRest {
 	}
 	
 	@Path("/getActive")
-	@POST
+	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActiveCart(User user) {
@@ -41,19 +42,19 @@ public class CartRest {
 		if(cr ==null)
 			return Response.serverError().build();
 		System.out.println(cr.getIdCart());
-		return Response.ok(cr.getIdCart()).build();
+		return Response.ok(cr).build();
 	}
 	@Path("/addProd/{id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProduct(@PathParam(value = "id")int id, Product prod) {
+	public Response addProduct(@PathParam(value = "id")int id,Product pid) {
 		User us = new User();
 		us.setIdUser(id);
-		cartservice.addProdCart(us, prod);
+		cartservice.addProdCart(us, pid);
 		return Response.ok("added").build();
 	}
 	@Path("/get")
-	@POST
+	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProds(User user) {
@@ -61,5 +62,4 @@ public class CartRest {
 		System.out.println("heerrr"+prods.size());
 		return Response.ok(prods).build();
 	}
-	
 }

@@ -10,10 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.Cart;
-import tn.esprit.consomitounsi.entities.CartItem;
 import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
+import tn.esprit.consomitounsi.services.impl.ProductService;
 
 
 @Stateless
@@ -21,6 +21,7 @@ import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 public class CartServices implements ICartServicesRemote{
 	@PersistenceContext
 	EntityManager em;
+	ProductService ps;
 	
 	@Override
 	public int addCart(Cart cart) {
@@ -38,7 +39,7 @@ public class CartServices implements ICartServicesRemote{
 	@Override
 	public void updateCart(Cart cartNewValues) {
 		Cart cart = em.find(Cart.class, cartNewValues.getIdCart());
-		cart.setItems(cartNewValues.getItems());
+		cart.setProducts(cartNewValues.getProducts());
 	}
 
 	@Override
@@ -94,14 +95,10 @@ public class CartServices implements ICartServicesRemote{
 	@Override
 	public void addProdCart(User user, Product prod) {
 		Cart cr = findActiveCartByUserId(user);
-		CartItem item = new CartItem();
-		item.setProd(prod);
-		em.persist(item);
-		List<CartItem> items=new ArrayList<CartItem>();
-		items = cr.getItems();
-		items.add(item);
-		cr.setItems(items);
-		
+		List<Product> items = new ArrayList<Product>();
+		items = cr.getProducts();
+		items.add(prod);
+		cr.setProducts(items);
 	}
 
 	@Override
@@ -110,20 +107,11 @@ public class CartServices implements ICartServicesRemote{
 		cr = findActiveCartByUserId(user);
 		List<Product> prods = new ArrayList<Product>();
 		System.out.println("zzzzzzzzzzzzzzzzzz"+cr.getIdCart());
-		//prods = cr.getItems().stream().map(CartItem::getProd).collect(Collectors.toList());
-		
-		
-		System.out.println("zzzzzzzzzzzzzzzzzz"+cr.getItems().size());
-		for (CartItem c : cr.getItems()) {
-			System.out.println("bbbbbbbbbbb"+c.getProd().getBarecode());
-			prods.add(c.getProd());
-		}
-		
+		prods = cr.getProducts();
+		System.out.println("zzzzzzzzzzzzzzzzzz"+cr.getProducts().size());
 		//List<CartItem> its = cr.getItems();
 		return prods;
 	}
 	
-	
-
 
 }
