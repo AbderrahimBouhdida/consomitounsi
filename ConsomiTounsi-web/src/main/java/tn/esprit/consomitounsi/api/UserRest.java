@@ -10,12 +10,13 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.User;
+import tn.esprit.consomitounsi.sec.LoginToken;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 
 
 
-@Path("/login")
+@Path("/user")
 @RequestScoped
 public class UserRest {
 	@EJB
@@ -23,12 +24,14 @@ public class UserRest {
 	@EJB
 	ICartServicesRemote carts;
 	@POST
-	@Path("/addUser")
+	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response adduser(User us) {
+		if(users.userExist(us))
+			return Response.status(Response.Status.BAD_REQUEST).entity("User exist").build();
 		users.addUser(us);
-		return Response.ok(users.findAllUsers()).build();
+		return Response.ok(us).build();
 	}
 	@POST
 	@Path("/log")
@@ -45,7 +48,8 @@ public class UserRest {
 			carts.addCart(cr);
 			System.out.println("cart created !");
 		}
-		return Response.ok(us).build();	
+		String token = LoginToken.createJWT("ConsomiTounsi", user.getUsername(), 0);
+		return Response.ok(us).header("AUTHORIZATION", "Bearer " + token).build();	
 	}
 	
 	

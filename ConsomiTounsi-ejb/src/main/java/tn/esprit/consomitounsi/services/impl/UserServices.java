@@ -1,5 +1,6 @@
 package tn.esprit.consomitounsi.services.impl;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -18,10 +19,23 @@ import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 public class UserServices implements IUserServicesRemote {
 	@PersistenceContext
 	EntityManager em;
+	SecUtils sec = new SecUtils();
 
 	@Override
 	public int addUser(User user) {
-		em.persist(user);
+		try {
+			user.setSalt(SecUtils.getSalt());
+			System.out.println("salt : " + user.getSalt());
+			String pass = user.getPassword();
+			String secPass = sec.getSecurePassword(pass, user.getSalt());
+			user.setPassword(secPass);
+			em.persist(user);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("add failed");
+		}
+
 		return user.getIdUser();
 	}
 
@@ -45,24 +59,43 @@ public class UserServices implements IUserServicesRemote {
 
 	@Override
 	public List<User> findAllUsers() {
-		List<User> users = em.createQuery("from user", User.class).getResultList();
+		List<User> users = em.createQuery("from User", User.class).getResultList();
 		return users;
 	}
 
 	@Override
 	public User login(String username, String password) {
-		TypedQuery<User> query = em
-				.createQuery("SELECT u FROM User u WHERE u.username=:username AND u.password=:password ", User.class);
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username=:username", User.class);
 		query.setParameter("username", username);
-		query.setParameter("password", password);
 		User user = null;
 		try {
 			user = query.getSingleResult();
+			if (user != null) {
+				String passToVerify = user.getSalt() + password;
+				if(sec.verifyPassword(user.getPassword(), passToVerify))
+					return user;
+			}
 		} catch (Exception e) {
 			System.out.println("Erreur : " + e);
 			return null;
 		}
-		return user;
+		return null;
+	}
+
+	@Override
+	public boolean userExist(User newUser) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username=:username OR u.email=:email", User.class);
+		query.setParameter("username", newUser.getUsername());
+		query.setParameter("email", newUser.getEmail());
+		try {
+			if(query.getResultList().size()!=0) {
+				System.out.println("exists");
+				return true;
+			}
+		} catch (Exception e) {
+			System.out.println("Erreur : " + e);
+		}
+		return false;
 	}
 
 }
