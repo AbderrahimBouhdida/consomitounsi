@@ -22,7 +22,7 @@ public class Product implements Serializable {
 	private int quantity;
 	@ManyToOne
 	private Category category;
-	
+	//heeelooooo
 	
 	
 	public Product() {
