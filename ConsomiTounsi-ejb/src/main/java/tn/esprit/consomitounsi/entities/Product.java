@@ -20,6 +20,8 @@ public class Product implements Serializable {
 	private Date dateExpire;
 	private Date dateAdd;
 	private int quantity;
+	
+	// comment added
 	@ManyToOne
 	private Category category;
 	
