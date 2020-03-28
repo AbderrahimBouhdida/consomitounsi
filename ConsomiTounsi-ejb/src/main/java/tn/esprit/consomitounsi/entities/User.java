@@ -27,6 +27,7 @@ public class User implements Serializable{
 	private String address;
 	private String phone;
 	private String img;
+	private String salt;
 	
 	public User() {
 	}
@@ -43,6 +44,46 @@ public class User implements Serializable{
 		this.address = address;
 		this.phone = phone;
 		this.img = img;
+	}
+	
+
+	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
+			String address, String phone, String img, String salt) {
+		this.role = role;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.dob = dob;
+		this.address = address;
+		this.phone = phone;
+		this.img = img;
+		this.salt = salt;
+	}
+
+	public User(int idUser, int role, String firstName, String lastName, String email, String username, String password,
+			Date dob, String address, String phone, String img, String salt) {
+		this.idUser = idUser;
+		this.role = role;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.dob = dob;
+		this.address = address;
+		this.phone = phone;
+		this.img = img;
+		this.salt = salt;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public int getIdUser() {
@@ -132,6 +173,5 @@ public class User implements Serializable{
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
 	
 }
