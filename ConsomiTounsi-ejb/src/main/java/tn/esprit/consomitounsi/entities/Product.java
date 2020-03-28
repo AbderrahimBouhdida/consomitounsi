@@ -23,7 +23,7 @@ public class Product implements Serializable {
 	@ManyToOne
 	private Category category;
 	//heeelooooo
-	
+	//hiiiii
 	
 	public Product() {
 		super();
