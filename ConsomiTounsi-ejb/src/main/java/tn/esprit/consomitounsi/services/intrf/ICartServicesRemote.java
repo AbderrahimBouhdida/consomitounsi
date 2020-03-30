@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import tn.esprit.consomitounsi.entities.Cart;
+import tn.esprit.consomitounsi.entities.CartProduct;
 import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 
@@ -17,7 +18,9 @@ public interface ICartServicesRemote {
 	public List<Cart> findCartByUserId(int id);
 	public List<Cart> findAllCarts();
 	public boolean isCartAvailaible(User user);
-	public void addProdCart(User user,Product prod);
+	public boolean addProdCart(User user,CartProduct prod);
 	public Cart findActiveCartByUserId(User user);
 	public List<Product> getCurrUserProds(User user);
+	public boolean removeProd(User user,CartProduct prod);
+	public boolean modProd(User user,CartProduct prod);
 }
