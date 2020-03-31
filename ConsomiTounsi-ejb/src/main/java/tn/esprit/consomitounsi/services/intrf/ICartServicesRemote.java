@@ -17,7 +17,7 @@ public interface ICartServicesRemote {
 	public List<Cart> findCartByUserId(int id);
 	public List<Cart> findAllCarts();
 	public boolean isCartAvailaible(User user);
-	public void addProdCart(User user,Product prod);
-	public Cart findActiveCartByUserId(User user);
+	public void addProdCart(int userId, int prodId, int qty);
+	public Cart findActiveCartByUserId(int userid);
 	public List<Product> getCurrUserProds(User user);
 }

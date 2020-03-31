@@ -1,20 +1,11 @@
 package tn.esprit.consomitounsi.services.impl;
 
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Date;
-
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import de.mkammerer.argon2.Argon2Factory.Argon2Types;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;  
+import de.mkammerer.argon2.Argon2Factory.Argon2Types;  
 
 public class SecUtils {
 	Argon2 argon2 = Argon2Factory.create(Argon2Types.ARGON2id);

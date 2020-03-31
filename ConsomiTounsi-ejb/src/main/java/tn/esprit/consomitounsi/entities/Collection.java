@@ -2,7 +2,6 @@ package tn.esprit.consomitounsi.entities;
 
 import java.io.Serializable;
 
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,34 +10,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
 @Entity
-public class Collection implements Serializable{
+public class Collection implements Serializable {
 	private static final long serialVersionUID = 3152690779735828408L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idcollection;
-	
+
 	private String name;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Collectiontype type;
-	
+
 	private String description;
-	
+
 	private String image;
-	
+
 	private int goal;
-	
+
 	private int collectedamount;
-	
+
 	@ManyToOne
-	private  User user;
-	
-	
-	
-	
+	private User user;
+
 	public Collection() {
 		super();
 	}
@@ -118,11 +113,5 @@ public class Collection implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	
-
-	
-	
-	
 
 }

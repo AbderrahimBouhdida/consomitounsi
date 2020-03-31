@@ -1,6 +1,5 @@
 package tn.esprit.consomitounsi.entities;
 
-
 //test v2
 import java.io.Serializable;
 import java.util.Date;
@@ -11,11 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1210738760881297022L;
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idUser;
 	private int role;
 	private String firstName;
@@ -28,7 +27,7 @@ public class User implements Serializable{
 	private String phone;
 	private String img;
 	private String salt;
-	
+
 	public User() {
 	}
 
@@ -45,7 +44,6 @@ public class User implements Serializable{
 		this.phone = phone;
 		this.img = img;
 	}
-	
 
 	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img, String salt) {
@@ -173,5 +171,5 @@ public class User implements Serializable{
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
+
 }
