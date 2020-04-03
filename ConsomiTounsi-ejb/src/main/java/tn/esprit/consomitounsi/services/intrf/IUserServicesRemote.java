@@ -17,4 +17,5 @@ public interface IUserServicesRemote {
 	public List<User> findAllUsers();
 	User login(String username, String password);
 	boolean userExist(User user);
+	public boolean verifyEmail(String token);
 }

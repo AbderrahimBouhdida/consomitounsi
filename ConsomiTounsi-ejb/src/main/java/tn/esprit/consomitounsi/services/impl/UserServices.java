@@ -1,5 +1,7 @@
 package tn.esprit.consomitounsi.services.impl;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -29,11 +31,24 @@ public class UserServices implements IUserServicesRemote {
 			String pass = user.getPassword();
 			String secPass = sec.getSecurePassword(pass, user.getSalt());
 			user.setPassword(secPass);
+			user.setValid(false);
 			em.persist(user);
+			String tok = user.getIdUser()+"."+sec.generateToken(15);
+			user.setVerifToken(tok);
+			EmailService email = new EmailService();
+			String body = "Please click on the link below to activate your account\n"
+					+ "http://localhost:9080/ConsomiTounsi-web/api/user/verify?token="+tok;
+			email.sendEmail("service@consomitounsi.tn", "Verification", user.getEmail(), body);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("add failed");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return user.getIdUser();
@@ -98,4 +113,20 @@ public class UserServices implements IUserServicesRemote {
 		return false;
 	}
 
+	@Override
+	public boolean verifyEmail(String token) {
+		if(token.contains(".")) {
+			int id = 0;
+			id = Integer.valueOf(token.split("\\.")[0]);
+			User us = em.find(User.class, id);
+			if(us.getVerifToken().equals(token)) {
+				us.setValid(true);
+				return true;
+			}
+				
+		}
+		return false;
+	}
+	
+	
 }
