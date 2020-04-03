@@ -62,7 +62,7 @@ public class UserRest {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		if(users.verifyEmail(token))
 			return Response.ok("Verified").build();
-		return Response.status(Response.Status.BAD_REQUEST).build();
+		return Response.ok("Already verified").build();
 	}
 	
 }

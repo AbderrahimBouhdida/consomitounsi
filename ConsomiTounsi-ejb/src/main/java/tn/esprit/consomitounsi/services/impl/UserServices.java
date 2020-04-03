@@ -119,6 +119,8 @@ public class UserServices implements IUserServicesRemote {
 			int id = 0;
 			id = Integer.valueOf(token.split("\\.")[0]);
 			User us = em.find(User.class, id);
+			if(us.isValid())
+				return false;
 			if(us.getVerifToken().equals(token)) {
 				us.setValid(true);
 				return true;
