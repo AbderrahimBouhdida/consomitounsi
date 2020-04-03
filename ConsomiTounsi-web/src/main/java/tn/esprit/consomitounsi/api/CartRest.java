@@ -1,5 +1,7 @@
 package tn.esprit.consomitounsi.api;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -64,7 +66,7 @@ public class CartRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllProds(User user) {
-		List<Product> prods = cartservice.getCurrUserProds(user);
+		List<CartProduct> prods = cartservice.getCurrUserProds(user);
 		System.out.println("heerrr"+prods.size());
 		return Response.ok(prods).build();
 	}
@@ -91,5 +93,20 @@ public class CartRest {
 		if(edited)
 			return Response.ok("edited").build();
 		return Response.ok("Item doesn't exists").build();
+	}
+	
+	@Path("/email")
+	@POST
+	public Response testEmail() {
+		try {
+			cartservice.testEmail();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return Response.ok("sent").build();
 	}
 }

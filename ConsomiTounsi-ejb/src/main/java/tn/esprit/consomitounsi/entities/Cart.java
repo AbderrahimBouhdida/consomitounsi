@@ -35,7 +35,7 @@ public class Cart implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date created;
 	
-	@OneToMany(mappedBy = "cart")
+	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER)
 	private List<CartProduct> products;
 	public Cart() {
 	}
