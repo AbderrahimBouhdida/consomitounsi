@@ -20,8 +20,8 @@ public class EmailService {
 	    Email to = new Email(toe);
 	    Content content = new Content("text/plain", body);
 	    Mail mail = new Mail(from, subject, to, content);
-	    
-	    String key = "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"; //need to hide this shit
+	    EmailKey ek = new EmailKey();
+	    String key = ek.getKey(); //need to hide this shit
 	    System.out.println(key);
 	    SendGrid sg = new SendGrid(key);
 	    Request request = new Request();
