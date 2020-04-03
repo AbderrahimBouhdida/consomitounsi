@@ -2,9 +2,11 @@ package tn.esprit.consomitounsi.api;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -42,6 +44,8 @@ public class UserRest {
 		User us = users.login(user.getUsername(), user.getPassword());
 		if(us == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
+		if(!us.isValid())
+			return Response.ok("please verify your Email First!").build();
 		System.out.println(!carts.isCartAvailaible(us));
 		if(!carts.isCartAvailaible(us)) {
 			Cart cr = new Cart(us,true);
@@ -51,6 +55,14 @@ public class UserRest {
 		String token = LoginToken.createJWT("ConsomiTounsi", user.getUsername(), 0);
 		return Response.ok(us).header("AUTHORIZATION", "Bearer " + token).build();	
 	}
-	
+	@GET
+	@Path("/verify")
+	public Response verifyEmail(@QueryParam(value = "token")String token) {
+		if (token == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		if(users.verifyEmail(token))
+			return Response.ok("Verified").build();
+		return Response.status(Response.Status.BAD_REQUEST).build();
+	}
 	
 }
