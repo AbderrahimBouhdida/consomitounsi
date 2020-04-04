@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.CartProduct;
+import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Address;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
@@ -51,15 +52,15 @@ public class ClientSide {
 		return Response.ok("cart added sucessfully").build();
 	}
 
-	@POST
-	@Path("cart/items/{idProd}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProduct(@PathParam(value = "userId") int idUser, @PathParam(value = "idProd") int idProd,
-			JsonObject obj) {
-		int qty = obj.getInt("qty");
-		csr.addProdCart(idUser, idProd, qty);
-		return Response.ok("item added successfully").build();
-	}
+//	@POST
+//	@Path("cart/items/{idProd}")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addProduct(@PathParam(value = "userId") int idUser, @PathParam(value = "idProd") int idProd,
+//			JsonObject obj) {
+//		int qty = obj.getInt("qty");
+//		csr.addProdCart(idUser, idProd, qty);
+//		return Response.ok("item added successfully").build();
+//	}
 
 	@POST
 	@Path("deliveryDetails")
@@ -104,7 +105,8 @@ public class ClientSide {
 
 		// total weight
 		double totalWeight = 0.0d;
-		List<CartProduct> items = csr.findActiveCartByUserId(userId).getProducts();
+		User us = userservice.findUserById(userId);
+		List<CartProduct> items = csr.findActiveCartByUserId(us).getProducts();
 		List<String> itemsList = new ArrayList<String>();
 		for (CartProduct item : items) {
 			totalWeight += (item.getProduct().getWeight()) * item.getQuantity();

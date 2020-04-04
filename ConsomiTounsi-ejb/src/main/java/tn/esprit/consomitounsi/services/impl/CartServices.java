@@ -24,7 +24,7 @@ import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 public class CartServices implements ICartServicesRemote {
 	@PersistenceContext
 	EntityManager em;
-	
+
 	@Override
 	public int addCart(Cart cart) {
 		em.persist(cart);
@@ -84,32 +84,6 @@ public class CartServices implements ICartServicesRemote {
 	}
 
 	@Override
-	public Cart findActiveCartByUserId(int userid) {
-//		TypedQuery<Cart> query = em.createQuery("select c from Cart c where user=:user and isCurrent=:curr", Cart.class);
-//		query.setParameter("user", user);
-//		query.setParameter("curr", true);
-//		Cart cr = null;
-//		try {
-//			System.out.println("geeeeeeeeeeeeeeeeeeeeez");
-//			cr = query.getSingleResult();
-//			System.out.println(cr.getIdCart());
-//				return cr;
-//		
-//		}catch (Exception e) {
-//			System.out.println("Error "+e);
-//			return null;
-//		}
-
-		User user = em.find(User.class, userid);
-
-		TypedQuery<Cart> query = em.createQuery("select c from Cart c where c.user=:user and isCurrent=:curr",
-				Cart.class);
-		query.setParameter("user", user);
-		query.setParameter("curr", true);
-		return query.getSingleResult();
-	}
-
-	@Override
 	public boolean addProdCart(User user, CartProduct prod) {
 		Cart cr = findActiveCartByUserId(user);
 		CartProdPk pk = new CartProdPk();
@@ -119,19 +93,19 @@ public class CartServices implements ICartServicesRemote {
 		CartProduct cp = new CartProduct();
 		cp.setCartProdPk(pk);
 		cp.setQuantity(120);
-		if(!prodExist(cr, ppp)) {
+		if (!prodExist(cr, ppp)) {
 			em.persist(cp);
 			return true;
 		}
 		System.out.println("exists");
 		return false;
 	}
-	
+
 	@Override
-	public boolean removeProd(User user,CartProduct prod) {
+	public boolean removeProd(User user, CartProduct prod) {
 		Cart cr = findActiveCartByUserId(user);
 		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
-		if(prodExist(cr, ppp)) {
+		if (prodExist(cr, ppp)) {
 			CartProdPk cpk = new CartProdPk();
 			cpk.setCart(cr.getIdCart());
 			cpk.setProd(prod.getCartProdPk().getProd());
@@ -140,41 +114,61 @@ public class CartServices implements ICartServicesRemote {
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean modProd(User user,CartProduct prod) {
+	public boolean modProd(User user, CartProduct prod) {
 		Cart cr = findActiveCartByUserId(user);
 		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
-		if(prodExist(cr, ppp)) {
+		if (prodExist(cr, ppp)) {
 			CartProdPk cpk = new CartProdPk();
 			cpk.setCart(cr.getIdCart());
 			cpk.setProd(prod.getCartProdPk().getProd());
 			CartProduct cp = em.find(CartProduct.class, cpk);
-			cp.setQuantity(prod.getQuantity());;
+			cp.setQuantity(prod.getQuantity());
+			;
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public List<CartProduct> getCurrUserProds(User user) {
 		Cart cr = findActiveCartByUserId(user);
-		List<CartProduct> prods = cr.getProducts();//.stream().map(x -> em.find(Product.class, x.getCartProdPk().getProd())).collect(Collectors.toList());
+		List<CartProduct> prods = cr.getProducts();// .stream().map(x -> em.find(Product.class,
+													// x.getCartProdPk().getProd())).collect(Collectors.toList());
 		return prods;
 	}
-	
+
 	public boolean prodExist(Cart cr, Product pr) {
-		Product prod=em.find(Product.class, pr.getBarecode());
+		Product prod = em.find(Product.class, pr.getBarecode());
 		List<CartProduct> c = cr.getProducts();
 		List<CartProdPk> pk = c.stream().map(x -> x.getCartProdPk()).collect(Collectors.toList());
 		List<Product> p = pk.stream().map(x -> em.find(Product.class, x.getProd())).collect(Collectors.toList());
-		if(p.contains(prod))
+		if (p.contains(prod))
 			return true;
 		return false;
 	}
-	
+
 	public void testEmail() throws IOException, URISyntaxException {
 		EmailService ems = new EmailService();
 		ems.sendEmail("imousrf3@gmail.com", "testing", "bouhdida.abderrahim@gmail.com", "Hello There");
+	}
+
+	@Override
+	public Cart findActiveCartByUserId(User user) {
+		TypedQuery<Cart> query = em.createQuery("select c from Cart c where user=:user and isCurrent=:curr", Cart.class);
+		query.setParameter("user", user);
+		query.setParameter("curr", true);
+		Cart cr = null;
+		try {
+			System.out.println("geeeeeeeeeeeeeeeeeeeeez");
+			cr = query.getSingleResult();
+			System.out.println(cr.getIdCart());
+				return cr;
+		
+		}catch (Exception e) {
+			System.out.println("Error "+e);
+			return null;
+		}
 	}
 }

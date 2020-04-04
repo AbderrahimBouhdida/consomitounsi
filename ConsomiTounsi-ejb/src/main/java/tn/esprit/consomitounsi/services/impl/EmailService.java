@@ -2,8 +2,6 @@ package tn.esprit.consomitounsi.services.impl;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;

@@ -28,8 +28,6 @@ public class Cart implements Serializable {
 	//@ManyToMany(fetch = FetchType.EAGER)
 	//private List<Product> products;
 	private int totalQty;
-	@Temporal(TemporalType.DATE)
-	private Date created;
 	private float totalPrice;
 	private boolean isCurrent; 
 	@Temporal(TemporalType.DATE)
@@ -62,16 +60,6 @@ public class Cart implements Serializable {
 	}
 
 	
-
-	public Date getCreated() {
-		return created;
-	}
-
-
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
 
 
 
