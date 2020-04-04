@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
-import tn.esprit.consomitounsi.entities.CartItem;
+import tn.esprit.consomitounsi.entities.CartProduct;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Address;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
@@ -104,11 +104,11 @@ public class ClientSide {
 
 		// total weight
 		double totalWeight = 0.0d;
-		List<CartItem> items = csr.findActiveCartByUserId(userId).getItems();
+		List<CartProduct> items = csr.findActiveCartByUserId(userId).getProducts();
 		List<String> itemsList = new ArrayList<String>();
-		for (CartItem item : items) {
-			totalWeight += (item.getProd().getWeight()) * item.getQty();
-			itemsList.add(item.getQty() + "x " + item.getProd().getNameProduct() + " " + item.getProd().getWeight()
+		for (CartProduct item : items) {
+			totalWeight += (item.getProduct().getWeight()) * item.getQuantity();
+			itemsList.add(item.getQuantity() + "x " + item.getProduct().getNameProduct() + " " + item.getProduct().getWeight()
 					+ "kg " + " ");
 		}
 
