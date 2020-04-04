@@ -2,6 +2,8 @@ package tn.esprit.consomitounsi.services.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Date;
+import java.util.Random;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
@@ -30,5 +32,17 @@ public class SecUtils {
 		return argon2.verify(hash, password);
 	}
 	
+	public String generateToken(int tokenLength) {
+		String token = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		
+		StringBuffer tokenBuffer = new StringBuffer();
+		Random random = new Random();
+		
+		while(tokenBuffer.length() < tokenLength) {
+			int index = (int) (random.nextFloat() * token.length());
+			tokenBuffer.append(token.substring(index, index+1));
+		}
+		return tokenBuffer.toString();
+	}
 	
 }

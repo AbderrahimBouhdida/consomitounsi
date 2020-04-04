@@ -25,33 +25,55 @@ public class Cart implements Serializable {
 	private int idCart;
 	@ManyToOne
 	private User user;
-	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
-	private List<CartProduct> products;
+	//@ManyToMany(fetch = FetchType.EAGER)
+	//private List<Product> products;
 	private int totalQty;
 	@Temporal(TemporalType.DATE)
 	private Date created;
 	private float totalPrice;
-	private boolean isCurrent;
-
+	private boolean isCurrent; 
+	@Temporal(TemporalType.DATE)
+	private Date created;
+	
+	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER)
+	private List<CartProduct> products;
 	public Cart() {
 	}
 
+
+
 	public Cart(User user, int totalQty, float totalPrice, boolean isCurrent) {
-		super();
 		this.user = user;
+		//this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
 	}
 
+
+
 	public Cart(int idCart, User user, int totalQty, float totalPrice, boolean isCurrent) {
-		super();
 		this.idCart = idCart;
 		this.user = user;
+		//this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
 	}
+
+	
+
+	public Date getCreated() {
+		return created;
+	}
+
+
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+
 
 	public int getIdCart() {
 		return idCart;
@@ -69,9 +91,13 @@ public class Cart implements Serializable {
 		this.user = user;
 	}
 
+
+
 	public List<CartProduct> getProducts() {
 		return products;
 	}
+
+
 
 	public void setProducts(List<CartProduct> products) {
 		this.products = products;
@@ -120,6 +146,8 @@ public class Cart implements Serializable {
 		return result;
 	}
 
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -145,10 +173,8 @@ public class Cart implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Cart [idCart=" + idCart + ", user=" + user.getFirstName() + " " + user.getLastName() + ", totalQty="
-				+ totalQty + ", created=" + created + ", totalPrice=" + totalPrice + ", isCurrent=" + isCurrent + "]";
-	}
 
+
+
+	
 }
