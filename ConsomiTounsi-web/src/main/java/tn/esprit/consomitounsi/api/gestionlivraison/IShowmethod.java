@@ -9,6 +9,8 @@ import java.util.Map;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
+import tn.esprit.consomitounsi.entities.gestionlivraison.Exchange;
+import tn.esprit.consomitounsi.entities.gestionlivraison.Reclamation;
 
 public class IShowmethod {
 
@@ -17,6 +19,16 @@ public class IShowmethod {
 		for (Delivery del : deliveries) {
 
 			results.add(delivery(del));
+		}
+
+		return results;
+	}
+
+	public List<Map<String, Object>> reclamations(List<Reclamation> reclamations) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		for (Reclamation rec : reclamations) {
+
+			results.add(reclamation(rec));
 		}
 
 		return results;
@@ -36,6 +48,15 @@ public class IShowmethod {
 		for (Bonus bon : bonnus) {
 
 			results.add(bonus(bon));
+		}
+		return results;
+	}
+
+	public List<Map<String, Object>> Exchanges(List<Exchange> exchanges) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		for (Exchange ex : exchanges) {
+
+			results.add(exchange(ex));
 		}
 		return results;
 	}
@@ -84,8 +105,9 @@ public class IShowmethod {
 		obj.put("cost", del.getCost());
 		obj.put("deliveryMan",
 				del.getDeliveryMan() != null
-						? String.valueOf(del.getDeliveryMan().getIdUser()) + " " + del.getDeliveryMan().getFirstName()
-								+ " " + del.getDeliveryMan().getLastName()
+						? "[id: " + String.valueOf(del.getDeliveryMan().getIdUser()) + ", firtsname: "
+								+ del.getDeliveryMan().getFirstName() + ", lastname: "
+								+ del.getDeliveryMan().getLastName() + "]"
 						: "");
 
 		return obj;
@@ -97,9 +119,33 @@ public class IShowmethod {
 		bonus.put("id", bon.getId());
 		bonus.put("amount", bon.getAmount());
 		bonus.put("date", bon.getDate());
-		bonus.put("deliveryMan", String.valueOf(bon.getDeliveryMan().getIdUser()) + " "
-				+ bon.getDeliveryMan().getFirstName() + " " + bon.getDeliveryMan().getLastName());
+		bonus.put("deliveryMan", "[id: " + String.valueOf(bon.getDeliveryMan().getIdUser()) + ", firtsname: "
+				+ bon.getDeliveryMan().getFirstName() + ", lastname: " + bon.getDeliveryMan().getLastName() + "]");
 		return bonus;
+	}
+
+	public Map<String, Object> reclamation(Reclamation rec) {
+		Map<String, Object> reclamation = new HashMap<>();
+		reclamation.put("id", rec.getId());
+		reclamation.put("description", rec.getDescription());
+		reclamation.put("created", rec.getCreated());
+		reclamation.put("answered", rec.getAnswered());
+		reclamation.put("decision", rec.getDecision());
+		reclamation.put("state", rec.getState());
+		reclamation.put("product", rec.getProduct().getNameProduct());
+		reclamation.put("responseDescription", rec.getResponseDescription());
+		reclamation.put("user", "[id: " + String.valueOf(rec.getUser().getIdUser()) + ", firtsname: "
+				+ rec.getUser().getFirstName() + ", lastname: " + rec.getUser().getLastName() + "]");
+		return reclamation;
+	}
+
+	public Map<String, Object> exchange(Exchange ex) {
+		Map<String, Object> exchange = new HashMap<>();
+		exchange.put("code", ex.getCode());
+		exchange.put("created", ex.getCreated());
+		exchange.put("doneOn", ex.getDoneOn());
+		exchange.put("product", ex.getProduct().getNameProduct());
+		return exchange;
 	}
 
 }

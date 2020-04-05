@@ -11,6 +11,8 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
+import tn.esprit.consomitounsi.entities.EmailKey;
+
 public class EmailService {
 	public void sendEmail(String email, String subj, String toe, String body) throws IOException, URISyntaxException {
 		Email from = new Email(email);

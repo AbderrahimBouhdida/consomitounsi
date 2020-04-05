@@ -25,9 +25,15 @@ public interface ReclamationServiceRemote {
 
 	public void deleteReclamationById(int reclamationId);
 
+	public boolean reclamationExist(int id);
+
 	public List<Reclamation> getAllReclamations();
 
+	public List<Reclamation> getReclamationByUserId(int userid);
+
 	public List<Reclamation> getAllReclamationsByYear(int year);
+
+	public List<Reclamation> getAllReclamationsByMonth(int year, int month);
 
 	public List<Reclamation> getReclamationByState(ReclamationState state);
 
@@ -59,15 +65,15 @@ public interface ReclamationServiceRemote {
 	public Exchange getExchangeByCode(String code);
 
 	public void updateExchange(Exchange newExchange);
-	
-	public void validateExchange(String code);
+
+	public boolean validateExchange(String code);
 
 	public void deleteExchangeByCode(String code);
 
 	public List<Exchange> getAllExchanges();
 
 	public List<Exchange> getAllExchangesByState(boolean state);
-	
+
 	public List<Exchange> getAllExchangesByYear(int year);
 
 	public boolean checkExchangeCode(String code);
@@ -75,6 +81,8 @@ public interface ReclamationServiceRemote {
 	public List<Product> getExchangedProductByYear(int year);
 
 	public long numberOfExchangeByYear(int year);
+
+	public long numberOfExchangePerMonth(int year, int month);
 
 	public long numberOfExchangeByProductByYear(int productId, int year);
 
@@ -93,7 +101,7 @@ public interface ReclamationServiceRemote {
 	public void updateRepayment(Repayment newRepayment);
 
 	public void deleteRepaymentById(int repaymentId);
-	
+
 	public void validateRepayment(int repaymentId, double amount, String description);
 
 	public List<Repayment> getAllRepayment();
@@ -115,7 +123,7 @@ public interface ReclamationServiceRemote {
 	public void updateRepair(Repair newRepair);
 
 	public void deleteRepairById(int repairId);
-	
+
 	public void validateRepair(int repairId, double cost, String description);
 
 	public List<Repair> getAllRepairs();
@@ -125,7 +133,7 @@ public interface ReclamationServiceRemote {
 	public List<Repair> getAllRepairByState(boolean state);
 
 	public long numberOfRepairByYear(int year);
-	
+
 	public long numberOfRepairPerMonth(int year, int month);
 
 	public long numberOfRepairByProductPerYear(int productId, int year);

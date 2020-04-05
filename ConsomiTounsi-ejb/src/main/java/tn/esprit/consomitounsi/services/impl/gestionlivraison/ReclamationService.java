@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.Category;
 import tn.esprit.consomitounsi.entities.Product;
+import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Decision;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Exchange;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Reclamation;
@@ -34,6 +35,16 @@ public class ReclamationService implements ReclamationServiceRemote {
 		reclamation.setState(ReclamationState.Pending);
 		em.persist(reclamation);
 		return reclamation.getId();
+	}
+
+	@Override
+	public boolean reclamationExist(int id) {
+		Reclamation rec = em.find(Reclamation.class, id);
+		if (rec != null) {
+			return true;
+		}
+		return false;
+
 	}
 
 	@Override
@@ -65,9 +76,30 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
+	public List<Reclamation> getReclamationByUserId(int userid) {
+		User user = em.find(User.class, userid);
+		TypedQuery<Reclamation> query = em.createQuery("Select rec from Reclamation rec where rec.user=:user",
+				Reclamation.class);
+		query.setParameter("user", user);
+		return query.getResultList();
+	}
+
+	@Override
 	public List<Reclamation> getAllReclamationsByYear(int year) {
 		TypedQuery<Reclamation> query = em.createQuery(
 				"Select r" + " from Reclamation r " + "where EXTRACT(YEAR FROM r.created)=:year", Reclamation.class);
+
+		query.setParameter("year", year);
+
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Reclamation> getAllReclamationsByMonth(int year, int month) {
+		TypedQuery<Reclamation> query = em.createQuery(
+				"Select r" + " from Reclamation r "
+						+ "where EXTRACT(MONTH FROM rec.created)=:month AND EXTRACT(YEAR FROM rec.created)=:year",
+				Reclamation.class);
 
 		query.setParameter("year", year);
 
@@ -246,11 +278,14 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
-	public void validateExchange(String code) {
+	public boolean validateExchange(String code) {
 		Exchange exchange = em.find(Exchange.class, code);
-		exchange.setDone(true);
-		exchange.setDoneOn(getCurrentDate());
-
+		if (exchange != null) {
+			exchange.setDone(true);
+			exchange.setDoneOn(getCurrentDate());
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -268,7 +303,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Exchange> getAllExchangesByYear(int year) {
 		TypedQuery<Exchange> query = em.createQuery(
-				"Select e" + " from Exchange e " + "where EXTRACT(YEAR FROM e.created)=:year", Exchange.class);
+				"Select e" + " from Exchange e " + "where EXTRACT(YEAR FROM e.doneOn)=:year", Exchange.class);
 
 		query.setParameter("year", year);
 
@@ -304,9 +339,22 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfExchangeByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(exc)" + " from Exchange exc " + "where EXTRACT(YEAR FROM exc.created)=:year", Long.class);
+				"Select count(exc)" + " from Exchange exc " + "where EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
+		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
+		return result;
+	}
+
+	@Override
+	public long numberOfExchangePerMonth(int year, int month) {
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(exc)" + " from Exchange exc "
+						+ "where EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
+				Long.class);
+
+		query.setParameter("year", year);
+		query.setParameter("month", month);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
 		return result;
 	}
@@ -315,7 +363,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfExchangeByProductByYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
 		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc "
-				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.created)=:year", Long.class);
+				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		query.setParameter("product", product);
@@ -328,7 +376,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfExchangeByProductPerMonth(int productId, int year, int month) {
 		Product product = em.find(Product.class, productId);
 		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc "
-				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.created)=:year AND EXTRACT(MONTH FROM exc.created)=:month",
+				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
 				Long.class);
 
 		query.setParameter("year", year);
@@ -342,7 +390,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfExchangeByCategoryByYear(int categoryId, int year) {
 		Category category = em.find(Category.class, categoryId);
 		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc Join exc.product product "
-				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.created)=:year", Long.class);
+				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		query.setParameter("category", category);
@@ -355,7 +403,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfExchangeByCategoryPerMonth(int categoryId, int year, int month) {
 		Category category = em.find(Category.class, categoryId);
 		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc Join exc.product product "
-				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.created)=:year AND EXTRACT(MONTH FROM exc.created)=:month",
+				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
 				Long.class);
 
 		query.setParameter("year", year);
@@ -412,7 +460,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Repayment> getAllRepaymentByYear(int year) {
 		TypedQuery<Repayment> query = em.createQuery(
-				"Select r" + " from Repayment r " + "where EXTRACT(YEAR FROM r.created)=:year", Repayment.class);
+				"Select r" + " from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Repayment.class);
 
 		query.setParameter("year", year);
 
@@ -430,7 +478,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfRepaymentPerYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " r from Repayment r " + "where EXTRACT(YEAR FROM r.created)=:year", Long.class);
+				"Select count(r)" + " r from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
@@ -441,7 +489,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfRepaymentPerMonth(int month, int year) {
 		TypedQuery<Long> query = em.createQuery(
 				"Select count(r)" + " from Repayment r "
-						+ "where EXTRACT(MONTH FROM r.created)=:month AND EXTRACT(YEAR FROM r.created)=:year",
+						+ "where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
 				Long.class);
 
 		query.setParameter("month", month);
@@ -503,7 +551,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Repair> getAllRepairByYear(int year) {
 		TypedQuery<Repair> query = em
-				.createQuery("Select r" + " from Repair r " + "where EXTRACT(YEAR FROM r.created)=:year", Repair.class);
+				.createQuery("Select r" + " from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Repair.class);
 
 		query.setParameter("year", year);
 
@@ -521,7 +569,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfRepairByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " r from Repair r " + "where EXTRACT(YEAR FROM r.created)=:year", Long.class);
+				"Select count(r)" + " r from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
@@ -532,7 +580,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfRepairByProductPerYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
 		TypedQuery<Long> query = em.createQuery("Select count(r)" + " from Repair r "
-				+ "where r.product=:product AND EXTRACT(YEAR FROM r.created)=:year", Long.class);
+				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		query.setParameter("product", product);
@@ -545,7 +593,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public long numberOfRepairPerMonth(int year, int month) {
 		TypedQuery<Long> query = em.createQuery(
 				"Select count(r)" + " from Repair r "
-						+ "where EXTRACT(MONTH FROM r.created)=:month AND EXTRACT(YEAR FROM r.created)=:year",
+						+ "where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
 				Long.class);
 
 		query.setParameter("month", month);
@@ -569,7 +617,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public double costOfRepairByProductPerYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
 		TypedQuery<Double> query = em.createQuery("Select sum(r.cost)" + " from Repair r "
-				+ "where r.product=:product AND EXTRACT(YEAR FROM r.created)=:year", Double.class);
+				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year", Double.class);
 
 		query.setParameter("year", year);
 		query.setParameter("product", product);
@@ -582,7 +630,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public double costOfRepairByProductPerMonth(int productId, int month, int year) {
 		Product product = em.find(Product.class, productId);
 		TypedQuery<Double> query = em.createQuery("Select sum(r.cost)" + " from Repair r "
-				+ "where r.product=:product  AND EXTRACT(YEAR FROM r.created)=:year AND EXTRACT(MONTH FROM r.created)=:month ",
+				+ "where r.product=:product  AND EXTRACT(YEAR FROM r.doneOn)=:year AND EXTRACT(MONTH FROM r.doneOn)=:month ",
 				Double.class);
 
 		query.setParameter("year", year);
