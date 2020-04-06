@@ -28,6 +28,8 @@ public class User implements Serializable{
 	private String phone;
 	private String img;
 	private String salt;
+	private String verifToken;
+	private boolean isValid;
 	
 	public User() {
 	}
@@ -76,6 +78,24 @@ public class User implements Serializable{
 		this.phone = phone;
 		this.img = img;
 		this.salt = salt;
+	}
+
+	
+	
+	public String getVerifToken() {
+		return verifToken;
+	}
+
+	public void setVerifToken(String verifToken) {
+		this.verifToken = verifToken;
+	}
+
+	public boolean isValid() {
+		return isValid;
+	}
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 
 	public String getSalt() {
