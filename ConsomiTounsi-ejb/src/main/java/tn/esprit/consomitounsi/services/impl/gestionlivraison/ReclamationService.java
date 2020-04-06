@@ -329,6 +329,15 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
+	public boolean exchangeExist(String code) {
+		Exchange exchange = em.find(Exchange.class, code.toUpperCase());
+		if (exchange != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public List<Product> getExchangedProductByYear(int year) {
 		TypedQuery<Product> query = em.createQuery(
 				"select exc.product from Exchange exc" + "where EXTRACT(YEAR FROM exc.doneOn)=:year ", Product.class);
@@ -452,6 +461,15 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
+	public boolean RepaymentExist(int id) {
+		Repayment r = em.find(Repayment.class, id);
+		if (r != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public List<Repayment> getAllRepayment() {
 		List<Repayment> rep = em.createQuery("Select rep from Repayment rep", Repayment.class).getResultList();
 		return rep;
@@ -533,6 +551,15 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
+	public boolean repairExist(int id) {
+		Repair r = em.find(Repair.class, id);
+		if (r != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void validateRepair(int repairId, double cost, String description) {
 		Repair repair = em.find(Repair.class, repairId);
 		repair.setCost(cost);
@@ -554,6 +581,16 @@ public class ReclamationService implements ReclamationServiceRemote {
 				.createQuery("Select r" + " from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Repair.class);
 
 		query.setParameter("year", year);
+
+		return query.getResultList();
+	}
+
+	@Override
+	public List<Repair> getRepairByProductId(int id) {
+		Product product = em.find(Product.class, id);
+		TypedQuery<Repair> query = em.createQuery("Select count(r)" + " from Repair r " + "where r.product=:product ",
+				Repair.class);
+		query.setParameter("product", product);
 
 		return query.getResultList();
 	}
@@ -585,6 +622,20 @@ public class ReclamationService implements ReclamationServiceRemote {
 		query.setParameter("year", year);
 		query.setParameter("product", product);
 
+		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
+		return result;
+	}
+
+	@Override
+	public long numberOfRepairByProductPerMonth(int productId, int year, int month) {
+		Product product = em.find(Product.class, productId);
+		TypedQuery<Long> query = em.createQuery("Select count(r)" + " from Repair r "
+				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year  AND EXTRACT(MONTH FROM r.doneOn)=:month",
+				Long.class);
+
+		query.setParameter("year", year);
+		query.setParameter("product", product);
+		query.setParameter("month", month);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
 		return result;
 	}

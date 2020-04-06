@@ -11,6 +11,8 @@ import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Exchange;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Reclamation;
+import tn.esprit.consomitounsi.entities.gestionlivraison.Repair;
+import tn.esprit.consomitounsi.entities.gestionlivraison.Repayment;
 
 public class IShowmethod {
 
@@ -57,6 +59,24 @@ public class IShowmethod {
 		for (Exchange ex : exchanges) {
 
 			results.add(exchange(ex));
+		}
+		return results;
+	}
+
+	public List<Map<String, Object>> repayments(List<Repayment> repayments) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		for (Repayment r : repayments) {
+
+			results.add(repayment(r));
+		}
+		return results;
+	}
+
+	public List<Map<String, Object>> repairs(List<Repair> repairs) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		for (Repair r : repairs) {
+
+			results.add(repair(r));
 		}
 		return results;
 	}
@@ -144,8 +164,36 @@ public class IShowmethod {
 		exchange.put("code", ex.getCode());
 		exchange.put("created", ex.getCreated());
 		exchange.put("doneOn", ex.getDoneOn());
+		exchange.put("done", ex.isDone());
 		exchange.put("product", ex.getProduct().getNameProduct());
 		return exchange;
+	}
+
+	public Map<String, Object> repayment(Repayment rep) {
+		Map<String, Object> r = new HashMap<>();
+		r.put("id", rep.getId());
+		r.put("amount", rep.getAmount());
+		r.put("created", rep.getCreated());
+		r.put("doneOn", rep.getDoneOn());
+		r.put("description", rep.getDescription());
+		r.put("done", rep.isDone());
+		r.put("User", "[id: " + String.valueOf(rep.getUser().getIdUser()) + ", firtsname: "
+				+ rep.getUser().getFirstName() + ", lastname: " + rep.getUser().getLastName() + "]");
+		return r;
+	}
+
+	public Map<String, Object> repair(Repair rep) {
+		Map<String, Object> r = new HashMap<>();
+		r.put("id", rep.getId());
+		r.put("created", rep.getCreated());
+		r.put("doneOn", rep.getDoneOn());
+		r.put("cost", rep.getCost());
+		r.put("description", rep.getDescription());
+		r.put("done", rep.isDone());
+		r.put("product", rep.getProduct().getNameProduct());
+		r.put("User", "[id: " + String.valueOf(rep.getUser().getIdUser()) + ", firtsname: "
+				+ rep.getUser().getFirstName() + ", lastname: " + rep.getUser().getLastName() + "]");
+		return r;
 	}
 
 }

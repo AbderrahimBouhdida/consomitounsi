@@ -79,10 +79,18 @@ public class ExchangeRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showExchangesByCode(@PathParam(value = "code") String code) {
 		IShowmethod show = new IShowmethod();
-		if (rsr.checkExchangeCode(code.toUpperCase())) {
+		if (rsr.exchangeExist(code.toUpperCase())) {
 			return Response.ok(show.exchange(rsr.getExchangeByCode(code.toUpperCase()))).build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
+
+	}
+
+	@GET
+	@Path("{code}/check")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkCode(@PathParam(value = "code") String code) {
+		return Response.ok(rsr.exchangeExist(code.toUpperCase())).build();
 
 	}
 
@@ -90,10 +98,10 @@ public class ExchangeRest {
 	@Path("{code}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateExchange(@PathParam(value = "code") String code, Exchange ex) {
-		if (rsr.checkExchangeCode(ex.getCode().toUpperCase())) {
+		if (rsr.exchangeExist(ex.getCode().toUpperCase())) {
 			ex.setProduct(psr.findProductById(ex.getProduct().getBarecode()));
 			rsr.updateExchange(ex);
-			return Response.ok("exchange added successfully").build();
+			return Response.ok("exchange update successfully").build();
 		}
 
 		return Response.ok("check the entries").build();
@@ -117,16 +125,6 @@ public class ExchangeRest {
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-
-	}
-
-	@GET
-	@Path("product/{year}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response product(@PathParam(value = "year") int year) {
-		IShowmethod show = new IShowmethod();
-
-		return Response.ok(show.Exchanges(rsr.getAllExchangesByYear(year))).build();
 
 	}
 

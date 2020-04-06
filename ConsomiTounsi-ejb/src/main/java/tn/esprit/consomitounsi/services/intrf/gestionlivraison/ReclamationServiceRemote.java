@@ -78,6 +78,8 @@ public interface ReclamationServiceRemote {
 
 	public boolean checkExchangeCode(String code);
 
+	public boolean exchangeExist(String code);
+
 	public List<Product> getExchangedProductByYear(int year);
 
 	public long numberOfExchangeByYear(int year);
@@ -102,6 +104,8 @@ public interface ReclamationServiceRemote {
 
 	public void deleteRepaymentById(int repaymentId);
 
+	public boolean RepaymentExist(int id);
+
 	public void validateRepayment(int repaymentId, double amount, String description);
 
 	public List<Repayment> getAllRepayment();
@@ -123,8 +127,12 @@ public interface ReclamationServiceRemote {
 	public void updateRepair(Repair newRepair);
 
 	public void deleteRepairById(int repairId);
+	
+	public List<Repair> getRepairByProductId(int id);
 
 	public void validateRepair(int repairId, double cost, String description);
+
+	public boolean repairExist(int id);
 
 	public List<Repair> getAllRepairs();
 
@@ -137,6 +145,8 @@ public interface ReclamationServiceRemote {
 	public long numberOfRepairPerMonth(int year, int month);
 
 	public long numberOfRepairByProductPerYear(int productId, int year);
+	
+	public long numberOfRepairByProductPerMonth(int productId, int year, int month);
 
 	public double costOfRepairsByYear(int year);
 
