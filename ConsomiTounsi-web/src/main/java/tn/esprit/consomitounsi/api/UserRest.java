@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.User;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.sec.LoginToken;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
@@ -52,10 +53,11 @@ public class UserRest {
 			carts.addCart(cr);
 			System.out.println("cart created !");
 		}
-		String token = LoginToken.createJWT("ConsomiTounsi", user.getUsername(), 0);
+		String token = LoginToken.createJWT("ConsomiTounsi", user.getUsername(),user.getRole(), 0);
 		return Response.ok(us).header("AUTHORIZATION", "Bearer " + token).build();	
 	}
 	@GET
+	@JWTTokenNeeded
 	@Path("/verify")
 	public Response verifyEmail(@QueryParam(value = "token")String token) {
 		if (token == null)

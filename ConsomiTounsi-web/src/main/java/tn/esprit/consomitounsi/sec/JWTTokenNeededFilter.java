@@ -54,9 +54,12 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         try {
             // Validate the token
         	Claims claims = LoginToken.decodeJWT(token);
-            //logger.info("#### valid token : " + token);
-            //logger.info(claims.toString());
+        	int role = claims.get("role", Integer.class);
+        	System.out.println(role);
+        	if(role == 2)
+        		System.out.println("not admin");
         	System.out.println("valid");
+        	
 
         } catch (Exception e) {
             //logger.info("#### invalid token : " + token);
