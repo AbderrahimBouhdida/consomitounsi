@@ -106,7 +106,7 @@ public interface ReclamationServiceRemote {
 
 	public boolean RepaymentExist(int id);
 
-	public void validateRepayment(int repaymentId, double amount, String description);
+	public void validateRepayment(int repaymentId, String description);
 
 	public List<Repayment> getAllRepayment();
 
@@ -127,7 +127,7 @@ public interface ReclamationServiceRemote {
 	public void updateRepair(Repair newRepair);
 
 	public void deleteRepairById(int repairId);
-	
+
 	public List<Repair> getRepairByProductId(int id);
 
 	public void validateRepair(int repairId, double cost, String description);
@@ -145,7 +145,7 @@ public interface ReclamationServiceRemote {
 	public long numberOfRepairPerMonth(int year, int month);
 
 	public long numberOfRepairByProductPerYear(int productId, int year);
-	
+
 	public long numberOfRepairByProductPerMonth(int productId, int year, int month);
 
 	public double costOfRepairsByYear(int year);

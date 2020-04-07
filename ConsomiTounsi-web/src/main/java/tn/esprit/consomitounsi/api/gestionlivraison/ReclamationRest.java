@@ -45,12 +45,13 @@ public class ReclamationRest {
 	CategoryRemote csr;
 
 	@POST
-	@Path("add")
+	@Path("/{userId}/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addReclamation(User client, Reclamation reclamation) {
+	public Response addReclamation(@PathParam(value = "userId") int userId, Reclamation reclamation) {
 
-		User us = usr.findUserById(client.getIdUser());
+		User us = usr.findUserById(userId);
 		reclamation.setUser(us);
+		reclamation.setProduct(psr.findProductById(reclamation.getProduct().getBarecode()));
 		rsr.addReclamation(reclamation);
 		return Response.ok("reclamation added successfully").build();
 	}
@@ -84,16 +85,16 @@ public class ReclamationRest {
 	}
 
 	@GET
-	@Path("all/{userId}")
+	@Path("all/user/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response showAllReclamationsByUser(@PathParam(value = "userid") int id) {
+	public Response showAllReclamationsByUser(@PathParam(value = "userId") int id) {
 		IShowmethod show = new IShowmethod();
 		return Response.ok(show.reclamations(rsr.getReclamationByUserId(id))).build();
 
 	}
 
 	@GET
-	@Path("all/{state}")
+	@Path("all/state/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllReclamationsByState(@PathParam(value = "state") String stat) {
 		IShowmethod show = new IShowmethod();
@@ -110,7 +111,7 @@ public class ReclamationRest {
 	}
 
 	@GET
-	@Path("all/{decision}")
+	@Path("all/decision/{decision}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllReclamationsByDecision(@PathParam(value = "decision") String dec) {
 		IShowmethod show = new IShowmethod();
@@ -158,6 +159,7 @@ public class ReclamationRest {
 				rsr.updateReclamation(reclamation);
 				return Response.ok("response added successfully").build();
 			} catch (Exception e) {
+
 				return Response.ok("Veuillez remplir tous les champs [ decision, state, responseDescription]").build();
 			}
 		} else {
@@ -202,7 +204,7 @@ public class ReclamationRest {
 	}
 
 	@GET
-	@Path("statistics/{state}/{year}")
+	@Path("statistics/state/{state}/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response state(@PathParam(value = "year") int year, @PathParam(value = "state") String stat) {
 		Map<String, Long> statistics = new HashMap<>();
@@ -233,7 +235,7 @@ public class ReclamationRest {
 	}
 
 	@GET
-	@Path("statistics/{decision}/{year}")
+	@Path("statistics/decision/{decision}/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response decision(@PathParam(value = "year") int year, @PathParam(value = "decision") String dec) {
 		Map<String, Long> statistics = new HashMap<>();

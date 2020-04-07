@@ -57,7 +57,7 @@ public class ExchangeRest {
 	}
 
 	@GET
-	@Path("all/{state}")
+	@Path("all/state/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllExchangesByState(@PathParam(value = "state") boolean state) {
 		IShowmethod show = new IShowmethod();
@@ -112,7 +112,11 @@ public class ExchangeRest {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response validateExchange(@PathParam(value = "code") String code) {
 
-		return Response.ok(rsr.validateExchange(code)).build();
+		if(rsr.validateExchange(code)) {
+			return Response.ok("validation Done").build();
+		}
+		
+		return Response.ok("validation failed").build();
 	}
 
 	@DELETE

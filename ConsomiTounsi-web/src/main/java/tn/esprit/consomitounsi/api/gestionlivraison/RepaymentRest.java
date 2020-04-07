@@ -98,12 +98,11 @@ public class RepaymentRest {
 	public Response validateRepayment(@PathParam(value = "id") int id, JsonObject obj) {
 
 		try {
-			double amount = obj.getJsonNumber("amount").doubleValue();
 			String description = obj.getString("description");
-			rsr.validateRepayment(id, amount, description);
+			rsr.validateRepayment(id, description);
 			return Response.ok("repayment validated successfully").build();
 		} catch (NullPointerException e) {
-			return Response.ok("Please fill all fields [ amount, description]").build();
+			return Response.ok("Please fill all fields [ description]").build();
 		}
 
 	}

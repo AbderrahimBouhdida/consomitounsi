@@ -42,7 +42,7 @@ public class RepairRest {
 	public Response addRepair(Repair r) {
 
 		r.setUser(usr.findUserById(r.getUser().getIdUser()));
-		;
+		
 		r.setProduct(psr.findProductById(r.getProduct().getBarecode()));
 		rsr.addRepair(r);
 		return Response.ok("repair added successfully").build();
@@ -117,13 +117,13 @@ public class RepairRest {
 	public Response validateRepair(@PathParam(value = "id") int id, JsonObject obj) {
 
 		try {
-			double cost = obj.getJsonNumber("amount").doubleValue();
+			double cost = obj.getJsonNumber("cost").doubleValue();
 			String description = obj.getString("description");
 			rsr.validateRepair(id, cost, description);
 			;
 			return Response.ok("repair validated successfully").build();
 		} catch (NullPointerException e) {
-			return Response.ok("Please fill all fields [ amount, description]").build();
+			return Response.ok("Please fill all fields [ cost, description]").build();
 		}
 	}
 

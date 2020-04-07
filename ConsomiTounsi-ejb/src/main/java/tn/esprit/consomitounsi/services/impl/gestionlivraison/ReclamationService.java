@@ -98,10 +98,11 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public List<Reclamation> getAllReclamationsByMonth(int year, int month) {
 		TypedQuery<Reclamation> query = em.createQuery(
 				"Select r" + " from Reclamation r "
-						+ "where EXTRACT(MONTH FROM rec.created)=:month AND EXTRACT(YEAR FROM rec.created)=:year",
+						+ "where EXTRACT(MONTH FROM r.created)=:month AND EXTRACT(YEAR FROM r.created)=:year",
 				Reclamation.class);
 
 		query.setParameter("year", year);
+		query.setParameter("month", month);
 
 		return query.getResultList();
 	}
@@ -189,7 +190,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfReclamationByDecisionPerMonth(Decision decision, int month, int year) {
 		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=decision",
+				+ "where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=:decision",
 				Long.class);
 
 		query.setParameter("month", month);
@@ -229,9 +230,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public long numberOfReclamationByCategoryByYear(int categoryId, int year) {
-		tn.esprit.consomitounsi.entities.Category category = em.find(tn.esprit.consomitounsi.entities.Category.class,
-				categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product"
+		Category category = em.find(Category.class, categoryId);
+		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product "
 				+ "where  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year", Long.class);
 		query.setParameter("year", year);
 		query.setParameter("category", category);
@@ -242,9 +242,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public long numberOfReclamationByCategoryPerMonth(int categoryId, int month, int year) {
-		tn.esprit.consomitounsi.entities.Category category = em.find(tn.esprit.consomitounsi.entities.Category.class,
-				categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product"
+		Category category = em.find(Category.class, categoryId);
+		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product "
 				+ "where EXTRACT(MONTH FROM rec.created)=:month AND  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year",
 				Long.class);
 
@@ -451,9 +450,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
-	public void validateRepayment(int repaymentId, double amount, String description) {
+	public void validateRepayment(int repaymentId, String description) {
 		Repayment repayment = em.find(Repayment.class, repaymentId);
-		repayment.setAmount(amount);
 		repayment.setDone(true);
 		repayment.setDoneOn(getCurrentDate());
 		repayment.setDescription(description);
@@ -496,7 +494,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfRepaymentPerYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " r from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
+				"Select count(r)" + " from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
@@ -588,7 +586,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Repair> getRepairByProductId(int id) {
 		Product product = em.find(Product.class, id);
-		TypedQuery<Repair> query = em.createQuery("Select count(r)" + " from Repair r " + "where r.product=:product ",
+		TypedQuery<Repair> query = em.createQuery("Select r" + " from Repair r " + "where r.product=:product ",
 				Repair.class);
 		query.setParameter("product", product);
 
@@ -606,7 +604,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public long numberOfRepairByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " r from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
+				"Select count(r)" + " from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
 		query.setParameter("year", year);
 		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
