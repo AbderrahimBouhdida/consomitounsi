@@ -1,7 +1,6 @@
 package tn.esprit.consomitounsi.entities.gestionlivraison;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.User;
 
 @Entity
@@ -32,18 +32,13 @@ public class DeliveryMan extends User implements Serializable {
 	@OneToMany(mappedBy = "deliveryMan", fetch = FetchType.EAGER)
 	private Set<Delivery> deliveries = new HashSet<>();
 
-
 	private String base;
+	
 
 	public DeliveryMan() {
 		super();
+		this.setRole(Roles.DELEVERYMAN);
 
-	}
-
-	public DeliveryMan(int role, String firstName, String lastName, String email, String username, String password,
-			Date dob, String address, String phone, String img) {
-		super(role, firstName, lastName, email, username, password, dob, address, phone, img);
-		this.setRole(2);
 	}
 
 	public DeliveryMan(String transportation) {
@@ -74,8 +69,6 @@ public class DeliveryMan extends User implements Serializable {
 	public void setBonus(Set<Bonus> bonus) {
 		this.bonus = bonus;
 	}
-
-
 
 	public String getAvailabilities() {
 		return availabilities;
@@ -115,7 +108,7 @@ public class DeliveryMan extends User implements Serializable {
 		if (availabilities == null) {
 			if (other.availabilities != null)
 				return false;
-		} 
+		}
 		else if (!availabilities.equals(other.availabilities))
 			return false;
 		if (base == null) {

@@ -47,6 +47,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 		}
 
 		return deliveryMan.getIdUser();
+		
 	}
 
 	@Override
