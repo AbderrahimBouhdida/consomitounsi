@@ -1,6 +1,5 @@
 package tn.esprit.consomitounsi.api.gestionlivraison;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
-import tn.esprit.consomitounsi.entities.gestionlivraison.Contract;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
@@ -80,26 +78,14 @@ public class DeliveryManRest {
 
 		del.setUsername(obj.getString("username"));
 		del.setAddress(obj.getString("address"));
-		int deliveryManId = dmsr.addDeliveryMan(del);
 
-		// add contract
-
-		Contract cont = new Contract();
-		cont.setStartOn(dmsr.getCurrentDate());
-		cont.setSalary(obj.getInt("salary"));
-		cont.setDescription(obj.getString("description"));
-		dmsr.addContract(deliveryManId, cont);
-
-		return Response.ok("deliveryMan added succesfully with his contract").build();
+		return Response.ok("deliveryMan added succesfully ").build();
 	}
 
 	@DELETE
 	@Path("deliveryMan/{id}/delete")
 	public Response deleteDeliveryMan(@PathParam(value = "id") int deliveryManId) {
 		DeliveryMan del = dmsr.getDeliveryManById(deliveryManId);
-
-		// delete deliveryMan contract
-		dmsr.deleteContractById(del.getContract().getReference());
 
 		// delete all deliveryMan Bonus
 		Set<Bonus> bonus = del.getBonus();
@@ -123,7 +109,7 @@ public class DeliveryManRest {
 	@POST
 	@Path("deliveryMan/{id}/bonus/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response giveBonusToDeliveryMan(@PathParam(value = "id") int id, JsonObject bon) throws ParseException {
+	public Response giveBonusToDeliveryMan(@PathParam(value = "id") int id, JsonObject bon) {
 
 		Bonus bonus = new Bonus();
 
@@ -140,7 +126,7 @@ public class DeliveryManRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllBonus() {
 		IShowmethod show = new IShowmethod();
-		return Response.ok(show.Bonuss(dmsr.getAllBonus())).build();
+		return Response.ok(show.bonuss(dmsr.getAllBonus())).build();
 	}
 
 	@GET
@@ -148,7 +134,7 @@ public class DeliveryManRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllBonusByYear(@PathParam(value = "year") int year) {
 		IShowmethod show = new IShowmethod();
-		return Response.ok(show.Bonuss(dmsr.getAllBonusByYear(year))).build();
+		return Response.ok(show.bonuss(dmsr.getAllBonusByYear(year))).build();
 	}
 
 	@GET
@@ -158,7 +144,7 @@ public class DeliveryManRest {
 		IShowmethod show = new IShowmethod();
 		List<Bonus> bonus = new ArrayList<>();
 		bonus.addAll(dmsr.getAllBonusByDeliveryManId(id));
-		return Response.ok(show.Bonuss(bonus)).build();
+		return Response.ok(show.bonuss(bonus)).build();
 	}
 
 	@GET
@@ -264,38 +250,38 @@ public class DeliveryManRest {
 			deli.setTransportation(obj.getString("transportation"));
 		} catch (NullPointerException e) {
 			deli.setTransportation("");
-			;
+
 		}
 		try {
 			deli.setAddress(obj.getString("address"));
 		} catch (NullPointerException e) {
 			deli.setAddress("");
-			;
+
 		}
 		try {
 			deli.setAvailabilities(obj.getString("availabilities"));
 		} catch (NullPointerException e) {
 			deli.setAvailabilities("");
-			;
+
 		}
 		try {
 			deli.setPassword(obj.getString("password"));
 		} catch (NullPointerException e) {
 			deli.setPassword("");
-			;
+
 		}
 		try {
 			deli.setPhone(obj.getString("phone"));
 		} catch (NullPointerException e) {
 			deli.setPhone("");
-			;
+
 		}
 
 		try {
 			deli.setBase(obj.getString("base"));
 		} catch (NullPointerException e) {
 			deli.setBase("");
-			;
+
 		}
 
 		dmsr.updateDeliveryMan(deli);

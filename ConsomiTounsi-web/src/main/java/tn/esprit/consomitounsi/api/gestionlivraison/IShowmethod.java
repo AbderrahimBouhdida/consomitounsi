@@ -16,6 +16,11 @@ import tn.esprit.consomitounsi.entities.gestionlivraison.Repayment;
 
 public class IShowmethod {
 
+	private static final String DESCRIPTION = "description";
+	private static final String CREATED = "created";
+	private static final String PRODUCT = "product";
+	private static final String DONEON = "doneOn";
+
 	public List<Map<String, Object>> deliveries(List<Delivery> deliveries) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		for (Delivery del : deliveries) {
@@ -45,7 +50,7 @@ public class IShowmethod {
 		return results;
 	}
 
-	public List<Map<String, Object>> Bonuss(List<Bonus> bonnus) {
+	public List<Map<String, Object>> bonuss(List<Bonus> bonnus) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		for (Bonus bon : bonnus) {
 
@@ -54,7 +59,7 @@ public class IShowmethod {
 		return results;
 	}
 
-	public List<Map<String, Object>> Exchanges(List<Exchange> exchanges) {
+	public List<Map<String, Object>> exchanges(List<Exchange> exchanges) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		for (Exchange ex : exchanges) {
 
@@ -98,7 +103,6 @@ public class IShowmethod {
 
 		obj.put("transportation", del.getTransportation());
 		obj.put("availabilities", del.getAvailabilities());
-		obj.put("contract", del.getContract().toString());
 
 		List<String> bonus = new ArrayList<>();
 		del.getBonus().stream().forEach(d -> bonus.add(d.toString()));
@@ -120,14 +124,12 @@ public class IShowmethod {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		obj.put("deliveryDate", del.getDeliveryDate() != null ? dateFormat.format(del.getDeliveryDate()) : "");
 
-		obj.put("description", del.getDescription());
+		obj.put(DESCRIPTION, del.getDescription());
 		obj.put("deliveredDate", del.getDeliveredDate() != null ? dateFormat.format(del.getDeliveredDate()) : "");
 		obj.put("cost", del.getCost());
 		obj.put("deliveryMan",
 				del.getDeliveryMan() != null
-						? "[id: " + String.valueOf(del.getDeliveryMan().getIdUser()) + ", firtsname: "
-								+ del.getDeliveryMan().getFirstName() + ", lastname: "
-								+ del.getDeliveryMan().getLastName() + "]"
+						? del.getDeliveryMan().getFirstName() + " " + del.getDeliveryMan().getLastName()
 						: "");
 
 		return obj;
@@ -139,33 +141,31 @@ public class IShowmethod {
 		bonus.put("id", bon.getId());
 		bonus.put("amount", bon.getAmount());
 		bonus.put("date", bon.getDate());
-		bonus.put("deliveryMan", "[id: " + String.valueOf(bon.getDeliveryMan().getIdUser()) + ", firtsname: "
-				+ bon.getDeliveryMan().getFirstName() + ", lastname: " + bon.getDeliveryMan().getLastName() + "]");
+		bonus.put("deliveryMan", bon.getDeliveryMan().getFirstName() + " " + bon.getDeliveryMan().getLastName());
 		return bonus;
 	}
 
 	public Map<String, Object> reclamation(Reclamation rec) {
 		Map<String, Object> reclamation = new HashMap<>();
 		reclamation.put("id", rec.getId());
-		reclamation.put("description", rec.getDescription());
-		reclamation.put("created", rec.getCreated());
+		reclamation.put(DESCRIPTION, rec.getDescription());
+		reclamation.put(CREATED, rec.getCreated());
 		reclamation.put("answered", rec.getAnswered());
 		reclamation.put("decision", rec.getDecision());
 		reclamation.put("state", rec.getState());
-		reclamation.put("product", rec.getProduct().getNameProduct());
+		reclamation.put(PRODUCT, rec.getProduct().getNameProduct());
 		reclamation.put("responseDescription", rec.getResponseDescription());
-		reclamation.put("user", "[id: " + String.valueOf(rec.getUser().getIdUser()) + ", firtsname: "
-				+ rec.getUser().getFirstName() + ", lastname: " + rec.getUser().getLastName() + "]");
+		reclamation.put("user", rec.getUser().getFirstName() + " " + rec.getUser().getLastName());
 		return reclamation;
 	}
 
 	public Map<String, Object> exchange(Exchange ex) {
 		Map<String, Object> exchange = new HashMap<>();
 		exchange.put("code", ex.getCode());
-		exchange.put("created", ex.getCreated());
-		exchange.put("doneOn", ex.getDoneOn());
+		exchange.put(CREATED, ex.getCreated());
+		exchange.put(DONEON, ex.getDoneOn());
 		exchange.put("done", ex.isDone());
-		exchange.put("product", ex.getProduct().getNameProduct());
+		exchange.put(PRODUCT, ex.getProduct().getNameProduct());
 		return exchange;
 	}
 
@@ -173,26 +173,24 @@ public class IShowmethod {
 		Map<String, Object> r = new HashMap<>();
 		r.put("id", rep.getId());
 		r.put("amount", rep.getAmount());
-		r.put("created", rep.getCreated());
-		r.put("doneOn", rep.getDoneOn());
-		r.put("description", rep.getDescription());
+		r.put(CREATED, rep.getCreated());
+		r.put(DONEON, rep.getDoneOn());
+		r.put(DESCRIPTION, rep.getDescription());
 		r.put("done", rep.isDone());
-		r.put("User", "[id: " + String.valueOf(rep.getUser().getIdUser()) + ", firtsname: "
-				+ rep.getUser().getFirstName() + ", lastname: " + rep.getUser().getLastName() + "]");
+		r.put("User", rep.getUser().getFirstName() + " " + rep.getUser().getLastName());
 		return r;
 	}
 
 	public Map<String, Object> repair(Repair rep) {
 		Map<String, Object> r = new HashMap<>();
 		r.put("id", rep.getId());
-		r.put("created", rep.getCreated());
-		r.put("doneOn", rep.getDoneOn());
+		r.put(CREATED, rep.getCreated());
+		r.put(DONEON, rep.getDoneOn());
 		r.put("cost", rep.getCost());
-		r.put("description", rep.getDescription());
+		r.put(DESCRIPTION, rep.getDescription());
 		r.put("done", rep.isDone());
-		r.put("product", rep.getProduct().getNameProduct());
-		r.put("User", "[id: " + String.valueOf(rep.getUser().getIdUser()) + ", firtsname: "
-				+ rep.getUser().getFirstName() + ", lastname: " + rep.getUser().getLastName() + "]");
+		r.put(PRODUCT, rep.getProduct().getNameProduct());
+		r.put("User", rep.getUser().getFirstName() + " " + rep.getUser().getLastName());
 		return r;
 	}
 

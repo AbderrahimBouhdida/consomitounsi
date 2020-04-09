@@ -32,7 +32,6 @@ public class Bonus implements Serializable {
 
 	public Bonus() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -66,8 +65,6 @@ public class Bonus implements Serializable {
 	public void setDeliveryMan(DeliveryMan deliveryMan) {
 		this.deliveryMan = deliveryMan;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -96,16 +93,16 @@ public class Bonus implements Serializable {
 		if (date == null) {
 			if (other.date != null)
 				return false;
-		} else if (!date.equals(other.date))
+		} 
+		else if (!date.equals(other.date))
 			return false;
 		if (deliveryMan == null) {
 			if (other.deliveryMan != null)
 				return false;
-		} else if (!deliveryMan.equals(other.deliveryMan))
+		} 
+		else if (!deliveryMan.equals(other.deliveryMan))
 			return false;
-		if (id != other.id)
-			return false;
-		return true;
+		return id==other.id;
 	}
 
 	@Override

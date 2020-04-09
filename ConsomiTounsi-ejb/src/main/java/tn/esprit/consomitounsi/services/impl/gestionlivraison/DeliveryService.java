@@ -9,6 +9,8 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -17,7 +19,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
-import tn.esprit.consomitounsi.entities.gestionlivraison.Contract;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
@@ -41,18 +42,11 @@ public class DeliveryService implements DeliveryServiceRemote {
 			deliveryMan.setPassword(secPass);
 			em.persist(deliveryMan);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger logger = Logger.getGlobal();
+			logger.log(Level.INFO, "Got an exception.", e);
 		}
 
 		return deliveryMan.getIdUser();
-	}
-
-	@Override
-	public void addContract(int deliveryManId, Contract contract) {
-		DeliveryMan deliveryMan = em.find(DeliveryMan.class, deliveryManId);
-		contract.setDeliveryMan(deliveryMan);
-		em.persist(contract);
 	}
 
 	@Override
@@ -115,40 +109,39 @@ public class DeliveryService implements DeliveryServiceRemote {
 
 	@Override
 	public List<DeliveryMan> getAllDeliveryMen() {
-		List<DeliveryMan> del = em.createQuery("Select del from DeliveryMan del", DeliveryMan.class).getResultList();
-		return del;
+
+		return em.createQuery("Select del from DeliveryMan del", DeliveryMan.class).getResultList();
 	}
 
 	@Override
 	public DeliveryMan getDeliveryManById(int deliveryManId) {
-		DeliveryMan del = em
-				.createQuery("Select del from DeliveryMan del where del.idUser=:deliveryManId", DeliveryMan.class)
+
+		return em.createQuery("Select del from DeliveryMan del where del.idUser=:deliveryManId", DeliveryMan.class)
 				.setParameter("deliveryManId", deliveryManId).getSingleResult();
 
-		return del;
 	}
 
 	@Override
 	public void updateDeliveryMan(DeliveryMan deliverMan) {
 		DeliveryMan del = em.find(DeliveryMan.class, deliverMan.getIdUser());
-		if (!(deliverMan.getTransportation().equals("")) && !(deliverMan.getTransportation() == null)) {
+		if (!(deliverMan.getTransportation().equals("")) && (deliverMan.getTransportation() != null)) {
 			del.setTransportation(deliverMan.getTransportation());
 		}
-		if (!(deliverMan.getPassword().equals("")) && !(deliverMan.getPassword() == null)) {
+		if (!(deliverMan.getPassword().equals("")) && (deliverMan.getPassword() != null)) {
 			del.setPassword(deliverMan.getPassword());
 		}
-		if (!(deliverMan.getPhone().equals("")) && !(deliverMan.getPhone() == null)) {
+		if (!(deliverMan.getPhone().equals("")) && (deliverMan.getPhone() != null)) {
 			del.setPhone(deliverMan.getPhone());
 		}
 
-		if (!(deliverMan.getAddress().equals("")) && (deliverMan.getAddress() == null)) {
+		if (!(deliverMan.getAddress().equals("")) && (deliverMan.getAddress() != null)) {
 			del.setAddress(deliverMan.getAddress());
 		}
-		if (!(deliverMan.getAvailabilities().equals("")) && !(deliverMan.getAvailabilities() == null)) {
+		if (!(deliverMan.getAvailabilities().equals("")) && (deliverMan.getAvailabilities() != null)) {
 			del.setAvailabilities(deliverMan.getAvailabilities());
 		}
 
-		if (!(deliverMan.getBase().equals("")) && !(deliverMan.getBase() == null)) {
+		if (!(deliverMan.getBase().equals("")) && (deliverMan.getBase() != null)) {
 			del.setBase(deliverMan.getBase());
 		}
 
@@ -157,12 +150,6 @@ public class DeliveryService implements DeliveryServiceRemote {
 	@Override
 	public void deleteDeliveryManById(int deliveryManId) {
 		em.remove(em.find(DeliveryMan.class, deliveryManId));
-
-	}
-
-	@Override
-	public void deleteContractById(int contractId) {
-		em.remove(em.find(Contract.class, contractId));
 
 	}
 
@@ -178,7 +165,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 		Date date = getCurrentDate();
 		delivery.setDeliveryDate(date);
 
-		delivery.setDeliveryState(DeliveryState.Registered);
+		delivery.setDeliveryState(DeliveryState.REGISTERED);
 		em.persist(delivery);
 
 	}
@@ -187,7 +174,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 	public void assignDeliveryToDeliveryMan(int deliveryManId, int deliveryId) {
 		DeliveryMan del = em.find(DeliveryMan.class, deliveryManId);
 		Delivery deli = em.find(Delivery.class, deliveryId);
-		deli.setDeliveryState(DeliveryState.Pending);
+		deli.setDeliveryState(DeliveryState.PENDING);
 		if (del.getDeliveries() == null) {
 			Set<Delivery> deliveries = new HashSet<>();
 			deliveries.add(deli);
@@ -202,7 +189,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 	@Override
 	public double shippingCost(String region, double weight, int reduction) {
 
-		double cost = 0.0d;
+		double cost;
 		List<String> noFar = new ArrayList<>();
 		noFar.add("Tunis");
 		noFar.add("Ariana");
@@ -242,15 +229,15 @@ public class DeliveryService implements DeliveryServiceRemote {
 	@Override
 	public void validateDelivery(int deliveryId) {
 		Delivery deli = em.find(Delivery.class, deliveryId);
-		deli.setDeliveryState(DeliveryState.Done);
+		deli.setDeliveryState(DeliveryState.DONE);
 		deli.setDeliveredDate(getCurrentDate());
 
 	}
 
 	@Override
 	public List<Delivery> getAllDeliveries() {
-		List<Delivery> del = em.createQuery("Select del from Delivery del", Delivery.class).getResultList();
-		return del;
+
+		return em.createQuery("Select del from Delivery del", Delivery.class).getResultList();
 	}
 
 	@Override
@@ -263,21 +250,20 @@ public class DeliveryService implements DeliveryServiceRemote {
 	}
 
 	@Override
-	public long NumberOfDeliveriesByYear(int year) {
+	public long numberOfDeliveriesByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(del)" + " from Delivery del " + "where EXTRACT(YEAR FROM del.deliveredDate)=:year",
-				Long.class);
+				"Select count(del) from Delivery del where EXTRACT(YEAR FROM del.deliveredDate)=:year", Long.class);
 
 		query.setParameter("year", year);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfActiveDeliveryMen() {
 		TypedQuery<Long> query = em.createQuery("select count(del) from DeliveryMan del", Long.class);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
@@ -294,7 +280,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 				Delivery.class);
 
 		query.setParameter("del", del);
-		query.setParameter("pending", DeliveryState.Pending);
+		query.setParameter("pending", DeliveryState.PENDING);
 		return query.getResultList();
 	}
 
@@ -307,17 +293,8 @@ public class DeliveryService implements DeliveryServiceRemote {
 
 		query.setParameter("del", del);
 		query.setParameter("year", year);
-		query.setParameter("done", DeliveryState.Done);
+		query.setParameter("done", DeliveryState.DONE);
 		return query.getResultList();
-	}
-
-	@Override
-	public void updateContractById(Contract contract) {
-		Contract cont = em.find(Contract.class, contract.getReference());
-		cont.setSalary(contract.getSalary());
-		cont.setDescription(contract.getDescription());
-		cont.setModifiedDate(getCurrentDate());
-
 	}
 
 	@Override
@@ -330,23 +307,20 @@ public class DeliveryService implements DeliveryServiceRemote {
 
 		query.setParameter("month", month);
 		query.setParameter("year", year);
-		query.setParameter("done", DeliveryState.Done);
+		query.setParameter("done", DeliveryState.DONE);
 		query.setParameter("deliveryMan", deliveryMan);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public Date getCurrentDate() {
-		Date date = java.sql.Date.valueOf(LocalDate.now());
-		return date;
+		return java.sql.Date.valueOf(LocalDate.now());
 	}
 
 	@Override
 	public List<Bonus> getAllBonus() {
-		List<Bonus> bonus = em.createQuery("Select bon from Bonus bon", Bonus.class).getResultList();
-		return bonus;
+		return em.createQuery("Select bon from Bonus bon", Bonus.class).getResultList();
 	}
 
 	@Override
@@ -379,11 +353,10 @@ public class DeliveryService implements DeliveryServiceRemote {
 				+ "where  del.deliveryMan=:deliveryMan AND EXTRACT(YEAR FROM del.deliveredDate)=:year and del.deliveryState=:done",
 				Long.class);
 		query.setParameter("year", year);
-		query.setParameter("done", DeliveryState.Done);
+		query.setParameter("done", DeliveryState.DONE);
 		query.setParameter("deliveryMan", deliveryMan);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 }

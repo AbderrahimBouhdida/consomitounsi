@@ -104,7 +104,7 @@ public interface ReclamationServiceRemote {
 
 	public void deleteRepaymentById(int repaymentId);
 
-	public boolean RepaymentExist(int id);
+	public boolean repaymentExist(int id);
 
 	public void validateRepayment(int repaymentId, String description);
 

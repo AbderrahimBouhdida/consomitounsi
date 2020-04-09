@@ -119,13 +119,6 @@ public class Repair implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(cost);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + (done ? 1231 : 1237);
-		result = prime * result + ((doneOn == null) ? 0 : doneOn.hashCode());
 		result = prime * result + id;
 		return result;
 	}
@@ -139,28 +132,8 @@ public class Repair implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Repair other = (Repair) obj;
-		if (Double.doubleToLongBits(cost) != Double.doubleToLongBits(other.cost))
-			return false;
-		if (created == null) {
-			if (other.created != null)
-				return false;
-		} else if (!created.equals(other.created))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (done != other.done)
-			return false;
-		if (doneOn == null) {
-			if (other.doneOn != null)
-				return false;
-		} else if (!doneOn.equals(other.doneOn))
-			return false;
-		if (id != other.id)
-			return false;
-		return true;
+
+		return id == other.id;
 	}
 
 	@Override

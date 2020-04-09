@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import tn.esprit.consomitounsi.entities.User;
 
@@ -33,14 +32,12 @@ public class DeliveryMan extends User implements Serializable {
 	@OneToMany(mappedBy = "deliveryMan", fetch = FetchType.EAGER)
 	private Set<Delivery> deliveries = new HashSet<>();
 
-	@OneToOne(mappedBy = "deliveryMan")
-	private Contract contract;
 
 	private String base;
 
 	public DeliveryMan() {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public DeliveryMan(int role, String firstName, String lastName, String email, String username, String password,
@@ -78,13 +75,7 @@ public class DeliveryMan extends User implements Serializable {
 		this.bonus = bonus;
 	}
 
-	public Contract getContract() {
-		return contract;
-	}
 
-	public void setContract(Contract contract) {
-		this.contract = contract;
-	}
 
 	public String getAvailabilities() {
 		return availabilities;
@@ -124,17 +115,20 @@ public class DeliveryMan extends User implements Serializable {
 		if (availabilities == null) {
 			if (other.availabilities != null)
 				return false;
-		} else if (!availabilities.equals(other.availabilities))
+		} 
+		else if (!availabilities.equals(other.availabilities))
 			return false;
 		if (base == null) {
 			if (other.base != null)
 				return false;
-		} else if (!base.equals(other.base))
+		} 
+		else if (!base.equals(other.base))
 			return false;
 		if (transportation == null) {
 			if (other.transportation != null)
 				return false;
-		} else if (!transportation.equals(other.transportation))
+		} 
+		else if (!transportation.equals(other.transportation))
 			return false;
 		return true;
 	}
@@ -142,7 +136,7 @@ public class DeliveryMan extends User implements Serializable {
 	@Override
 	public String toString() {
 		return "DeliveryMan [transportation=" + transportation + ", bonus=" + bonus + ", availabilities="
-				+ availabilities + ", deliveries=" + deliveries + ", contract=" + contract + ", base=" + base + "]";
+				+ availabilities + ", deliveries=" + deliveries + ", base=" + base + "]";
 	}
 
 }

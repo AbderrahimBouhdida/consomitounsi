@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.ejb.Remote;
 
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
-import tn.esprit.consomitounsi.entities.gestionlivraison.Contract;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
@@ -18,8 +17,6 @@ public interface DeliveryServiceRemote {
 	// delivery man functionalities
 
 	public int addDeliveryMan(DeliveryMan deliveryMan);
-
-	public void addContract(int deliveryManId, Contract contract);
 
 	public void addBonus(int deliveryManId, Bonus bonus);
 
@@ -43,11 +40,7 @@ public interface DeliveryServiceRemote {
 
 	public void updateDeliveryMan(DeliveryMan deliverMan);
 
-	public void updateContractById(Contract contract);
-
 	public void deleteDeliveryManById(int deliveryManId);
-
-	public void deleteContractById(int contractId);
 
 	public void deleteBonusById(int bonusId);
 
@@ -69,7 +62,7 @@ public interface DeliveryServiceRemote {
 
 	public Set<Delivery> getDeliveriesByDeliveryMan(int deliveryManId);
 
-	public long NumberOfDeliveriesByYear(int year);
+	public long numberOfDeliveriesByYear(int year);
 
 	public List<Delivery> getDeliveriesTaskByDeliveryManId(int deliveryManId);
 

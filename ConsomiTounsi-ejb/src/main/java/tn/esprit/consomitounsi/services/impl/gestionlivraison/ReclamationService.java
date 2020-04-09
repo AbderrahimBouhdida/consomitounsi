@@ -27,12 +27,18 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@PersistenceContext
 	EntityManager em;
+	private static final String MONTH = "month";
+	private static final String YEAR = "year";
+	private static final String STATE = "state";
+	private static final String DECISION = "decision";
+	private static final String PRODUCT = "product";
+	private static final String CATEGORY = "category";
 
 	@Override
 	public int addReclamation(Reclamation reclamation) {
 
 		reclamation.setCreated(getCurrentDate());
-		reclamation.setState(ReclamationState.Pending);
+		reclamation.setState(ReclamationState.PENDING);
 		em.persist(reclamation);
 		return reclamation.getId();
 	}
@@ -40,17 +46,14 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public boolean reclamationExist(int id) {
 		Reclamation rec = em.find(Reclamation.class, id);
-		if (rec != null) {
-			return true;
-		}
-		return false;
+		return rec != null;
 
 	}
 
 	@Override
 	public Reclamation getReclamationById(int reclamationId) {
-		Reclamation reclamation = em.find(Reclamation.class, reclamationId);
-		return reclamation;
+
+		return em.find(Reclamation.class, reclamationId);
 	}
 
 	@Override
@@ -71,8 +74,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public List<Reclamation> getAllReclamations() {
-		List<Reclamation> recl = em.createQuery("Select rec from Reclamation rec", Reclamation.class).getResultList();
-		return recl;
+
+		return em.createQuery("Select rec from Reclamation rec", Reclamation.class).getResultList();
 	}
 
 	@Override
@@ -86,10 +89,10 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public List<Reclamation> getAllReclamationsByYear(int year) {
-		TypedQuery<Reclamation> query = em.createQuery(
-				"Select r" + " from Reclamation r " + "where EXTRACT(YEAR FROM r.created)=:year", Reclamation.class);
+		TypedQuery<Reclamation> query = em
+				.createQuery("Select r from Reclamation r where EXTRACT(YEAR FROM r.created)=:year", Reclamation.class);
 
-		query.setParameter("year", year);
+		query.setParameter(YEAR, year);
 
 		return query.getResultList();
 	}
@@ -97,12 +100,11 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Reclamation> getAllReclamationsByMonth(int year, int month) {
 		TypedQuery<Reclamation> query = em.createQuery(
-				"Select r" + " from Reclamation r "
-						+ "where EXTRACT(MONTH FROM r.created)=:month AND EXTRACT(YEAR FROM r.created)=:year",
+				"Select r from Reclamation r where EXTRACT(MONTH FROM r.created)=:month AND EXTRACT(YEAR FROM r.created)=:year",
 				Reclamation.class);
 
-		query.setParameter("year", year);
-		query.setParameter("month", month);
+		query.setParameter(YEAR, year);
+		query.setParameter(MONTH, month);
 
 		return query.getResultList();
 	}
@@ -112,7 +114,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 		TypedQuery<Reclamation> query = em.createQuery("Select rec from Reclamation rec where rec.state=:state",
 				Reclamation.class);
 
-		query.setParameter("state", state);
+		query.setParameter(STATE, state);
 		return query.getResultList();
 	}
 
@@ -121,138 +123,130 @@ public class ReclamationService implements ReclamationServiceRemote {
 		TypedQuery<Reclamation> query = em.createQuery("Select rec from Reclamation rec where rec.decision=:decision",
 				Reclamation.class);
 
-		query.setParameter("decision", decision);
+		query.setParameter(DECISION, decision);
 		return query.getResultList();
 	}
 
 	@Override
 	public long numberOfReclamationByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(rec)" + " from Reclamation rec " + "where EXTRACT(YEAR FROM rec.created)=:year",
-				Long.class);
+				"Select count(rec) from Reclamation rec where EXTRACT(YEAR FROM rec.created)=:year", Long.class);
 
-		query.setParameter("year", year);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationPerMonth(int month, int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(rec)" + " from Reclamation rec "
-						+ "where EXTRACT(MONTH FROM rec.created)=:month AND EXTRACT(YEAR FROM rec.created)=:year",
+				"Select count(rec) from Reclamation rec where EXTRACT(MONTH FROM rec.created)=:month AND EXTRACT(YEAR FROM rec.created)=:year",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByStatePerYear(ReclamationState state, int year) {
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
+		TypedQuery<Long> query = em.createQuery("Select count(rec) from Reclamation rec "
 				+ "where  EXTRACT(YEAR FROM rec.answered)=:year and rec.state=:state", Long.class);
-		query.setParameter("year", year);
-		query.setParameter("state", state);
+		query.setParameter(YEAR, year);
+		query.setParameter(STATE, state);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByStatePerMonth(ReclamationState state, int month, int year) {
 
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.state=:state",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.state=:state",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
-		query.setParameter("state", state);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
+		query.setParameter(STATE, state);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByDecisionByYear(Decision decision, int year) {
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where  EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=:decision", Long.class);
-		query.setParameter("year", year);
-		query.setParameter("decision", decision);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec where  EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=:decision",
+				Long.class);
+		query.setParameter(YEAR, year);
+		query.setParameter(DECISION, decision);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByDecisionPerMonth(Decision decision, int month, int year) {
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=:decision",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec where EXTRACT(MONTH FROM rec.answered)=:month AND EXTRACT(YEAR FROM rec.answered)=:year and rec.decision=:decision",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
-		query.setParameter("decision", decision);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
+		query.setParameter(DECISION, decision);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByProductByYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where  rec.product=:product AND EXTRACT(YEAR FROM rec.created)=:year", Long.class);
-		query.setParameter("year", year);
-		query.setParameter("product", product);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec where  rec.product=:product AND EXTRACT(YEAR FROM rec.created)=:year",
+				Long.class);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByProductPerMonth(int productId, int month, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec "
-				+ "where EXTRACT(MONTH FROM rec.created)=:month AND rec.product=:product AND EXTRACT(YEAR FROM rec.created)=:year",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec where EXTRACT(MONTH FROM rec.created)=:month AND rec.product=:product AND EXTRACT(YEAR FROM rec.created)=:year",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
-		query.setParameter("product", product);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByCategoryByYear(int categoryId, int year) {
 		Category category = em.find(Category.class, categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product "
-				+ "where  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year", Long.class);
-		query.setParameter("year", year);
-		query.setParameter("category", category);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec  Join rec.product product where  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year",
+				Long.class);
+		query.setParameter(YEAR, year);
+		query.setParameter(CATEGORY, category);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfReclamationByCategoryPerMonth(int categoryId, int month, int year) {
 		Category category = em.find(Category.class, categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(rec)" + " from Reclamation rec  Join rec.product product "
-				+ "where EXTRACT(MONTH FROM rec.created)=:month AND  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(rec) from Reclamation rec  Join rec.product product where EXTRACT(MONTH FROM rec.created)=:month AND  product.category=:category AND EXTRACT(YEAR FROM rec.created)=:year",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
-		query.setParameter("category", category);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
+		query.setParameter(CATEGORY, category);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
@@ -265,8 +259,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public Exchange getExchangeByCode(String code) {
-		Exchange exchange = em.find(Exchange.class, code);
-		return exchange;
+
+		return em.find(Exchange.class, code);
 	}
 
 	@Override
@@ -295,16 +289,16 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public List<Exchange> getAllExchanges() {
-		List<Exchange> exc = em.createQuery("Select exc from Exchange exc", Exchange.class).getResultList();
-		return exc;
+
+		return em.createQuery("Select exc from Exchange exc", Exchange.class).getResultList();
 	}
 
 	@Override
 	public List<Exchange> getAllExchangesByYear(int year) {
-		TypedQuery<Exchange> query = em.createQuery(
-				"Select e" + " from Exchange e " + "where EXTRACT(YEAR FROM e.doneOn)=:year", Exchange.class);
+		TypedQuery<Exchange> query = em.createQuery("Select e from Exchange e where EXTRACT(YEAR FROM e.doneOn)=:year",
+				Exchange.class);
 
-		query.setParameter("year", year);
+		query.setParameter(YEAR, year);
 
 		return query.getResultList();
 	}
@@ -314,7 +308,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 		TypedQuery<Exchange> query = em.createQuery("Select exc from Exchange exc where exc.done=:state",
 				Exchange.class);
 
-		query.setParameter("state", state);
+		query.setParameter(STATE, state);
 		return query.getResultList();
 	}
 
@@ -330,96 +324,92 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public boolean exchangeExist(String code) {
 		Exchange exchange = em.find(Exchange.class, code.toUpperCase());
-		if (exchange != null) {
-			return true;
-		}
-		return false;
+
+		return exchange != null;
 	}
 
 	@Override
 	public List<Product> getExchangedProductByYear(int year) {
 		TypedQuery<Product> query = em.createQuery(
-				"select exc.product from Exchange exc" + "where EXTRACT(YEAR FROM exc.doneOn)=:year ", Product.class);
-		query.setParameter("year", year);
+				"select exc.product from Exchange exc where EXTRACT(YEAR FROM exc.doneOn)=:year ", Product.class);
+		query.setParameter(YEAR, year);
 		return query.getResultList();
 	}
 
 	@Override
 	public long numberOfExchangeByYear(int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(exc)" + " from Exchange exc " + "where EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
+				"Select count(exc)  from Exchange exc  where EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
 
-		query.setParameter("year", year);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfExchangePerMonth(int year, int month) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(exc)" + " from Exchange exc "
-						+ "where EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
+				"Select count(exc) from Exchange exc where EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
 				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("month", month);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+		query.setParameter(MONTH, month);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfExchangeByProductByYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc "
-				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(exc) from Exchange exc where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year",
+				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfExchangeByProductPerMonth(int productId, int year, int month) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc "
-				+ "where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(exc) from Exchange exc where exc.product=:product AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
 				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
-		query.setParameter("month", month);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
+		query.setParameter(MONTH, month);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfExchangeByCategoryByYear(int categoryId, int year) {
 		Category category = em.find(Category.class, categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc Join exc.product product "
-				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year", Long.class);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(exc) from Exchange exc Join exc.product product where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year",
+				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("category", category);
+		query.setParameter(YEAR, year);
+		query.setParameter(CATEGORY, category);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfExchangeByCategoryPerMonth(int categoryId, int year, int month) {
 		Category category = em.find(Category.class, categoryId);
-		TypedQuery<Long> query = em.createQuery("Select count(exc)" + " from Exchange exc Join exc.product product "
-				+ "where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(exc)from Exchange exc Join exc.product product where product.category=:category AND EXTRACT(YEAR FROM exc.doneOn)=:year AND EXTRACT(MONTH FROM exc.doneOn)=:month",
 				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("category", category);
-		query.setParameter("month", month);
+		query.setParameter(YEAR, year);
+		query.setParameter(CATEGORY, category);
+		query.setParameter(MONTH, month);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
@@ -432,8 +422,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public Repayment getRepaymentById(int repaymentId) {
-		Repayment repayment = em.find(Repayment.class, repaymentId);
-		return repayment;
+
+		return em.find(Repayment.class, repaymentId);
 	}
 
 	@Override
@@ -459,26 +449,24 @@ public class ReclamationService implements ReclamationServiceRemote {
 	}
 
 	@Override
-	public boolean RepaymentExist(int id) {
+	public boolean repaymentExist(int id) {
 		Repayment r = em.find(Repayment.class, id);
-		if (r != null) {
-			return true;
-		}
-		return false;
+
+		return r != null;
 	}
 
 	@Override
 	public List<Repayment> getAllRepayment() {
-		List<Repayment> rep = em.createQuery("Select rep from Repayment rep", Repayment.class).getResultList();
-		return rep;
+
+		return em.createQuery("Select rep from Repayment rep", Repayment.class).getResultList();
 	}
 
 	@Override
 	public List<Repayment> getAllRepaymentByYear(int year) {
-		TypedQuery<Repayment> query = em.createQuery(
-				"Select r" + " from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Repayment.class);
+		TypedQuery<Repayment> query = em
+				.createQuery("Select r from Repayment r where EXTRACT(YEAR FROM r.doneOn)=:year", Repayment.class);
 
-		query.setParameter("year", year);
+		query.setParameter(YEAR, year);
 
 		return query.getResultList();
 	}
@@ -487,32 +475,30 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public List<Repayment> getAllRepaymentByState(boolean state) {
 		TypedQuery<Repayment> query = em.createQuery("Select r from Repayment r where r.done=:state", Repayment.class);
 
-		query.setParameter("state", state);
+		query.setParameter(STATE, state);
 		return query.getResultList();
 	}
 
 	@Override
 	public long numberOfRepaymentPerYear(int year) {
-		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " from Repayment r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
+		TypedQuery<Long> query = em
+				.createQuery("Select count(r) from Repayment r where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
 
-		query.setParameter("year", year);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfRepaymentPerMonth(int month, int year) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " from Repayment r "
-						+ "where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
+				"Select count(r) from Repayment r where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
@@ -525,8 +511,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public Repair getRepairById(int repairId) {
-		Repair repair = em.find(Repair.class, repairId);
-		return repair;
+
+		return em.find(Repair.class, repairId);
 	}
 
 	@Override
@@ -551,10 +537,7 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public boolean repairExist(int id) {
 		Repair r = em.find(Repair.class, id);
-		if (r != null) {
-			return true;
-		}
-		return false;
+		return r != null;
 	}
 
 	@Override
@@ -569,16 +552,16 @@ public class ReclamationService implements ReclamationServiceRemote {
 
 	@Override
 	public List<Repair> getAllRepairs() {
-		List<Repair> rep = em.createQuery("Select rep from Repair rep", Repair.class).getResultList();
-		return rep;
+
+		return em.createQuery("Select rep from Repair rep", Repair.class).getResultList();
 	}
 
 	@Override
 	public List<Repair> getAllRepairByYear(int year) {
-		TypedQuery<Repair> query = em
-				.createQuery("Select r" + " from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Repair.class);
+		TypedQuery<Repair> query = em.createQuery("Select r from Repair r where EXTRACT(YEAR FROM r.doneOn)=:year",
+				Repair.class);
 
-		query.setParameter("year", year);
+		query.setParameter(YEAR, year);
 
 		return query.getResultList();
 	}
@@ -586,9 +569,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public List<Repair> getRepairByProductId(int id) {
 		Product product = em.find(Product.class, id);
-		TypedQuery<Repair> query = em.createQuery("Select r" + " from Repair r " + "where r.product=:product ",
-				Repair.class);
-		query.setParameter("product", product);
+		TypedQuery<Repair> query = em.createQuery("Select r from Repair r where r.product=:product ", Repair.class);
+		query.setParameter(PRODUCT, product);
 
 		return query.getResultList();
 	}
@@ -597,103 +579,100 @@ public class ReclamationService implements ReclamationServiceRemote {
 	public List<Repair> getAllRepairByState(boolean state) {
 		TypedQuery<Repair> query = em.createQuery("Select r from Repair r where r.done=:state", Repair.class);
 
-		query.setParameter("state", state);
+		query.setParameter(STATE, state);
 		return query.getResultList();
 	}
 
 	@Override
 	public long numberOfRepairByYear(int year) {
-		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
+		TypedQuery<Long> query = em.createQuery("Select count(r) from Repair r where EXTRACT(YEAR FROM r.doneOn)=:year",
+				Long.class);
 
-		query.setParameter("year", year);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(STATE, year);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfRepairByProductPerYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(r)" + " from Repair r "
-				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year", Long.class);
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(r) from Repair r where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year",
+				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfRepairByProductPerMonth(int productId, int year, int month) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Long> query = em.createQuery("Select count(r)" + " from Repair r "
-				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year  AND EXTRACT(MONTH FROM r.doneOn)=:month",
+		TypedQuery<Long> query = em.createQuery(
+				"Select count(r) from Repair r where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year  AND EXTRACT(MONTH FROM r.doneOn)=:month",
 				Long.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
-		query.setParameter("month", month);
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
+		query.setParameter(MONTH, month);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public long numberOfRepairPerMonth(int year, int month) {
 		TypedQuery<Long> query = em.createQuery(
-				"Select count(r)" + " from Repair r "
-						+ "where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
+				"Select count(r) from Repair r where EXTRACT(MONTH FROM r.doneOn)=:month AND EXTRACT(YEAR FROM r.doneOn)=:year",
 				Long.class);
 
-		query.setParameter("month", month);
-		query.setParameter("year", year);
+		query.setParameter(MONTH, month);
+		query.setParameter(YEAR, year);
 
-		long result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public double costOfRepairsByYear(int year) {
 		TypedQuery<Double> query = em.createQuery(
-				"Select sum(r.cost)" + " r from Repair r " + "where EXTRACT(YEAR FROM r.doneOn)=:year", Double.class);
+				"Select sum(r.cost) r from Repair r where EXTRACT(YEAR FROM r.doneOn)=:year", Double.class);
 
-		query.setParameter("year", year);
-		double result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		query.setParameter(YEAR, year);
+
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public double costOfRepairByProductPerYear(int productId, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Double> query = em.createQuery("Select sum(r.cost)" + " from Repair r "
-				+ "where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year", Double.class);
+		TypedQuery<Double> query = em.createQuery(
+				"Select sum(r.cost) from Repair r where r.product=:product AND EXTRACT(YEAR FROM r.doneOn)=:year",
+				Double.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
 
-		double result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public double costOfRepairByProductPerMonth(int productId, int month, int year) {
 		Product product = em.find(Product.class, productId);
-		TypedQuery<Double> query = em.createQuery("Select sum(r.cost)" + " from Repair r "
-				+ "where r.product=:product  AND EXTRACT(YEAR FROM r.doneOn)=:year AND EXTRACT(MONTH FROM r.doneOn)=:month ",
+		TypedQuery<Double> query = em.createQuery(
+				"Select sum(r.cost) from Repair r where r.product=:product  AND EXTRACT(YEAR FROM r.doneOn)=:year AND EXTRACT(MONTH FROM r.doneOn)=:month ",
 				Double.class);
 
-		query.setParameter("year", year);
-		query.setParameter("product", product);
-		query.setParameter("month", month);
+		query.setParameter(YEAR, year);
+		query.setParameter(PRODUCT, product);
+		query.setParameter(MONTH, month);
 
-		double result = query.getSingleResult() != null ? query.getSingleResult() : 0;
-		return result;
+		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
 	@Override
 	public Date getCurrentDate() {
-		Date date = java.sql.Date.valueOf(LocalDate.now());
-		return date;
+
+		return java.sql.Date.valueOf(LocalDate.now());
 	}
 
 }

@@ -52,7 +52,7 @@ public class ExchangeRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllExchanges() {
 		IShowmethod show = new IShowmethod();
-		return Response.ok(show.Exchanges(rsr.getAllExchanges())).build();
+		return Response.ok(show.exchanges(rsr.getAllExchanges())).build();
 
 	}
 
@@ -61,7 +61,7 @@ public class ExchangeRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllExchangesByState(@PathParam(value = "state") boolean state) {
 		IShowmethod show = new IShowmethod();
-		return Response.ok(show.Exchanges(rsr.getAllExchangesByState(state))).build();
+		return Response.ok(show.exchanges(rsr.getAllExchangesByState(state))).build();
 
 	}
 
@@ -70,7 +70,7 @@ public class ExchangeRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllExchangesByYear(@PathParam(value = "year") int year) {
 		IShowmethod show = new IShowmethod();
-		return Response.ok(show.Exchanges(rsr.getAllExchangesByYear(year))).build();
+		return Response.ok(show.exchanges(rsr.getAllExchangesByYear(year))).build();
 
 	}
 

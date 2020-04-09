@@ -85,10 +85,11 @@ public class Exchange implements Serializable {
 		int result = 1;
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + (done ? 1231 : 1237);
-		result = prime * result + ((doneOn == null) ? 0 : doneOn.hashCode());
+		result = prime * result + ((product == null) ? 0 : product.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -102,19 +103,20 @@ public class Exchange implements Serializable {
 		if (code == null) {
 			if (other.code != null)
 				return false;
-		} else if (!code.equals(other.code))
+		} 
+		else if (!code.equals(other.code))
 			return false;
 		if (created == null) {
 			if (other.created != null)
 				return false;
-		} else if (!created.equals(other.created))
+		} 
+		else if (!created.equals(other.created))
 			return false;
-		if (done != other.done)
-			return false;
-		if (doneOn == null) {
-			if (other.doneOn != null)
+		if (product == null) {
+			if (other.product != null)
 				return false;
-		} else if (!doneOn.equals(other.doneOn))
+		} 
+		else if (!product.equals(other.product))
 			return false;
 		return true;
 	}

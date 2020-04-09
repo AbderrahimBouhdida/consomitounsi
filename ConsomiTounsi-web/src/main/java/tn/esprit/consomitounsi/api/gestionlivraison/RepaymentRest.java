@@ -71,7 +71,7 @@ public class RepaymentRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showRepaymentById(@PathParam(value = "id") int id) {
 		IShowmethod show = new IShowmethod();
-		if (rsr.RepaymentExist(id)) {
+		if (rsr.repaymentExist(id)) {
 			return Response.ok(show.repayment(rsr.getRepaymentById(id))).build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
@@ -82,7 +82,7 @@ public class RepaymentRest {
 	@Path("{id}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateRepayment(@PathParam(value = "id") int id, Repayment r) {
-		if (rsr.RepaymentExist(id)) {
+		if (rsr.repaymentExist(id)) {
 			r.setUser(usr.findUserById(r.getUser().getIdUser()));
 			rsr.updateRepayment(r);
 
@@ -110,7 +110,7 @@ public class RepaymentRest {
 	@DELETE
 	@Path("{id}/delete")
 	public Response deleteRepayment(@PathParam(value = "id") int id) {
-		if (rsr.RepaymentExist(id)) {
+		if (rsr.repaymentExist(id)) {
 			rsr.deleteRepaymentById(id);
 
 			return Response.ok("repayment deleted successfully").build();

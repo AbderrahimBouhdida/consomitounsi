@@ -131,13 +131,7 @@ public class Reclamation implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((answered == null) ? 0 : answered.hashCode());
-		result = prime * result + ((created == null) ? 0 : created.hashCode());
-		result = prime * result + ((decision == null) ? 0 : decision.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((responseDescription == null) ? 0 : responseDescription.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
 
@@ -150,41 +144,16 @@ public class Reclamation implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Reclamation other = (Reclamation) obj;
-		if (answered == null) {
-			if (other.answered != null)
-				return false;
-		} else if (!answered.equals(other.answered))
-			return false;
-		if (created == null) {
-			if (other.created != null)
-				return false;
-		} else if (!created.equals(other.created))
-			return false;
-		if (decision != other.decision)
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (id != other.id)
-			return false;
-		if (responseDescription == null) {
-			if (other.responseDescription != null)
-				return false;
-		} else if (!responseDescription.equals(other.responseDescription))
-			return false;
-		if (state != other.state)
-			return false;
-		return true;
+
+		return id == other.id;
 	}
 
 	@Override
 	public String toString() {
 		return "id=" + id + ", description=" + description + ", responseDescription=" + responseDescription
 				+ ", created=" + created + ", answered=" + answered + ", state=" + state + ", decision=" + decision
-				+ ", product=" + product.getNameProduct() + ", user=" + user.getFirstName() +" "+user.getLastName() + "]";
+				+ ", product=" + product.getNameProduct() + ", user=" + user.getFirstName() + " " + user.getLastName()
+				+ "]";
 	}
 
-	
 }

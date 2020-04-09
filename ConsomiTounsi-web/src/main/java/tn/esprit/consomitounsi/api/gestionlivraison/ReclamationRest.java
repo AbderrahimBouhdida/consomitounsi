@@ -44,6 +44,14 @@ public class ReclamationRest {
 	@EJB
 	CategoryRemote csr;
 
+	private static final String ACCEPTED = "accepted";
+	private static final String REJECTED = "rejected";
+	private static final String PENDING = "pending";
+	private static final String REPAIR = "repair";
+	private static final String REPAYMENT = "repayment";
+	private static final String EXCHANGE = "exchange";
+	private static final String DECISION = "decision";
+
 	@POST
 	@Path("/{userId}/add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -99,12 +107,12 @@ public class ReclamationRest {
 	public Response showAllReclamationsByState(@PathParam(value = "state") String stat) {
 		IShowmethod show = new IShowmethod();
 		ReclamationState state = null;
-		if (stat.toLowerCase().equals("accepted")) {
-			state = ReclamationState.Accepted;
-		} else if (stat.toLowerCase().equals("rejected")) {
-			state = ReclamationState.Rejected;
-		} else if (stat.toLowerCase().equals("pending")) {
-			state = ReclamationState.Pending;
+		if (stat.equalsIgnoreCase(ACCEPTED)) {
+			state = ReclamationState.ACCEPTED;
+		} else if (stat.equalsIgnoreCase(REJECTED)) {
+			state = ReclamationState.REJECTED;
+		} else if (stat.equalsIgnoreCase(PENDING)) {
+			state = ReclamationState.PENDING;
 		}
 		return Response.ok(show.reclamations(rsr.getReclamationByState(state))).build();
 
@@ -116,12 +124,12 @@ public class ReclamationRest {
 	public Response showAllReclamationsByDecision(@PathParam(value = "decision") String dec) {
 		IShowmethod show = new IShowmethod();
 		Decision decision = null;
-		if (dec.toLowerCase().equals("repair")) {
-			decision = Decision.Repair;
-		} else if (dec.toLowerCase().equals("repayment")) {
-			decision = Decision.Repayment;
-		} else if (dec.toLowerCase().equals("exchange")) {
-			decision = Decision.Exchange;
+		if (dec.equalsIgnoreCase(REPAIR)) {
+			decision = Decision.REPAIR;
+		} else if (dec.equalsIgnoreCase(REPAYMENT)) {
+			decision = Decision.REPAYMENT;
+		} else if (dec.equalsIgnoreCase(EXCHANGE)) {
+			decision = Decision.EXCHANGE;
 		}
 		return Response.ok(show.reclamations(rsr.getReclamationByDecision(decision))).build();
 
@@ -130,23 +138,23 @@ public class ReclamationRest {
 	@PUT
 	@Path("response/{reclamationId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response Response(@PathParam(value = "reclamationId") int id, JsonObject obj) {
+	public Response esponse(@PathParam(value = "reclamationId") int id, JsonObject obj) {
 
 		if (rsr.reclamationExist(id)) {
 			ReclamationState state = null;
-			if (obj.getString("state").toLowerCase().equals("accepted")) {
-				state = ReclamationState.Accepted;
-			} else if (obj.getString("state").toLowerCase().equals("rejected")) {
-				state = ReclamationState.Rejected;
+			if (obj.getString("state").equalsIgnoreCase(ACCEPTED)) {
+				state = ReclamationState.ACCEPTED;
+			} else if (obj.getString("state").equalsIgnoreCase(REJECTED)) {
+				state = ReclamationState.REJECTED;
 			}
 
 			Decision decision = null;
-			if (obj.getString("decision").toLowerCase().equals("repair")) {
-				decision = Decision.Repair;
-			} else if (obj.getString("decision").toLowerCase().equals("repayment")) {
-				decision = Decision.Repayment;
-			} else if (obj.getString("decision").toLowerCase().equals("exchange")) {
-				decision = Decision.Exchange;
+			if (obj.getString(DECISION).equalsIgnoreCase(REPAIR)) {
+				decision = Decision.REPAIR;
+			} else if (obj.getString(DECISION).equalsIgnoreCase(REPAYMENT)) {
+				decision = Decision.REPAYMENT;
+			} else if (obj.getString(DECISION).equalsIgnoreCase(EXCHANGE)) {
+				decision = Decision.EXCHANGE;
 			}
 
 			Reclamation reclamation = new Reclamation();
@@ -185,19 +193,19 @@ public class ReclamationRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response all(@PathParam(value = "year") int year) {
 		Map<String, Long> statistics = new HashMap<>();
-		statistics.put("Number of all reclamations", rsr.numberOfReclamationByYear(year));
-		statistics.put("January", rsr.numberOfReclamationPerMonth(1, year));
-		statistics.put("February", rsr.numberOfReclamationPerMonth(2, year));
-		statistics.put("March", rsr.numberOfReclamationPerMonth(3, year));
-		statistics.put("April", rsr.numberOfReclamationPerMonth(4, year));
+		statistics.put("Number of all reclamations ", rsr.numberOfReclamationByYear(year));
+		statistics.put("January ", rsr.numberOfReclamationPerMonth(1, year));
+		statistics.put("February ", rsr.numberOfReclamationPerMonth(2, year));
+		statistics.put("March ", rsr.numberOfReclamationPerMonth(3, year));
+		statistics.put("April ", rsr.numberOfReclamationPerMonth(4, year));
 		statistics.put("May", rsr.numberOfReclamationPerMonth(5, year));
 		statistics.put("June", rsr.numberOfReclamationPerMonth(6, year));
 		statistics.put("July", rsr.numberOfReclamationPerMonth(7, year));
-		statistics.put("August", rsr.numberOfReclamationPerMonth(8, year));
-		statistics.put("September", rsr.numberOfReclamationPerMonth(9, year));
-		statistics.put("October", rsr.numberOfReclamationPerMonth(10, year));
-		statistics.put("November", rsr.numberOfReclamationPerMonth(11, year));
-		statistics.put("December", rsr.numberOfReclamationPerMonth(12, year));
+		statistics.put("August ", rsr.numberOfReclamationPerMonth(8, year));
+		statistics.put("September ", rsr.numberOfReclamationPerMonth(9, year));
+		statistics.put("October ", rsr.numberOfReclamationPerMonth(10, year));
+		statistics.put("November ", rsr.numberOfReclamationPerMonth(11, year));
+		statistics.put("December ", rsr.numberOfReclamationPerMonth(12, year));
 
 		return Response.ok(statistics).build();
 
@@ -209,12 +217,12 @@ public class ReclamationRest {
 	public Response state(@PathParam(value = "year") int year, @PathParam(value = "state") String stat) {
 		Map<String, Long> statistics = new HashMap<>();
 		ReclamationState state = null;
-		if (stat.toLowerCase().equals("accepted")) {
-			state = ReclamationState.Accepted;
-		} else if (stat.toLowerCase().equals("rejected")) {
-			state = ReclamationState.Rejected;
-		} else if (stat.toLowerCase().equals("pending")) {
-			state = ReclamationState.Pending;
+		if (stat.equalsIgnoreCase(ACCEPTED)) {
+			state = ReclamationState.ACCEPTED;
+		} else if (stat.equalsIgnoreCase(REJECTED)) {
+			state = ReclamationState.REJECTED;
+		} else if (stat.equalsIgnoreCase(PENDING)) {
+			state = ReclamationState.PENDING;
 		}
 		statistics.put("Number of all reclamations", rsr.numberOfReclamationByStatePerYear(state, year));
 		statistics.put("January", rsr.numberOfReclamationByStatePerMonth(state, 1, year));
@@ -240,12 +248,12 @@ public class ReclamationRest {
 	public Response decision(@PathParam(value = "year") int year, @PathParam(value = "decision") String dec) {
 		Map<String, Long> statistics = new HashMap<>();
 		Decision decision = null;
-		if (dec.toLowerCase().equals("repair")) {
-			decision = Decision.Repair;
-		} else if (dec.toLowerCase().equals("repayment")) {
-			decision = Decision.Repayment;
-		} else if (dec.equals("exchange")) {
-			decision = Decision.Exchange;
+		if (dec.equalsIgnoreCase(REPAIR)) {
+			decision = Decision.REPAIR;
+		} else if (dec.equalsIgnoreCase(REPAYMENT)) {
+			decision = Decision.REPAYMENT;
+		} else if (dec.equalsIgnoreCase(EXCHANGE)) {
+			decision = Decision.EXCHANGE;
 		}
 		statistics.put("Number of all reclamations", rsr.numberOfReclamationByDecisionByYear(decision, year));
 		statistics.put("January", rsr.numberOfReclamationByDecisionPerMonth(decision, 1, year));

@@ -43,6 +43,7 @@ public class Delivery implements Serializable {
 	private double cost;
 
 	public Delivery() {
+		super();
 	}
 
 	public int getId() {
@@ -113,17 +114,11 @@ public class Delivery implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((addressInformation == null) ? 0 : addressInformation.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(cost);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((deliveredDate == null) ? 0 : deliveredDate.hashCode());
-		result = prime * result + ((deliveryDate == null) ? 0 : deliveryDate.hashCode());
-		result = prime * result + ((deliveryState == null) ? 0 : deliveryState.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
 		return result;
 	}
+
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -134,33 +129,7 @@ public class Delivery implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Delivery other = (Delivery) obj;
-		if (addressInformation == null) {
-			if (other.addressInformation != null)
-				return false;
-		} else if (!addressInformation.equals(other.addressInformation))
-			return false;
-		if (Double.doubleToLongBits(cost) != Double.doubleToLongBits(other.cost))
-			return false;
-		if (deliveredDate == null) {
-			if (other.deliveredDate != null)
-				return false;
-		} else if (!deliveredDate.equals(other.deliveredDate))
-			return false;
-		if (deliveryDate == null) {
-			if (other.deliveryDate != null)
-				return false;
-		} else if (!deliveryDate.equals(other.deliveryDate))
-			return false;
-		if (deliveryState != other.deliveryState)
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (id != other.id)
-			return false;
-		return true;
+		return id == other.id;
 	}
 
 	@Override

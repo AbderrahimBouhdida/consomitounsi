@@ -55,12 +55,12 @@ public class DeliveryRest {
 		IShowmethod show = new IShowmethod();
 
 		DeliveryState name = null;
-		if (state.toLowerCase().equals("pending")) {
-			name = DeliveryState.Pending;
-		} else if (state.toLowerCase().equals("registered")) {
-			name = DeliveryState.Registered;
-		} else if (state.toLowerCase().equals("done")) {
-			name = DeliveryState.Done;
+		if (state.equalsIgnoreCase("pending")) {
+			name = DeliveryState.PENDING;
+		} else if (state.equalsIgnoreCase("registered")) {
+			name = DeliveryState.REGISTERED;
+		} else if (state.equalsIgnoreCase("done")) {
+			name = DeliveryState.DONE;
 		}
 
 		return Response.ok(show.deliveries(dmsr.getAllDeliveriesByState(name))).build();
@@ -89,7 +89,7 @@ public class DeliveryRest {
 	@Path("Statistics/delivery/year/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response statsDeliveryNUmberPerYear(@PathParam(value = "year") int year) {
-		return Response.ok(dmsr.NumberOfDeliveriesByYear(year)).build();
+		return Response.ok(dmsr.numberOfDeliveriesByYear(year)).build();
 	}
 
 	// client side
@@ -139,7 +139,7 @@ public class DeliveryRest {
 		double totalWeight = 0.0d;
 		User us = userservice.findUserById(userId);
 		List<CartProduct> items = csr.findActiveCartByUserId(us).getProducts();
-		List<String> itemsList = new ArrayList<String>();
+		List<String> itemsList = new ArrayList<>();
 		for (CartProduct item : items) {
 			totalWeight += (item.getProduct().getWeight()) * item.getQuantity();
 			itemsList.add(item.getQuantity() + "x " + item.getProduct().getNameProduct() + " "

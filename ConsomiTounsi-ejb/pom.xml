@@ -189,6 +189,7 @@
 					<artifactId>wildfly-arquillian-container-remote</artifactId>
 					<scope>test</scope>
 				</dependency>
+
 			</dependencies>
 		</profile>
 
