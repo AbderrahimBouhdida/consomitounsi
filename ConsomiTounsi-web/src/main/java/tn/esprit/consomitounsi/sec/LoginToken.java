@@ -10,9 +10,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import tn.esprit.consomitounsi.entities.Roles;
 
 public class LoginToken {
-	public static String createJWT(String issuer, String subject, long ttlMillis) {
+	public static String createJWT(String issuer, String subject,Roles role, long ttlMillis) {
 		  
 	    //The JWT signature algorithm we will be using to sign the token
 	    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -29,6 +30,7 @@ public class LoginToken {
 	            .setIssuedAt(now)
 	            .setSubject(subject)
 	            .setIssuer(issuer)
+	            .claim("Role", role.name())
 	            .signWith(signatureAlgorithm, signingKey);
 	  
 	    //if it has been specified, let's add the expiration
