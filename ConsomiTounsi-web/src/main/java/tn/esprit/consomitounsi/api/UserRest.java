@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,6 +17,7 @@ import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.sec.LoginToken;
+import tn.esprit.consomitounsi.sec.Session;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 
@@ -57,10 +59,49 @@ public class UserRest {
 			carts.addCart(cr);
 			System.out.println("cart created !");
 		}
-		String token = LoginToken.createJWT("ConsomiTounsi", us.getUsername(),us.getRole(), 0);
+		String token = LoginToken.createJWT("ConsomiTounsi",us.getIdUser(), us.getUsername(),us.getRole(), 0);
 		return Response.ok(us).header("AUTHORIZATION", "Bearer " + token).build();	
 	}
-
+	@PUT
+	@Path("/update")
+	@JWTTokenNeeded
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modInfo(@HeaderParam("Authorization") String token, User user) {
+		int curentId=Session.getUserId(token);
+		System.out.println("real id = "+curentId);
+		user.setIdUser(curentId);
+		users.updateUser(user);
+		return Response.ok(user).build();
+	}
+	@PUT
+	@Path("/update/admin")
+	@JWTTokenNeeded(roles = {Roles.ADMIN})
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modInfoAdmin(User user) {
+		users.updateUser(user);
+		return Response.ok(user).build();
+	}
+	@PUT
+	@Path("/delete/admin")
+	@JWTTokenNeeded(roles = {Roles.ADMIN})
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delUserAdmin(User user) {
+		users.removeUser(user.getIdUser());
+		return Response.ok("deleted").build();
+	}
+	@PUT
+	@Path("/delete")
+	@JWTTokenNeeded
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delUser(@HeaderParam("Authorization") String token) {
+		int curentId=Session.getUserId(token);
+		users.removeUser(curentId);
+		return Response.ok("deleted").build();
+	}
 	@GET
 	@Path("/verify")
 	public Response verifyEmail(@QueryParam(value = "token") String token) {
