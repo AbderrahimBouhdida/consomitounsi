@@ -12,3 +12,7 @@ ConsomiTounsi-ejb/target/test-classes/
 *.properties
 
 ConsomiTounsi-ejb/src/main/java/tn/esprit/consomitounsi/services/impl/EmailKey.java
+
+ConsomiTounsi-ejb/.classpath
+
+ConsomiTounsi-web/.classpath
