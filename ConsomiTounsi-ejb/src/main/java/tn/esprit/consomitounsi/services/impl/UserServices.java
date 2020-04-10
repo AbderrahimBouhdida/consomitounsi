@@ -1,7 +1,10 @@
 package tn.esprit.consomitounsi.services.impl;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -11,6 +14,7 @@ import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
+import tn.esprit.consomitounsi.services.impl.SecUtils;
 
 
 
@@ -29,11 +33,24 @@ public class UserServices implements IUserServicesRemote {
 			String pass = user.getPassword();
 			String secPass = sec.getSecurePassword(pass, user.getSalt());
 			user.setPassword(secPass);
+			user.setValid(false);
 			em.persist(user);
+			String tok = user.getIdUser()+"."+sec.generateToken(15);
+			user.setVerifToken(tok);
+			EmailService email = new EmailService();
+			String body = "Please click on the link below to activate your account\n"
+					+ "http://localhost:9080/ConsomiTounsi-web/api/user/verify?token="+tok;
+			email.sendEmail("service@consomitounsi.tn", "Verification", user.getEmail(), body);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("add failed");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return user.getIdUser();
@@ -48,7 +65,26 @@ public class UserServices implements IUserServicesRemote {
 	@Override
 	public void updateUser(User userNewValues) {
 		User user = em.find(User.class, userNewValues.getIdUser());
-		user.setPassword(userNewValues.getPassword());
+		System.out.println("haaw l tttookeeennnnnnnnnn: "+user.getVerifToken());
+		Optional.ofNullable(userNewValues.getPassword()).ifPresent(p -> {
+			try {
+				user.setSalt(SecUtils.getSalt());
+				System.out.println("salt : " + user.getSalt());
+				String pass = p;
+				String secPass = sec.getSecurePassword(pass, user.getSalt());
+				user.setPassword(secPass);
+				
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("Pass failed");
+			}
+		});
+		Optional.ofNullable(userNewValues.getAddress()).ifPresent(user::setAddress);
+		Optional.ofNullable(userNewValues.getFirstName()).ifPresent(user::setFirstName);
+		Optional.ofNullable(userNewValues.getLastName()).ifPresent(user::setLastName);
+		Optional.ofNullable(userNewValues.getPhone()).ifPresent(user::setPhone);
+		Optional.ofNullable(userNewValues.getImg()).ifPresent(user::setImg);
 	}
 
 	@Override
@@ -98,4 +134,22 @@ public class UserServices implements IUserServicesRemote {
 		return false;
 	}
 
+	@Override
+	public boolean verifyEmail(String token) {
+		if(token.contains(".")) {
+			int id = 0;
+			id = Integer.valueOf(token.split("\\.")[0]);
+			User us = em.find(User.class, id);
+			if(us.isValid())
+				return false;
+			if(us.getVerifToken().equals(token)) {
+				us.setValid(true);
+				return true;
+			}
+				
+		}
+		return false;
+	}
+	
+	
 }

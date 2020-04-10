@@ -12,3 +12,5 @@ ConsomiTounsi-ejb/target/test-classes/
 *.properties
 
 ConsomiTounsi-ejb/src/main/java/tn/esprit/consomitounsi/services/impl/SMSKey.java
+
+ConsomiTounsi-ejb/src/main/java/tn/esprit/consomitounsi/services/impl/EmailKey.java

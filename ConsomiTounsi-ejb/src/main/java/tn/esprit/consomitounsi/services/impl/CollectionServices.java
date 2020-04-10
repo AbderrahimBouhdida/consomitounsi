@@ -6,7 +6,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.PersistenceException;
 
 import tn.esprit.consomitounsi.entities.Collection;
 import tn.esprit.consomitounsi.services.intrf.CollectionServiceRemote;
@@ -40,6 +40,16 @@ public class CollectionServices implements CollectionServiceRemote {
 		
 	}
 	
+	@Override
+	public void updateCollectionv2(Collection collection) {
+		try {
+			em.merge(collection);
+	    } catch (PersistenceException e) {
+	        System.out.println("Update Error: " + e.getMessage());
+	    }
+		
+	}
+	
 
 
 	@Override
@@ -53,6 +63,8 @@ public class CollectionServices implements CollectionServiceRemote {
 		List<Collection> collection = em.createQuery("from Collection", Collection.class).getResultList();
         return collection;
 	}
+
+	
 
 	
 

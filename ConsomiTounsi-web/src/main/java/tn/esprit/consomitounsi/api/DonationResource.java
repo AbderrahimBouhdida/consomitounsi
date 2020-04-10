@@ -5,10 +5,10 @@ package tn.esprit.consomitounsi.api;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-//import javax.ws.rs.DELETE;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-//import javax.ws.rs.PUT;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,7 +27,7 @@ public class DonationResource {
 	
 	@EJB
     DonationServiceRemote dons;
-	
+		
 	
     @POST
     @Path("/add")
@@ -38,7 +38,7 @@ public class DonationResource {
         return Response.ok(dons.findAllDonation()).build();
     }
     
-    @POST
+    @PUT
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -48,8 +48,18 @@ public class DonationResource {
     	//return Response.ok(cols.findAllCollection()).build();
     }
     
+    @PUT
+    @Path("/editv2")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editdonationv2(Donation don) {
+    	dons.updateDonationv2(don);
+        return Response.ok(dons.findDonationById(don.getIddon())).build();
+    	//return Response.ok(cols.findAllCollection()).build();
+    }
     
-    @POST
+    
+    @DELETE
     @Path("/del/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +84,18 @@ public class DonationResource {
     	return Response.ok(dons.findAllDonation()).build();
     	
     }
+    
+    @GET
+    @Path("/Topdonators")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response Topdonators() {
+   // 	return Response.ok(dons.topdonatorsstring()).build();
+    	//return dons.topdonatorsstring();
+    	//System.out.println(dons.topdonatorsstring());
+    	return Response.ok(dons.topdonatorsstring()).build();
+    	
+    }
+    
     
     
 //    @POST
