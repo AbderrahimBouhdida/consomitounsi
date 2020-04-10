@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -13,6 +14,7 @@ import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
+import tn.esprit.consomitounsi.services.impl.SecUtils;
 
 
 
@@ -63,7 +65,26 @@ public class UserServices implements IUserServicesRemote {
 	@Override
 	public void updateUser(User userNewValues) {
 		User user = em.find(User.class, userNewValues.getIdUser());
-		user.setPassword(userNewValues.getPassword());
+		System.out.println("haaw l tttookeeennnnnnnnnn: "+user.getVerifToken());
+		Optional.ofNullable(userNewValues.getPassword()).ifPresent(p -> {
+			try {
+				user.setSalt(SecUtils.getSalt());
+				System.out.println("salt : " + user.getSalt());
+				String pass = p;
+				String secPass = sec.getSecurePassword(pass, user.getSalt());
+				user.setPassword(secPass);
+				
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("Pass failed");
+			}
+		});
+		Optional.ofNullable(userNewValues.getAddress()).ifPresent(user::setAddress);
+		Optional.ofNullable(userNewValues.getFirstName()).ifPresent(user::setFirstName);
+		Optional.ofNullable(userNewValues.getLastName()).ifPresent(user::setLastName);
+		Optional.ofNullable(userNewValues.getPhone()).ifPresent(user::setPhone);
+		Optional.ofNullable(userNewValues.getImg()).ifPresent(user::setImg);
 	}
 
 	@Override
