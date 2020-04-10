@@ -62,6 +62,7 @@ public class UserRest {
 	}
 	@PUT
 	@Path("/update")
+	@JWTTokenNeeded
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response modInfo(@HeaderParam("Authorization") String token, User user) {
@@ -70,6 +71,34 @@ public class UserRest {
 		user.setIdUser(curentId);
 		users.updateUser(user);
 		return Response.ok(user).build();
+	}
+	@PUT
+	@Path("/update/admin")
+	@JWTTokenNeeded(roles = {Roles.ADMIN})
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response modInfoAdmin(User user) {
+		users.updateUser(user);
+		return Response.ok(user).build();
+	}
+	@PUT
+	@Path("/delete/admin")
+	@JWTTokenNeeded(roles = {Roles.ADMIN})
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delUserAdmin(User user) {
+		users.removeUser(user.getIdUser());
+		return Response.ok("deleted").build();
+	}
+	@PUT
+	@Path("/delete")
+	@JWTTokenNeeded
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delUser(@HeaderParam("Authorization") String token) {
+		int curentId=Session.getUserId(token);
+		users.removeUser(curentId);
+		return Response.ok("deleted").build();
 	}
 	@GET
 	@Path("/verify")
