@@ -27,7 +27,7 @@ public class DonationResource {
 	
 	@EJB
     DonationServiceRemote dons;
-	
+		
 	
     @POST
     @Path("/add")
@@ -44,6 +44,16 @@ public class DonationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editdonation(Donation don) {
     	dons.updateDonation(don);
+        return Response.ok(dons.findDonationById(don.getIddon())).build();
+    	//return Response.ok(cols.findAllCollection()).build();
+    }
+    
+    @PUT
+    @Path("/editv2")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editdonationv2(Donation don) {
+    	dons.updateDonationv2(don);
         return Response.ok(dons.findDonationById(don.getIddon())).build();
     	//return Response.ok(cols.findAllCollection()).build();
     }
@@ -74,6 +84,18 @@ public class DonationResource {
     	return Response.ok(dons.findAllDonation()).build();
     	
     }
+    
+    @GET
+    @Path("/Topdonators")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response Topdonators() {
+   // 	return Response.ok(dons.topdonatorsstring()).build();
+    	//return dons.topdonatorsstring();
+    	//System.out.println(dons.topdonatorsstring());
+    	return Response.ok(dons.topdonatorsstring()).build();
+    	
+    }
+    
     
     
 //    @POST

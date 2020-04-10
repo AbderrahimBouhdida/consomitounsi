@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 
 import tn.esprit.consomitounsi.entities.Collection;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.CollectionServiceRemote;
 
 
@@ -29,7 +30,7 @@ public class CollectionResource {
 	@EJB
     CollectionServiceRemote cols;
 	
-	
+	@JWTTokenNeeded
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -46,6 +47,16 @@ public class CollectionResource {
     public Response editcollection(Collection col) {
     	cols.updateCollection(col);
         return Response.ok(cols.findCollectionById(col.getIdcollection())).build();
+    	//return Response.ok(cols.findAllCollection()).build();
+    }
+    
+    @PUT
+    @Path("/editv2")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editdonationv2(Collection col) {
+    	cols.updateCollectionv2(col);
+    	return Response.ok(cols.findCollectionById(col.getIdcollection())).build();
     	//return Response.ok(cols.findAllCollection()).build();
     }
     

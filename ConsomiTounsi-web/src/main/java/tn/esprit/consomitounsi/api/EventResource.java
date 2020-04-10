@@ -48,6 +48,16 @@ public class EventResource {
     	//return Response.ok(cols.findAllCollection()).build();
     }
     
+    @PUT
+    @Path("/editv2")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editeventv2(Event eve) {
+    	events.updateEventv2(eve);
+        return Response.ok(events.findEventById(eve.getIdevent())).build();
+    	//return Response.ok(cols.findAllCollection()).build();
+    }
+    
     
     @DELETE
     @Path("/del/{id}")

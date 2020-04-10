@@ -12,6 +12,7 @@ public interface CollectionServiceRemote {
 	public int addCollection(Collection collection);
     public void removeCollection(int id);
     public void updateCollection(Collection collection);
+    public void updateCollectionv2(Collection collection);
     public Collection findCollectionById(int id);
     public List<Collection> findAllCollection();
     
