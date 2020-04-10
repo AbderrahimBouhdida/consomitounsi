@@ -17,7 +17,7 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private int idUser;
-	private int role;
+	private Roles role;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -28,11 +28,13 @@ public class User implements Serializable{
 	private String phone;
 	private String img;
 	private String salt;
+	private String verifToken;
+	private boolean isValid;
 	
 	public User() {
 	}
 
-	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
+	public User(Roles role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img) {
 		this.role = role;
 		this.firstName = firstName;
@@ -47,7 +49,7 @@ public class User implements Serializable{
 	}
 	
 
-	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
+	public User(Roles role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img, String salt) {
 		this.role = role;
 		this.firstName = firstName;
@@ -62,7 +64,7 @@ public class User implements Serializable{
 		this.salt = salt;
 	}
 
-	public User(int idUser, int role, String firstName, String lastName, String email, String username, String password,
+	public User(int idUser, Roles role, String firstName, String lastName, String email, String username, String password,
 			Date dob, String address, String phone, String img, String salt) {
 		this.idUser = idUser;
 		this.role = role;
@@ -76,6 +78,24 @@ public class User implements Serializable{
 		this.phone = phone;
 		this.img = img;
 		this.salt = salt;
+	}
+
+	
+	
+	public String getVerifToken() {
+		return verifToken;
+	}
+
+	public void setVerifToken(String verifToken) {
+		this.verifToken = verifToken;
+	}
+
+	public boolean isValid() {
+		return isValid;
+	}
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 
 	public String getSalt() {
@@ -94,11 +114,11 @@ public class User implements Serializable{
 		this.idUser = idUser;
 	}
 
-	public int getRole() {
+	public Roles getRole() {
 		return role;
 	}
 
-	public void setRole(int role) {
+	public void setRole(Roles role) {
 		this.role = role;
 	}
 
