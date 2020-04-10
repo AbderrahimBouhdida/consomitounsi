@@ -11,6 +11,7 @@ public interface EventServiceRemote {
 	public int addEvent(Event event);
     public void removeEvent(int id);
     public void updateEvent(Event event);
+    public void updateEventv2(Event event);
     public Event findEventById(int id);
     public List<Event> findAllEvent();
 
