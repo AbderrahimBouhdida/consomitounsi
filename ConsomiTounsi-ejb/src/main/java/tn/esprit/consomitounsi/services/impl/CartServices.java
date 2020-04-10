@@ -1,7 +1,10 @@
 package tn.esprit.consomitounsi.services.impl;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -10,7 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import tn.esprit.consomitounsi.entities.Cart;
-import tn.esprit.consomitounsi.entities.CartItem;
+import tn.esprit.consomitounsi.entities.CartProdPk;
+import tn.esprit.consomitounsi.entities.CartProduct;
 import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
@@ -37,13 +41,17 @@ public class CartServices implements ICartServicesRemote{
 
 	@Override
 	public void updateCart(Cart cartNewValues) {
-		Cart cart = em.find(Cart.class, cartNewValues.getIdCart());
-		cart.setItems(cartNewValues.getItems());
+		try {
+			em.merge(cartNewValues);
+		} catch (Exception e) {
+			System.out.println("doesn't exist or error");
+		}
 	}
 
 	@Override
-	public List<Cart> findCartByUserId(int id) {
-		TypedQuery<Cart> query = em.createQuery("select c from cart c where user_IdUser=:user ", Cart.class);
+	public List<Cart> findCartByUserId(User id) {
+		System.out.println("called");
+		TypedQuery<Cart> query = em.createQuery("select c from Cart c where user=:user", Cart.class);
 		query.setParameter("user", id);
 		List<Cart> carts = new ArrayList<Cart>();
 		try { carts = query.getResultList(); }
@@ -92,38 +100,71 @@ public class CartServices implements ICartServicesRemote{
 	}
 
 	@Override
-	public void addProdCart(User user, Product prod) {
+	public boolean addProdCart(User user, CartProduct prod) {
 		Cart cr = findActiveCartByUserId(user);
-		CartItem item = new CartItem();
-		item.setProd(prod);
-		em.persist(item);
-		List<CartItem> items=new ArrayList<CartItem>();
-		items = cr.getItems();
-		items.add(item);
-		cr.setItems(items);
-		
-	}
-
-	@Override
-	public List<Product> getCurrUserProds(User user) {
-		Cart cr = new Cart();
-		cr = findActiveCartByUserId(user);
-		List<Product> prods = new ArrayList<Product>();
-		System.out.println("zzzzzzzzzzzzzzzzzz"+cr.getIdCart());
-		//prods = cr.getItems().stream().map(CartItem::getProd).collect(Collectors.toList());
-		
-		
-		System.out.println("zzzzzzzzzzzzzzzzzz"+cr.getItems().size());
-		for (CartItem c : cr.getItems()) {
-			System.out.println("bbbbbbbbbbb"+c.getProd().getBarecode());
-			prods.add(c.getProd());
+		CartProdPk pk = new CartProdPk();
+		pk.setCart(cr.getIdCart());
+		pk.setProd(prod.getCartProdPk().getProd());
+		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		CartProduct cp = new CartProduct();
+		cp.setCartProdPk(pk);
+		cp.setQuantity(120);
+		if(!prodExist(cr, ppp)) {
+			em.persist(cp);
+			return true;
 		}
-		
-		//List<CartItem> its = cr.getItems();
+		System.out.println("exists");
+		return false;
+	}
+	
+	@Override
+	public boolean removeProd(User user,CartProduct prod) {
+		Cart cr = findActiveCartByUserId(user);
+		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		if(prodExist(cr, ppp)) {
+			CartProdPk cpk = new CartProdPk();
+			cpk.setCart(cr.getIdCart());
+			cpk.setProd(prod.getCartProdPk().getProd());
+			em.remove(em.find(CartProduct.class, cpk));
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean modProd(User user,CartProduct prod) {
+		Cart cr = findActiveCartByUserId(user);
+		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		if(prodExist(cr, ppp)) {
+			CartProdPk cpk = new CartProdPk();
+			cpk.setCart(cr.getIdCart());
+			cpk.setProd(prod.getCartProdPk().getProd());
+			CartProduct cp = em.find(CartProduct.class, cpk);
+			cp.setQuantity(prod.getQuantity());;
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public List<CartProduct> getCurrUserProds(User user) {
+		Cart cr = findActiveCartByUserId(user);
+		List<CartProduct> prods = cr.getProducts();//.stream().map(x -> em.find(Product.class, x.getCartProdPk().getProd())).collect(Collectors.toList());
 		return prods;
 	}
 	
+	public boolean prodExist(Cart cr, Product pr) {
+		Product prod=em.find(Product.class, pr.getBarecode());
+		List<CartProduct> c = cr.getProducts();
+		List<CartProdPk> pk = c.stream().map(x -> x.getCartProdPk()).collect(Collectors.toList());
+		List<Product> p = pk.stream().map(x -> em.find(Product.class, x.getProd())).collect(Collectors.toList());
+		if(p.contains(prod))
+			return true;
+		return false;
+	}
 	
-
-
+	public void testEmail() throws IOException, URISyntaxException {
+		EmailService ems = new EmailService();
+		ems.sendEmail("imousrf3@gmail.com", "testing", "bouhdida.abderrahim@gmail.com", "Hello There");
+	}
 }

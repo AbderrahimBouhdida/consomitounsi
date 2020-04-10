@@ -1,16 +1,20 @@
 package tn.esprit.consomitounsi.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
 
 @Entity
 public class Cart implements Serializable{
@@ -23,12 +27,16 @@ public class Cart implements Serializable{
 	private int idCart;
 	@ManyToOne
 	private User user;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private List<CartItem> items;
+	//@ManyToMany(fetch = FetchType.EAGER)
+	//private List<Product> products;
 	private int totalQty;
 	private float totalPrice;
 	private boolean isCurrent; 
+	@Temporal(TemporalType.DATE)
+	private Date created;
 	
+	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER)
+	private List<CartProduct> products;
 	public Cart() {
 	}
 	
@@ -41,9 +49,9 @@ public class Cart implements Serializable{
 
 
 
-	public Cart(User user, List<CartItem> items, int totalQty, float totalPrice, boolean isCurrent) {
+	public Cart(User user, int totalQty, float totalPrice, boolean isCurrent) {
 		this.user = user;
-		this.items = items;
+		//this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
@@ -51,28 +59,34 @@ public class Cart implements Serializable{
 
 
 
-	public Cart(int idCart, User user, List<CartItem> items, int totalQty, float totalPrice, boolean isCurrent) {
+	public Cart(int idCart, User user, int totalQty, float totalPrice, boolean isCurrent) {
 		this.idCart = idCart;
 		this.user = user;
-		this.items = items;
+		//this.products = products;
 		this.totalQty = totalQty;
 		this.totalPrice = totalPrice;
 		this.isCurrent = isCurrent;
 	}
 
+	
 
-
-	public boolean isCurrent() {
-		return isCurrent;
+	public Date getCreated() {
+		return created;
 	}
 
-	public void setCurrent(boolean isCurrent) {
-		this.isCurrent = isCurrent;
+
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
+
+
 
 	public int getIdCart() {
 		return idCart;
 	}
+
+
 
 	public void setIdCart(int idCart) {
 		this.idCart = idCart;
@@ -92,29 +106,94 @@ public class Cart implements Serializable{
 
 
 
-	public List<CartItem> getItems() {
-		return items;
+	public List<CartProduct> getProducts() {
+		return products;
 	}
 
-	public void setItems(List<CartItem> items) {
-		this.items = items;
+
+
+	public void setProducts(List<CartProduct> products) {
+		this.products = products;
 	}
+
+
 
 	public int getTotalQty() {
 		return totalQty;
 	}
 
+
+
 	public void setTotalQty(int totalQty) {
 		this.totalQty = totalQty;
 	}
+
+
 
 	public float getTotalPrice() {
 		return totalPrice;
 	}
 
+
+
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
+
+
+	public boolean isCurrent() {
+		return isCurrent;
+	}
+
+
+
+	public void setCurrent(boolean isCurrent) {
+		this.isCurrent = isCurrent;
+	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + idCart;
+		result = prime * result + (isCurrent ? 1231 : 1237);
+		result = prime * result + Float.floatToIntBits(totalPrice);
+		result = prime * result + totalQty;
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cart other = (Cart) obj;
+		if (idCart != other.idCart)
+			return false;
+		if (isCurrent != other.isCurrent)
+			return false;
+		if (products == null) {
+			if (other.products != null)
+				return false;
+		} else if (!products.equals(other.products))
+			return false;
+		if (Float.floatToIntBits(totalPrice) != Float.floatToIntBits(other.totalPrice))
+			return false;
+		if (totalQty != other.totalQty)
+			return false;
+		return true;
+	}
+
+
+
+
 	
 }

@@ -3,12 +3,10 @@ package tn.esprit.consomitounsi.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+
 
 @Entity
 public class Product implements Serializable {
