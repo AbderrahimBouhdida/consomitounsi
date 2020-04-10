@@ -94,6 +94,14 @@
 			<artifactId>arquillian-protocol-servlet</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+
+			<groupId>com.nexmo</groupId>
+			<artifactId>client</artifactId>
+			<version>4.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>

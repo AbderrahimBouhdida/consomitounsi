@@ -9,9 +9,10 @@ import tn.esprit.consomitounsi.entities.Category;
 
 @Remote
 public interface CategoryRemote {
-    public int addCategory(Category category);
-    public void removeCategory(int id);
-    public void updateCategory(Category category);
-    public Category findCategoryById(int id);
+	
+	public int addCategory(Category category);
+    public void removeCategory(int idCategory);
+    public void updateCategory(Category categoryNewValues);
+    public Category findCategoryById(int idCategory);
     public List<Category> findAllCategory();
 }
