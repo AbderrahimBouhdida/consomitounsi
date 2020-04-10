@@ -35,6 +35,14 @@ public class Category  implements Serializable{
 		super();
 	}
 
+	public Category(int idCategory, String nom, String description, String type, List<Product> prod) {
+		super();
+		this.idCategory = idCategory;
+		this.nom = nom;
+		this.description = description;
+		this.type = type;
+		this.prod = prod;
+	}
 
 	public Category(int idCategory, String nom, String description, String type) {
 		super();
@@ -44,6 +52,9 @@ public class Category  implements Serializable{
 		this.type = type;
 	}
 
+	public void setIdCategory(int idCategory) {
+		this.idCategory = idCategory;
+	}
 
 	public int getIdCategory() {
 		return idCategory;
@@ -54,11 +65,17 @@ public class Category  implements Serializable{
 		this.idCategory = idCategory;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getNom() {
 		return nom;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public void setNom(String nom) {
 		this.nom = nom;
@@ -69,6 +86,7 @@ public class Category  implements Serializable{
 		return description;
 	}
 
+	}
 
 	public void setDescription(String description) {
 		this.description = description;

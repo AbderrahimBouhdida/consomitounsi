@@ -8,7 +8,6 @@ import javax.ejb.Remote;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.CartProduct;
-import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 
 

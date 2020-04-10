@@ -2,8 +2,6 @@ package tn.esprit.consomitounsi.services.impl;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -12,6 +10,8 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+
+import tn.esprit.consomitounsi.entities.EmailKey;
 
 public class EmailService {
 	public void sendEmail(String email, String subj, String toe, String body) throws IOException, URISyntaxException {

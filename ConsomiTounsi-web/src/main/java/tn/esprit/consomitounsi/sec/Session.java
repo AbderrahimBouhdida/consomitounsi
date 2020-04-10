@@ -11,4 +11,9 @@ public class Session {
 		return id;
 	}
 
+	private Session() {
+		super();
+	}
+	
+
 }

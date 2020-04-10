@@ -40,14 +40,15 @@ public class Product implements Serializable{
 		this.dateExpire = dateExpire;
 		this.dateAdd = dateAdd;
 		this.quantity = quantity;
+		this.weight = weight;
 	}
 
 	public int getBarecode() {
-		return Barecode;
+		return barecode;
 	}
 
 	public void setBarecode(int barecode) {
-		Barecode = barecode;
+		this.barecode = barecode;
 	}
 
 	public String getNameProduct() {
