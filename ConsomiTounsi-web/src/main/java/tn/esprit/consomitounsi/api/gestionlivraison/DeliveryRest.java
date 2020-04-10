@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -25,6 +26,7 @@ import tn.esprit.consomitounsi.entities.gestionlivraison.Address;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
 import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
+import tn.esprit.consomitounsi.sec.Session;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
@@ -101,12 +103,12 @@ public class DeliveryRest {
 	}
 
 	// client side
-	@JWTTokenNeeded(roles = Roles.ALL)
+	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
-	@Path("{userId}/deliveryDetails")
+	@Path("deliveryDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response showDeliveryDetail(@PathParam(value = "userId") int userId, JsonObject obj) {
+	public Response showDeliveryDetail(@HeaderParam("Authorization") String token, JsonObject obj) {
 
 		Address address = new Address();
 
@@ -145,7 +147,7 @@ public class DeliveryRest {
 
 		// total weight
 		double totalWeight = 0.0d;
-		User us = userservice.findUserById(userId);
+		User us = userservice.findUserById(Session.getUserId(token));
 		List<CartProduct> items = csr.findActiveCartByUserId(us).getProducts();
 		List<String> itemsList = new ArrayList<>();
 		for (CartProduct item : items) {
@@ -169,11 +171,11 @@ public class DeliveryRest {
 
 	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
-	@Path("{userId}/deliveryDetails/add")
+	@Path("deliveryDetails/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDelivery(@PathParam(value = "userId") int userId, JsonObject obj) {
+	public Response addDelivery(@HeaderParam("Authorization") String token, JsonObject obj) {
 
-		Delivery deliveryDetails = (Delivery) showDeliveryDetail(userId, obj).getEntity();
+		Delivery deliveryDetails = (Delivery) showDeliveryDetail(token, obj).getEntity();
 
 		Delivery delivery = new Delivery();
 

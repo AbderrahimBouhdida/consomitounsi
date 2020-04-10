@@ -86,7 +86,7 @@ public class RepaymentRest {
 
 	}
 
-	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("{id}/update")
 	@Consumes(MediaType.APPLICATION_JSON)

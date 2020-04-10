@@ -53,6 +53,8 @@ public interface DeliveryServiceRemote {
 	public double shippingCost(String region, double weight, int reduction);
 
 	public void validateDelivery(int deliveryId);
+	
+	public Delivery getDeliveryById(int id);
 
 	public void deleteDeliveryById(int deliveryId);
 

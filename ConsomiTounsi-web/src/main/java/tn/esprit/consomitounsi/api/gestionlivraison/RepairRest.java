@@ -105,11 +105,11 @@ public class RepairRest {
 
 	}
 
-	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("{id}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateRepair(@PathParam(value = "code") int id, Repair r) {
+	public Response updateRepair(@PathParam(value = "id") int id, Repair r) {
 		if (rsr.repairExist(id)) {
 			r.setUser(usr.findUserById(r.getUser().getIdUser()));
 			r.setProduct(psr.findProductById(r.getProduct().getBarecode()));

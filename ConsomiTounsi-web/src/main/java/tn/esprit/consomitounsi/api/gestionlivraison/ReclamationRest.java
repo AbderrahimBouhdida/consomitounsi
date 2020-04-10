@@ -9,6 +9,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import tn.esprit.consomitounsi.entities.gestionlivraison.Decision;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Reclamation;
 import tn.esprit.consomitounsi.entities.gestionlivraison.ReclamationState;
 import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
+import tn.esprit.consomitounsi.sec.Session;
 import tn.esprit.consomitounsi.services.intrf.CategoryRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.ProductRemote;
@@ -57,11 +59,11 @@ public class ReclamationRest {
 
 	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
-	@Path("/{userId}/add")
+	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addReclamation(@PathParam(value = "userId") int userId, Reclamation reclamation) {
+	public Response addReclamation(@HeaderParam("Authorization") String token, Reclamation reclamation) {
 
-		User us = usr.findUserById(userId);
+		User us = usr.findUserById(Session.getUserId(token));
 		reclamation.setUser(us);
 		reclamation.setProduct(psr.findProductById(reclamation.getProduct().getBarecode()));
 		rsr.addReclamation(reclamation);

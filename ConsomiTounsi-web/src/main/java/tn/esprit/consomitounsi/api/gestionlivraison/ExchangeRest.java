@@ -117,18 +117,6 @@ public class ExchangeRest {
 		return Response.ok("check the entries").status(Status.BAD_REQUEST).build();
 	}
 
-	@JWTTokenNeeded(roles = Roles.ADMIN)
-	@PUT
-	@Path("{code}/validate")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response validateExchange(@PathParam(value = "code") String code) {
-
-		if (rsr.validateExchange(code)) {
-			return Response.ok("validation Done").build();
-		}
-
-		return Response.ok("validation failed").build();
-	}
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@DELETE

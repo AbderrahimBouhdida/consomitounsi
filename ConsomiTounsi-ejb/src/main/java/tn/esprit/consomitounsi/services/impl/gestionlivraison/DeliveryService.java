@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,22 +35,22 @@ public class DeliveryService implements DeliveryServiceRemote {
 
 	@PersistenceContext
 	EntityManager em;
-	SecUtils sec = new SecUtils();
 
 	@Override
 	public int addDeliveryMan(DeliveryMan deliveryMan) {
 		try {
+			SecUtils sec = new SecUtils();
 			deliveryMan.setSalt(SecUtils.getSalt());
 			String pass = deliveryMan.getPassword();
 			String secPass = sec.getSecurePassword(pass, deliveryMan.getSalt());
 			deliveryMan.setPassword(secPass);
 			deliveryMan.setValid(false);
 			em.persist(deliveryMan);
-			String tok = deliveryMan.getIdUser()+"."+sec.generateToken(15);
+			String tok = deliveryMan.getIdUser() + "." + sec.generateToken(15);
 			deliveryMan.setVerifToken(tok);
 			EmailService email = new EmailService();
 			String body = "Please click on the link below to activate your account\n"
-					+ "http://localhost:9080/ConsomiTounsi-web/api/user/verify?token="+tok;
+					+ "http://localhost:9080/ConsomiTounsi-web/api/user/verify?token=" + tok;
 			email.sendEmail("service@consomitounsi.tn", "Verification", deliveryMan.getEmail(), body);
 		} catch (NoSuchAlgorithmException | IOException | URISyntaxException e) {
 			Logger logger = Logger.getGlobal();
@@ -57,7 +58,7 @@ public class DeliveryService implements DeliveryServiceRemote {
 		}
 
 		return deliveryMan.getIdUser();
-		
+
 	}
 
 	@Override
@@ -135,26 +136,28 @@ public class DeliveryService implements DeliveryServiceRemote {
 	@Override
 	public void updateDeliveryMan(DeliveryMan deliverMan) {
 		DeliveryMan del = em.find(DeliveryMan.class, deliverMan.getIdUser());
-		if (!(deliverMan.getTransportation().equals("")) && (deliverMan.getTransportation() != null)) {
-			del.setTransportation(deliverMan.getTransportation());
-		}
-		if (!(deliverMan.getPassword().equals("")) && (deliverMan.getPassword() != null)) {
-			del.setPassword(deliverMan.getPassword());
-		}
-		if (!(deliverMan.getPhone().equals("")) && (deliverMan.getPhone() != null)) {
-			del.setPhone(deliverMan.getPhone());
-		}
+		Optional.ofNullable(deliverMan.getPassword()).ifPresent(p -> {
 
-		if (!(deliverMan.getAddress().equals("")) && (deliverMan.getAddress() != null)) {
-			del.setAddress(deliverMan.getAddress());
-		}
-		if (!(deliverMan.getAvailabilities().equals("")) && (deliverMan.getAvailabilities() != null)) {
-			del.setAvailabilities(deliverMan.getAvailabilities());
-		}
+			try {
+				SecUtils sec = new SecUtils();
+				del.setSalt(SecUtils.getSalt());
+				String pass = p;
+				String secPass = sec.getSecurePassword(pass, del.getSalt());
+				del.setPassword(secPass);
 
-		if (!(deliverMan.getBase().equals("")) && (deliverMan.getBase() != null)) {
-			del.setBase(deliverMan.getBase());
-		}
+			} catch (NoSuchAlgorithmException e) {
+				Logger logger = Logger.getGlobal();
+				logger.log(Level.INFO, "Got an exception.", e);
+			}
+		});
+		Optional.ofNullable(deliverMan.getAddress()).ifPresent(del::setAddress);
+		Optional.ofNullable(deliverMan.getFirstName()).ifPresent(del::setFirstName);
+		Optional.ofNullable(deliverMan.getLastName()).ifPresent(del::setLastName);
+		Optional.ofNullable(deliverMan.getPhone()).ifPresent(del::setPhone);
+		Optional.ofNullable(deliverMan.getImg()).ifPresent(del::setImg);
+		Optional.ofNullable(deliverMan.getAvailabilities()).ifPresent(del::setAvailabilities);
+		Optional.ofNullable(deliverMan.getBase()).ifPresent(del::setBase);
+		Optional.ofNullable(deliverMan.getTransportation()).ifPresent(del::setTransportation);
 
 	}
 
@@ -370,5 +373,10 @@ public class DeliveryService implements DeliveryServiceRemote {
 		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
 
+	@Override
+	public Delivery getDeliveryById(int id) {
+
+		return em.find(Delivery.class, id);
+	}
 
 }

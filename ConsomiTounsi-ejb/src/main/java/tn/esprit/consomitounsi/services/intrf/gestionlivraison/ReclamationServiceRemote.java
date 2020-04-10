@@ -66,8 +66,6 @@ public interface ReclamationServiceRemote {
 
 	public void updateExchange(Exchange newExchange);
 
-	public boolean validateExchange(String code);
-
 	public void deleteExchangeByCode(String code);
 
 	public List<Exchange> getAllExchanges();

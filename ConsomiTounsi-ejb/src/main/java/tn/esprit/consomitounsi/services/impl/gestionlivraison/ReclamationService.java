@@ -3,6 +3,7 @@ package tn.esprit.consomitounsi.services.impl.gestionlivraison;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -63,7 +64,6 @@ public class ReclamationService implements ReclamationServiceRemote {
 		reclamation.setAnswered(getCurrentDate());
 		reclamation.setState(newReclamation.getState());
 		reclamation.setResponseDescription(newReclamation.getResponseDescription());
-
 	}
 
 	@Override
@@ -266,19 +266,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public void updateExchange(Exchange newExchange) {
 		Exchange exchange = em.find(Exchange.class, newExchange.getCode());
-		exchange.setProduct(newExchange.getProduct());
+		Optional.ofNullable(newExchange.getProduct()).ifPresent(exchange::setProduct);
 
-	}
-
-	@Override
-	public boolean validateExchange(String code) {
-		Exchange exchange = em.find(Exchange.class, code);
-		if (exchange != null) {
-			exchange.setDone(true);
-			exchange.setDoneOn(getCurrentDate());
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -518,13 +507,8 @@ public class ReclamationService implements ReclamationServiceRemote {
 	@Override
 	public void updateRepair(Repair newRepair) {
 		Repair repair = em.find(Repair.class, newRepair.getId());
-		if (newRepair.getUser() != null) {
-
-			repair.setUser(newRepair.getUser());
-		}
-		if (newRepair.getProduct() != null) {
-			repair.setProduct(newRepair.getProduct());
-		}
+		Optional.ofNullable(newRepair.getProduct()).ifPresent(repair::setProduct);
+		Optional.ofNullable(newRepair.getUser()).ifPresent(repair::setUser);
 
 	}
 

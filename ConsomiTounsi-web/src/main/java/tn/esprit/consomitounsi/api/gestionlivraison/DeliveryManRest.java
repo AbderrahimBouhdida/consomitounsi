@@ -11,6 +11,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,8 +25,8 @@ import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
-import tn.esprit.consomitounsi.sec.InputValidation;
 import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
+import tn.esprit.consomitounsi.sec.Session;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
 
@@ -95,7 +96,7 @@ public class DeliveryManRest {
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@DELETE
-	@Path("deliveryMan/{id}/delete")
+	@Path("{id}/delete")
 	public Response deleteDeliveryMan(@PathParam(value = "id") int deliveryManId) {
 		DeliveryMan del = dmsr.getDeliveryManById(deliveryManId);
 
@@ -120,7 +121,7 @@ public class DeliveryManRest {
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
-	@Path("deliveryMan/{id}/bonus/add")
+	@Path("{id}/bonus/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response giveBonusToDeliveryMan(@PathParam(value = "id") int id, JsonObject bon) {
 
@@ -128,6 +129,9 @@ public class DeliveryManRest {
 
 		bonus.setDate(dmsr.getCurrentDate());
 
+		if (bon.getJsonNumber("amount").doubleValue() < 0) {
+			Response.ok("PLease enter a correct amount").status(Status.NOT_ACCEPTABLE).build();
+		}
 		bonus.setAmount(bon.getJsonNumber("amount").doubleValue());
 		dmsr.addBonus(id, bonus);
 		return Response.ok("Bonus added successfully to deliveryMan").build();
@@ -136,7 +140,7 @@ public class DeliveryManRest {
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
-	@Path("bonus")
+	@Path("bonus/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllBonus() {
 		IShowmethod show = new IShowmethod();
@@ -145,7 +149,7 @@ public class DeliveryManRest {
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
-	@Path("bonus/{year}")
+	@Path("bonus/all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllBonusByYear(@PathParam(value = "year") int year) {
 		IShowmethod show = new IShowmethod();
@@ -154,7 +158,7 @@ public class DeliveryManRest {
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
-	@Path("deliveryMan/{id}/bonus/list")
+	@Path("bonus/list/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showAllBonusByDeliveryMan(@PathParam(value = "id") int id) {
 		IShowmethod show = new IShowmethod();
@@ -187,7 +191,7 @@ public class DeliveryManRest {
 	@GET
 	@Path("Statistics/deliveryMen/deliveries/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response statisticsD(@PathParam(value = "year") int year, @PathParam(value = "month") int month) {
+	public Response statistics(@PathParam(value = "year") int year, @PathParam(value = "month") int month) {
 
 		List<DeliveryMan> deliveryMen = dmsr.getAllDeliveryMen();
 		Map<String, Integer> results = new HashMap<>();
@@ -203,9 +207,21 @@ public class DeliveryManRest {
 		return Response.ok(results).build();
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{id}/tasks")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response showJobListD(@PathParam(value = "id") int deliveryManId) {
+
+		IShowmethod show = new IShowmethod();
+
+		return Response.ok(show.deliveries(dmsr.getDeliveriesTaskByDeliveryManId(deliveryManId))).build();
+
+	}
+
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@GET
+	@Path("tasks")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showJobList(@PathParam(value = "id") int deliveryManId) {
 
@@ -215,7 +231,7 @@ public class DeliveryManRest {
 
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{id}/deliveries/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -227,7 +243,20 @@ public class DeliveryManRest {
 				.build();
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@GET
+	@Path("deliveries/{year}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response showDeliveriesD(@HeaderParam("Authorization") String token, @PathParam(value = "year") int year) {
+
+		IShowmethod show = new IShowmethod();
+
+		return Response
+				.ok(show.deliveries(dmsr.getAccomplishedDeliveryByDeliveryManIdPerYear(Session.getUserId(token), year)))
+				.build();
+	}
+
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{id}/deliveries/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -242,17 +271,36 @@ public class DeliveryManRest {
 				.build();
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@GET
+	@Path("deliveries/{year}/{month}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response showDeliveriesperD(@HeaderParam("Authorization") String token, @PathParam(value = "year") int year,
+			@PathParam(value = "month") int month) {
+
+		IShowmethod show = new IShowmethod();
+
+		return Response.ok(show.deliveries(
+				dmsr.getAccomplishedDeliveryByDeliveryManIdPerYearAndMonth(Session.getUserId(token), year, month)))
+				.build();
+	}
+
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
 	@PUT
-	@Path("{id}/tasks/{idDelivery}/done")
+	@Path("tasks/{idDelivery}/done")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response changeDeliveryState(@PathParam(value = "idDelivery") int deliveryId) {
-		dmsr.validateDelivery(deliveryId);
-		return Response.ok("delivery state changed to done ").build();
+	public Response changeDeliveryStateD(@HeaderParam("Authorization") String token,
+			@PathParam(value = "idDelivery") int deliveryId) {
+		Delivery del = dmsr.getDeliveryById(deliveryId);
+		if (del.getDeliveryMan().getIdUser() == Session.getUserId(token)) {
+			dmsr.validateDelivery(deliveryId);
+			return Response.ok("delivery state changed to done ").build();
+		}
+		return Response.status(Status.FORBIDDEN).build();
 
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{id}/profile")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -263,63 +311,87 @@ public class DeliveryManRest {
 
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@GET
+	@Path("profile")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response showProfiled(@HeaderParam("Authorization") String token) {
+		IShowmethod show = new IShowmethod();
+
+		return Response.ok(show.deliveryMan(dmsr.getDeliveryManById(Session.getUserId(token)))).build();
+
+	}
+
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("{id}/Profile/update")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateProfile(@PathParam(value = "id") int id, JsonObject obj) {
+	public Response updateProfile(@PathParam(value = "id") int id, DeliveryMan del) {
 
-		DeliveryMan deli = new DeliveryMan();
-		deli.setIdUser(id);
-		try {
-			deli.setTransportation(obj.getString("transportation"));
-		} catch (NullPointerException e) {
-			deli.setTransportation("");
-
-		}
-		try {
-			deli.setAddress(obj.getString("address"));
-		} catch (NullPointerException e) {
-			deli.setAddress("");
-
-		}
-		try {
-			deli.setAvailabilities(obj.getString("availabilities"));
-		} catch (NullPointerException e) {
-			deli.setAvailabilities("");
-
-		}
-		try {
-			deli.setPassword(obj.getString("password"));
-		} catch (NullPointerException e) {
-			deli.setPassword("");
-
-		}
-		try {
-			deli.setPhone(obj.getString("phone"));
-		} catch (NullPointerException e) {
-			deli.setPhone("");
-
+		del.setIdUser(id);
+		if (del.getPassword() != null) {
+			InputValidation input = new InputValidation();
+			if (!input.isPassword(del.getPassword())) {
+				return Response.ok("enter a correct password").status(Status.NOT_ACCEPTABLE).build();
+			}
 		}
 
-		try {
-			deli.setBase(obj.getString("base"));
-		} catch (NullPointerException e) {
-			deli.setBase("");
-
-		}
-
-		dmsr.updateDeliveryMan(deli);
+		dmsr.updateDeliveryMan(del);
 		return Response.ok("deliveryMan updated successfully").build();
 
 	}
 
-	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@PUT
+	@Path("profile/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateProfileD(@HeaderParam("Authorization") String token, DeliveryMan del) {
+
+		del.setIdUser(Session.getUserId(token));
+
+		if (del.getPassword() != null) {
+			InputValidation input = new InputValidation();
+			if (!input.isPassword(del.getPassword())) {
+				return Response.ok("enter a correct password").status(Status.NOT_ACCEPTABLE).build();
+			}
+		}
+		dmsr.updateDeliveryMan(del);
+		return Response.ok("deliveryMan updated successfully").build();
+
+	}
+
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{id}/Statistics/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response statistics(@PathParam(value = "id") int id, @PathParam(value = "year") int year) {
+	public Response statisticsh(@PathParam(value = "id") int id, @PathParam(value = "year") int year) {
 
+		Map<String, Long> statistics = new HashMap<>();
+		statistics.put("Number of done deliveries", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerYear(id, year));
+		statistics.put("January", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 1, year));
+		statistics.put("February", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 2, year));
+		statistics.put("March", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 3, year));
+		statistics.put("April", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 4, year));
+		statistics.put("May", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 5, year));
+		statistics.put("June", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 6, year));
+		statistics.put("July", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 7, year));
+		statistics.put("August", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 8, year));
+		statistics.put("September", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 9, year));
+		statistics.put("October", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 10, year));
+		statistics.put("November", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 11, year));
+		statistics.put("December", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 12, year));
+
+		return Response.ok(statistics).build();
+
+	}
+
+	@JWTTokenNeeded(roles = Roles.DELEVERYMAN)
+	@GET
+	@Path("Statistics/{year}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response statisticsD(@HeaderParam("Authorization") String token, @PathParam(value = "year") int year) {
+
+		int id = Session.getUserId(token);
 		Map<String, Long> statistics = new HashMap<>();
 		statistics.put("Number of done deliveries", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerYear(id, year));
 		statistics.put("January", dmsr.getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(id, 1, year));
