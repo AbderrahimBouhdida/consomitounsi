@@ -20,15 +20,18 @@ import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.consomitounsi.entities.Category;
 import tn.esprit.consomitounsi.entities.Product;
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Decision;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Reclamation;
 import tn.esprit.consomitounsi.entities.gestionlivraison.ReclamationState;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.CategoryRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.ProductRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.ReclamationServiceRemote;
 
+@JWTTokenNeeded(roles = {Roles.ADMIN, Roles.USER})
 @Path("gestionlivraison/Reclamations")
 public class ReclamationRest {
 
@@ -52,6 +55,7 @@ public class ReclamationRest {
 	private static final String EXCHANGE = "exchange";
 	private static final String DECISION = "decision";
 
+	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
 	@Path("/{userId}/add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -64,6 +68,7 @@ public class ReclamationRest {
 		return Response.ok("reclamation added successfully").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +78,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -82,6 +88,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -92,6 +99,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/user/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -101,6 +109,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/state/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -118,6 +127,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/decision/{decision}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -135,6 +145,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("response/{reclamationId}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -176,6 +187,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@DELETE
 	@Path("delete/{id}")
 	public Response deleteReclamation(@PathParam(value = "id") int id) {
@@ -188,6 +200,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -211,6 +224,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/state/{state}/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -242,6 +256,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/decision/{decision}/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -273,6 +288,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/products/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -291,6 +307,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/products/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -309,6 +326,7 @@ public class ReclamationRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/categories/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -326,6 +344,7 @@ public class ReclamationRest {
 		return Response.ok(statistics).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/categories/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)

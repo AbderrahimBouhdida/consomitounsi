@@ -19,14 +19,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.CartProduct;
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Address;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
 
+@JWTTokenNeeded(roles = {Roles.ADMIN, Roles.DELEVERYMAN, Roles.USER})
 @Path("gestionlivraison/deliveries")
 public class DeliveryRest {
 
@@ -39,6 +42,7 @@ public class DeliveryRest {
 	@EJB
 	ICartServicesRemote csr;
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -47,6 +51,7 @@ public class DeliveryRest {
 		return Response.ok(show.deliveries(dmsr.getAllDeliveries())).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{state}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +71,7 @@ public class DeliveryRest {
 		return Response.ok(show.deliveries(dmsr.getAllDeliveriesByState(name))).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("registered/available/{base}/{day}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +81,7 @@ public class DeliveryRest {
 		return Response.ok(show.deliveryMen(dmsr.getDeliveryMenByBaseAndDay(base, day))).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("registered/assign/{idDelivery}/{idDeliveryMan}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -85,6 +92,7 @@ public class DeliveryRest {
 		return Response.ok("delivery assigned succesfully to deliveryMan").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("Statistics/delivery/year/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -93,7 +101,7 @@ public class DeliveryRest {
 	}
 
 	// client side
-
+	@JWTTokenNeeded(roles = Roles.ALL)
 	@POST
 	@Path("{userId}/deliveryDetails")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -159,6 +167,7 @@ public class DeliveryRest {
 		return Response.ok(delivery).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
 	@Path("{userId}/deliveryDetails/add")
 	@Consumes(MediaType.APPLICATION_JSON)

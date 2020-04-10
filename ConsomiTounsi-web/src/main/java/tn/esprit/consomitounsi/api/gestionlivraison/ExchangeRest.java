@@ -19,11 +19,14 @@ import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.consomitounsi.entities.Category;
 import tn.esprit.consomitounsi.entities.Product;
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Exchange;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.CategoryRemote;
 import tn.esprit.consomitounsi.services.intrf.ProductRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.ReclamationServiceRemote;
 
+@JWTTokenNeeded(roles = Roles.ADMIN)
 @Path("gestionlivraison/Exchanges")
 public class ExchangeRest {
 
@@ -36,6 +39,7 @@ public class ExchangeRest {
 	@EJB
 	CategoryRemote csr;
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -47,6 +51,7 @@ public class ExchangeRest {
 		return Response.ok("exchange added successfully").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -56,6 +61,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/state/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +71,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +81,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{code}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -86,6 +94,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("{code}/check")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -94,6 +103,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("{code}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -104,21 +114,23 @@ public class ExchangeRest {
 			return Response.ok("exchange update successfully").build();
 		}
 
-		return Response.ok("check the entries").build();
+		return Response.ok("check the entries").status(Status.BAD_REQUEST).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@PUT
 	@Path("{code}/validate")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response validateExchange(@PathParam(value = "code") String code) {
 
-		if(rsr.validateExchange(code)) {
+		if (rsr.validateExchange(code)) {
 			return Response.ok("validation Done").build();
 		}
-		
+
 		return Response.ok("validation failed").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@DELETE
 	@Path("{code}/delete")
 	public Response deleteExchange(@PathParam(value = "code") String code) {
@@ -132,6 +144,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -155,6 +168,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/products/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -173,6 +187,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/products/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -191,6 +206,7 @@ public class ExchangeRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/categories/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -208,6 +224,7 @@ public class ExchangeRest {
 		return Response.ok(statistics).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("statistics/categories/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)

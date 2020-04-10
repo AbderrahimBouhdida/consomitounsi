@@ -18,18 +18,27 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
+import tn.esprit.consomitounsi.sec.InputValidation;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
+import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
 
+@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 @Path("gestionlivraison/deliveryMen")
 public class DeliveryManRest {
 
 	@EJB
 	DeliveryServiceRemote dmsr;
+	@EJB
+	IUserServicesRemote users;
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -38,6 +47,7 @@ public class DeliveryManRest {
 		return Response.ok(show.deliveryMen(dmsr.getAllDeliveryMen())).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("base/{base}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -47,6 +57,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("availabilities/{day}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -56,32 +67,33 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDeliveryMan(JsonObject obj) {
-		// addDeliveryMan
-		DeliveryMan del = new DeliveryMan();
-		del.setFirstName(obj.getString("firstName"));
-		del.setLastName(obj.getString("lastName"));
-		del.setBase(obj.getString("base"));
+	public Response addDeliveryMan(DeliveryMan del) {
 
-		del.setDob(dmsr.getCurrentDate());
+		InputValidation input = new InputValidation();
 
-		del.setEmail(obj.getString("email"));
-		del.setImg(obj.getString("img"));
-		del.setPassword(obj.getString("password"));
-		del.setPhone(obj.getString("phone"));
-		del.setRole(obj.getInt("role"));
+		if (input.isEmail(del.getEmail()) && input.isPassword(del.getPassword())
+				&& input.isPhoneNumber(del.getPhone())) {
+			if (users.userExist(del)) {
+				return Response.status(Response.Status.CONFLICT)
+						.entity("User already exist. Check the username or the email").build();
+			}
+			del.setDob(dmsr.getCurrentDate());
 
-		del.setTransportation(obj.getString("transportation"));
+			del.setRole(Roles.DELEVERYMAN);
 
-		del.setUsername(obj.getString("username"));
-		del.setAddress(obj.getString("address"));
+			dmsr.addDeliveryMan(del);
+			return Response.ok("deliveryMan added succesfully ").build();
+		}
 
-		return Response.ok("deliveryMan added succesfully ").build();
+		return Response.ok("please fill correctly all the fiels").status(Status.NOT_ACCEPTABLE).build();
+
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@DELETE
 	@Path("deliveryMan/{id}/delete")
 	public Response deleteDeliveryMan(@PathParam(value = "id") int deliveryManId) {
@@ -106,6 +118,7 @@ public class DeliveryManRest {
 		return Response.ok("deliveryMan deleted successfully").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("deliveryMan/{id}/bonus/add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -121,6 +134,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("bonus")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +143,7 @@ public class DeliveryManRest {
 		return Response.ok(show.bonuss(dmsr.getAllBonus())).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("bonus/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -137,6 +152,7 @@ public class DeliveryManRest {
 		return Response.ok(show.bonuss(dmsr.getAllBonusByYear(year))).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("deliveryMan/{id}/bonus/list")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -147,6 +163,7 @@ public class DeliveryManRest {
 		return Response.ok(show.bonuss(bonus)).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("Statistics/deliveryMen/base")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -158,6 +175,7 @@ public class DeliveryManRest {
 		return Response.ok(number).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("Statistics/deliveryMen/all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -165,6 +183,7 @@ public class DeliveryManRest {
 		return Response.ok(dmsr.numberOfActiveDeliveryMen()).build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
 	@Path("Statistics/deliveryMen/deliveries/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -184,6 +203,7 @@ public class DeliveryManRest {
 		return Response.ok(results).build();
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@GET
 	@Path("{id}/tasks")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -195,6 +215,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@GET
 	@Path("{id}/deliveries/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -206,6 +227,7 @@ public class DeliveryManRest {
 				.build();
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@GET
 	@Path("{id}/deliveries/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -220,6 +242,7 @@ public class DeliveryManRest {
 				.build();
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@PUT
 	@Path("{id}/tasks/{idDelivery}/done")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -229,6 +252,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@GET
 	@Path("{id}/profile")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -239,6 +263,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@PUT
 	@Path("{id}/Profile/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -289,6 +314,7 @@ public class DeliveryManRest {
 
 	}
 
+	@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN })
 	@GET
 	@Path("{id}/Statistics/{year}")
 	@Produces(MediaType.APPLICATION_JSON)

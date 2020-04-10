@@ -1,5 +1,7 @@
 package tn.esprit.consomitounsi.services.impl.gestionlivraison;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import tn.esprit.consomitounsi.entities.gestionlivraison.Bonus;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryMan;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
+import tn.esprit.consomitounsi.services.impl.EmailService;
 import tn.esprit.consomitounsi.services.impl.SecUtils;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
 
@@ -40,8 +43,15 @@ public class DeliveryService implements DeliveryServiceRemote {
 			String pass = deliveryMan.getPassword();
 			String secPass = sec.getSecurePassword(pass, deliveryMan.getSalt());
 			deliveryMan.setPassword(secPass);
+			deliveryMan.setValid(false);
 			em.persist(deliveryMan);
-		} catch (NoSuchAlgorithmException e) {
+			String tok = deliveryMan.getIdUser()+"."+sec.generateToken(15);
+			deliveryMan.setVerifToken(tok);
+			EmailService email = new EmailService();
+			String body = "Please click on the link below to activate your account\n"
+					+ "http://localhost:9080/ConsomiTounsi-web/api/user/verify?token="+tok;
+			email.sendEmail("service@consomitounsi.tn", "Verification", deliveryMan.getEmail(), body);
+		} catch (NoSuchAlgorithmException | IOException | URISyntaxException e) {
 			Logger logger = Logger.getGlobal();
 			logger.log(Level.INFO, "Got an exception.", e);
 		}
@@ -359,5 +369,6 @@ public class DeliveryService implements DeliveryServiceRemote {
 
 		return query.getSingleResult() != null ? query.getSingleResult() : 0;
 	}
+
 
 }

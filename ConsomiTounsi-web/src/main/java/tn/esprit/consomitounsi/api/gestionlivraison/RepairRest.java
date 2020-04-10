@@ -19,11 +19,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import tn.esprit.consomitounsi.entities.Product;
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Repair;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.ProductRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.ReclamationServiceRemote;
 
+@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 @Path("gestionlivraison/Repairs")
 public class RepairRest {
 
@@ -36,6 +39,7 @@ public class RepairRest {
 	@EJB
 	IUserServicesRemote usr;
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -48,6 +52,7 @@ public class RepairRest {
 		return Response.ok("repair added successfully").build();
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +62,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +72,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +82,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all/product/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +92,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -96,6 +105,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@PUT
 	@Path("{id}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -111,6 +121,7 @@ public class RepairRest {
 		return Response.ok("check the entries").build();
 	}
 
+	@JWTTokenNeeded(roles = Roles.SAV)
 	@PUT
 	@Path("{id}/validate")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -127,6 +138,7 @@ public class RepairRest {
 		}
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@DELETE
 	@Path("{id}/delete")
 	public Response deleteRepair(@PathParam(value = "id") int id) {
@@ -140,6 +152,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -163,6 +176,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/products/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -181,6 +195,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/products/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -199,6 +214,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/cost/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -213,6 +229,7 @@ public class RepairRest {
 		return Response.ok(cost).build();
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/cost/product/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -231,6 +248,7 @@ public class RepairRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/cost/product/{year}/{month}")
 	@Produces(MediaType.APPLICATION_JSON)

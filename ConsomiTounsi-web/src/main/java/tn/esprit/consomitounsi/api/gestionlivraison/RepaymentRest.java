@@ -17,10 +17,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Repayment;
+import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.ReclamationServiceRemote;
 
+@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.SAV })
 @Path("gestionlivraison/Repayments")
 public class RepaymentRest {
 	@EJB
@@ -29,6 +32,7 @@ public class RepaymentRest {
 	@EJB
 	IUserServicesRemote usr;
 
+	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@POST
 	@Path("add")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -39,6 +43,7 @@ public class RepaymentRest {
 		return Response.ok("repayment added successfully").build();
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -48,6 +53,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all/{state}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +63,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +73,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -78,6 +86,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@PUT
 	@Path("{id}/update")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -92,6 +101,7 @@ public class RepaymentRest {
 		return Response.ok("check the entries").build();
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@PUT
 	@Path("{id}/validate")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -107,6 +117,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@DELETE
 	@Path("{id}/delete")
 	public Response deleteRepayment(@PathParam(value = "id") int id) {
@@ -120,6 +131,7 @@ public class RepaymentRest {
 
 	}
 
+	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
 	@Path("statistics/all/{year}")
 	@Produces(MediaType.APPLICATION_JSON)
