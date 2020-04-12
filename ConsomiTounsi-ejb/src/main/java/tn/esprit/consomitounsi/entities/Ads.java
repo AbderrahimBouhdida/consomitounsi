@@ -1,8 +1,5 @@
 package tn.esprit.consomitounsi.entities;
 
-
-
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 
 @Entity
 public class Ads  implements Serializable {
@@ -24,6 +20,9 @@ public class Ads  implements Serializable {
 		private Date EndDay;
 		private int ViewsNumber;
 		private int FinalViewsNumber;
+		@ManyToOne
+		private User user;
+		
 		@ManyToOne
 		private User user;
 		

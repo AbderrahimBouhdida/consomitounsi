@@ -8,18 +8,16 @@ import com.nexmo.client.sms.SmsSubmissionResponse;
 import com.nexmo.client.sms.SmsSubmissionResponseMessage;
 import com.nexmo.client.sms.messages.TextMessage;
 
-
-
 public class Sms {
-
 	public void sendSMS(String to, String body) {
 		SMSKey key= new SMSKey();
 		NexmoClient client = new NexmoClient.Builder()
-				  .apiKey("98518560")
-				  .apiSecret("QC0W6i0Fv4AQHdGj")
+				  .apiKey(key.getApiKey())
+				  .apiSecret(key.getApiSecret())
 				  .build();
-		
-				TextMessage message = new TextMessage("ConsomiTounsi",to, body);
+
+				String messageText = "Hello from Vonage";
+				TextMessage message = new TextMessage("ConsomiTounsi", to, body);
 
 				SmsSubmissionResponse response;
 				try {
@@ -40,5 +38,3 @@ public class Sms {
 
 	}
 }
-
-

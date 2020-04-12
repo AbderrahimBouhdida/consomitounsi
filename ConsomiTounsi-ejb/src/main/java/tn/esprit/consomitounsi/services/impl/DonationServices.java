@@ -1,19 +1,25 @@
 package tn.esprit.consomitounsi.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import tn.esprit.consomitounsi.entities.Donation;
 import tn.esprit.consomitounsi.services.intrf.DonationServiceRemote;
+import tn.esprit.consomitounsi.entities.User;
+import tn.esprit.consomitounsi.services.impl.Topdonators;
 
 @LocalBean
 @Stateless
 public class DonationServices implements DonationServiceRemote {
+	
+	public String out="";
 	
 	
 	@PersistenceContext
@@ -33,10 +39,23 @@ public class DonationServices implements DonationServiceRemote {
 	}
 
 	@Override
-	public void updateDonation(Donation connectionNewValues) {
-		Donation coll = em.find(Donation.class, connectionNewValues.getIddon());
+	public void updateDonation(Donation d) {
+		Donation coll = em.find(Donation.class, d.getIddon());
 		//coll.setPassword(connectionNewValues.getPassword());
-		coll.setName(connectionNewValues.getName());
+		coll.setName(d.getName());
+		
+	}
+	
+	@Override
+	public void updateDonationv2(Donation Donation) {
+		
+		
+		try {
+			em.merge(Donation);
+	    } catch (PersistenceException e) {
+	        System.out.println("Update Error: " + e.getMessage());
+	    }
+		
 		
 	}
 
@@ -51,5 +70,52 @@ public class DonationServices implements DonationServiceRemote {
 		List<Donation> Donation = em.createQuery("from Donation", Donation.class).getResultList();
         return Donation;
 	}
+	
+	@Override
+	public  List<Object[]> topdonators() {
+        Query query = em.createQuery("SELECT user,Count(iddon) FROM Donation d GROUP BY d.user ORDER BY Count(iddon) DESC");
+	     List<Object[]> results = query.getResultList();	
+	     	     
+        return results;
+	    }
+	
+	@Override
+	public String topdonatorsstring() {
+
+		List<Object[]> l = topdonators();
+		List<Topdonators> result = new ArrayList<>(l.size());
+		for (Object[] row : l) {
+		    result.add(new Topdonators((User) row[0],
+		                            (long) row[1]
+		                          ));
+		}
+        
+		for (final Topdonators donator : result) {
+
+	       System.out.println("user"+donator.getUsr().getIdUser()+"has donated "+donator.getIdusr()+"times !");
+	         
+	        
+	          
+			 out += "user"+Integer.toString(donator.getUsr().getIdUser())+" has donated "+Long.toString(donator.getIdusr())+"times !"+"\n";
+					 
+	        
+	}
+	//	System.out.println(out);
+		return out;
+	}
+	
+	
+	
+//	@Override
+//	public int MandateCost() {
+//		// TODO Auto-generated method stub
+//		Query jpql = em.createQuery("SELECT Count(iddon) FROM Donation d");
+//		int x =((Number)jpql.getSingleResult()).intValue();
+//		System.out.println("le nombre est "+x);
+//		return x;
+//		
+//	}
+
+	
 
 }
