@@ -1,5 +1,7 @@
 package tn.esprit.consomitounsi.services.impl;
 
+
+
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -10,9 +12,11 @@ import javax.persistence.PersistenceContext;
 import tn.esprit.consomitounsi.entities.Category;
 import tn.esprit.consomitounsi.services.intrf.CategoryRemote;
 
+
 @Stateless
 @LocalBean
-public class CategoryService implements CategoryRemote {
+public class CategoryService implements CategoryRemote{
+	private static final Object IdCategory = null;
 	@PersistenceContext
 	EntityManager em;
 
@@ -20,36 +24,42 @@ public class CategoryService implements CategoryRemote {
 	public int addCategory(Category category) {
 		// TODO Auto-generated method stub
 		em.persist(category);
-		return category.getIdCategory();
+        return category.getIdCategory();
 	}
 
 	@Override
-	public void removeCategory(int id) {
+	public void removeCategory(int idCategory) {
 		// TODO Auto-generated method stub
-		em.remove(em.find(Category.class, id));
-		System.out.println("category deleted");
+		 em.remove(em.find(Category.class, idCategory));
+	     System.out.println("category deleted");
 	}
 
 	@Override
-	public void updateCategory(Category c) {
+	public void updateCategory(Category categoryNewValues) {
 		// TODO Auto-generated method stub
-		System.out.println("gggggggggggggggggs");
-		Category category = em.find(Category.class, c.getIdCategory());
-		// coll.setPassword(connectionNewValues.getPassword());
-		category.setNom(c.getNom());
+		Category category = em.find(Category.class, categoryNewValues.getIdCategory());
+		category.setNom(categoryNewValues.getNom());
+		category.setIdCategory(categoryNewValues.getIdCategory());
 
+		
+
+		category.setDescription(categoryNewValues.getDescription());
+		category.setType(categoryNewValues.getType());
+		
 	}
 
 	@Override
 	public Category findCategoryById(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		Category category = em.find(Category.class, IdCategory);
+        return category;
 	}
 
 	@Override
 	public List<Category> findAllCategory() {
-		List<Category> cat = em.createQuery("from Category", Category.class).getResultList();
-		return cat;
+		// TODO Auto-generated method stub
+		List<Category> category = em.createQuery("Select c from Category c", Category.class).getResultList();
+        return category;
 	}
 
 }
