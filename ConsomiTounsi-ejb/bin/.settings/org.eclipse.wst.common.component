@@ -5,3 +5,4 @@
         <property name="java-output-path" value="/ConsomiTounsi-ejb/target/classes"/>
     </wb-module>
 </project-modules>
+

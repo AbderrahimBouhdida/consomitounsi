@@ -1,5 +1,4 @@
 
-.settings/
 
 ConsomiTounsi-ear/target/m2e-wtp/ear-resources/META-INF/
 
@@ -19,4 +18,4 @@ ConsomiTounsi-web/.classpath
 
 ConsomiTounsi-ejb/.classpath
 
-ConsomiTounsi-ejb/src/main/java/tn/esprit/consomitounsi/entities/EmailKey.java
+
