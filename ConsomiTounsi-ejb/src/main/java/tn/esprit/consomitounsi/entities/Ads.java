@@ -20,9 +20,7 @@ public class Ads  implements Serializable {
 		private Date EndDay;
 		private int ViewsNumber;
 		private int FinalViewsNumber;
-		@ManyToOne
-		private User user;
-		
+
 		@ManyToOne
 		private User user;
 		

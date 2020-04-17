@@ -44,11 +44,11 @@ public class Product implements Serializable{
 	}
 
 	public int getBarecode() {
-		return barecode;
+		return Barecode;
 	}
 
 	public void setBarecode(int barecode) {
-		this.barecode = barecode;
+		this.Barecode = barecode;
 	}
 
 	public String getNameProduct() {

@@ -52,10 +52,6 @@ public class Category  implements Serializable{
 		this.type = type;
 	}
 
-	public void setIdCategory(int idCategory) {
-		this.idCategory = idCategory;
-	}
-
 	public int getIdCategory() {
 		return idCategory;
 	}
@@ -65,16 +61,9 @@ public class Category  implements Serializable{
 		this.idCategory = idCategory;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public String getNom() {
 		return nom;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public void setNom(String nom) {
@@ -86,7 +75,7 @@ public class Category  implements Serializable{
 		return description;
 	}
 
-	}
+	
 
 	public void setDescription(String description) {
 		this.description = description;
