@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import tn.esprit.consomitounsi.entities.Event;
 import tn.esprit.consomitounsi.services.intrf.EventServiceRemote;
@@ -61,7 +62,15 @@ public class EventServices implements EventServiceRemote {
 		List<Event> Event = em.createQuery("from Event", Event.class).getResultList();
         return Event;
 	}
+	
+	@Override
+	public  List<Object[]> eventsbytype() {
+        Query query = em.createQuery("SELECT type,Count(type) FROM Event e GROUP BY e.type");
+	     List<Object[]> results = query.getResultList();	
+	     	     
+        return results;
+	    }
 
-
+	
 
 }

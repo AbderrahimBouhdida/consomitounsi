@@ -10,30 +10,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+
+
 @Entity
-public class Collection implements Serializable {
+public class Collection implements Serializable{
 	private static final long serialVersionUID = 3152690779735828408L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idcollection;
-
+	
 	private String name;
-
+	
 	@Enumerated(EnumType.STRING)
 	private Collectiontype type;
-
+	
 	private String description;
-
+	
 	private String image;
-
+	
 	private int goal;
-
+	
 	private int collectedamount;
-
+	
 	@ManyToOne
-	private User user;
-
+	private  User user;
+	
+	
+	
+	
 	public Collection() {
 		super();
 	}
@@ -49,6 +54,8 @@ public class Collection implements Serializable {
 		this.goal = goal;
 		this.collectedamount = collectedamount;
 	}
+	
+	
 
 	public int getIdcollection() {
 		return idcollection;
@@ -105,6 +112,9 @@ public class Collection implements Serializable {
 	public void setCollectedamount(int collectedamount) {
 		this.collectedamount = collectedamount;
 	}
+	public void addtoCollectedamount(int collectedamount) {
+		this.collectedamount += collectedamount;
+	}
 
 	public User getUser() {
 		return user;
@@ -113,5 +123,8 @@ public class Collection implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	
+
 
 }

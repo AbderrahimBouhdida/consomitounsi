@@ -39,5 +39,29 @@ public class PollServices implements PollServicesRemote {
 		Poll poll = em.find(Poll.class, Integer.valueOf(pollId));
 		return poll;
 	}
+	@Override
+	public List<Poll> findAllPol() {
+		List<Poll> poll = em.createQuery("from Poll", Poll.class).getResultList();
+		
+        return poll;
+	}
+	
+	@Override
+	public void removePoll(int id) {
+		// TODO Auto-generated method stub
+		em.remove(em.find(Poll.class, id));
+	     System.out.println("poll deleted");
+		
+	}
+	@Override
+	public void updatePoll(Poll pollNewValues) {
+		// TODO Auto-generated method stub
+		Poll poll = em.find(Poll.class, pollNewValues.getId());
+		poll.setQuestion(pollNewValues.getQuestion());
+		poll.setCreatedAt(pollNewValues.getCreatedAt());
+		poll.setOptions(pollNewValues.getOptions());
+		
+	}
+	
 
 }

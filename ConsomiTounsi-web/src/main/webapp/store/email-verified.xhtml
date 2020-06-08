@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/store/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="block order-success">
+			<div class="container">
+				<div class="order-success__body">
+					<div class="order-success__header">
+						<svg class="order-success__icon" width="100" height="100">
+<use xlink:href="images/sprite.svg#check-100"></use>
+</svg>
+						<h1 class="order-success__title">Thank you</h1>
+						<div class="order-success__subtitle">Your Email has been
+							verified</div>
+						<div class="order-success__actions">
+							<a href="index.jsf" class="btn btn-xs btn-secondary">Go To Homepage</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</ui:define>
+</ui:composition>

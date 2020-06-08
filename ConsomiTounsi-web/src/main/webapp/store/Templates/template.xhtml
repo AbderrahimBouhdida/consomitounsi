@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<head>
+<meta name="generator"
+	content="HTML Tidy for HTML5 for Linux version 5.6.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no" />
+<title>Stroyka</title>
+<link rel="icon" type="image/png" href="images/favicon.png" />
+<!-- fonts -->
+<link rel="stylesheet"
+	href="css/css2234.css?family=Roboto:400,400i,500,500i,700,700i" />
+<!-- css -->
+<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="vendor/owl-carousel/assets/owl.carousel.min.css" />
+<link rel="stylesheet" href="vendor/photoswipe/photoswipe.css" />
+<link rel="stylesheet"
+	href="vendor/photoswipe/default-skin/default-skin.css" />
+<link rel="stylesheet" href="vendor/select2/css/select2.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<!-- font - fontawesome -->
+<link rel="stylesheet" href="vendor/fontawesome/css/all.min.css" />
+<!-- font - stroyka -->
+<link rel="stylesheet" href="fonts/stroyka/stroyka.css" />
+
+
+</head>
+
+<body
+	class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md logo-red red-sidebar-color header-red">
+
+	<div class="site">
+		<ui:param name="category" value="#{cat}" />
+		<ui:include src="header.xhtml" />
+
+		<div class="site__body">
+			<ui:insert name="content" />
+		</div>
+		<ui:include src="footer.xhtml" />
+	</div>
+
+
+
+</body>
+</html>

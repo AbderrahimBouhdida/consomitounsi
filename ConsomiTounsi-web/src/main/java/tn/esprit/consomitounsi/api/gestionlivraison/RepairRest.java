@@ -39,18 +39,18 @@ public class RepairRest {
 	@EJB
 	IUserServicesRemote usr;
 
-	@JWTTokenNeeded(roles = Roles.ADMIN)
-	@POST
-	@Path("add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRepair(Repair r) {
-
-		r.setUser(usr.findUserById(r.getUser().getIdUser()));
-
-		r.setProduct(psr.findProductById(r.getProduct().getBarecode()));
-		rsr.addRepair(r);
-		return Response.ok("repair added successfully").build();
-	}
+//	@JWTTokenNeeded(roles = Roles.ADMIN)
+//	@POST
+//	@Path("add")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addRepair(Repair r) {
+//
+//		r.setUser(usr.findUserById(r.getUser().getIdUser()));
+//
+//		r.setProduct(psr.findProductById(r.getProduct().getBarecode()));
+//		rsr.addRepair(r);
+//		return Response.ok("repair added successfully").build();
+//	}
 
 	@JWTTokenNeeded(roles = {Roles.ADMIN,Roles.SAV})
 	@GET
@@ -105,21 +105,21 @@ public class RepairRest {
 
 	}
 
-	@JWTTokenNeeded(roles = Roles.ADMIN)
-	@PUT
-	@Path("{id}/update")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateRepair(@PathParam(value = "id") int id, Repair r) {
-		if (rsr.repairExist(id)) {
-			r.setUser(usr.findUserById(r.getUser().getIdUser()));
-			r.setProduct(psr.findProductById(r.getProduct().getBarecode()));
-			rsr.updateRepair(r);
-
-			return Response.ok("repair updated successfully").build();
-		}
-
-		return Response.ok("check the entries").build();
-	}
+//	@JWTTokenNeeded(roles = Roles.ADMIN)
+//	@PUT
+//	@Path("{id}/update")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response updateRepair(@PathParam(value = "id") int id, Repair r) {
+//		if (rsr.repairExist(id)) {
+//			r.setUser(usr.findUserById(r.getUser().getIdUser()));
+//			r.setProduct(psr.findProductById(r.getProduct().getBarecode()));
+//			rsr.updateRepair(r);
+//
+//			return Response.ok("repair updated successfully").build();
+//		}
+//
+//		return Response.ok("check the entries").build();
+//	}
 
 	@JWTTokenNeeded(roles = Roles.SAV)
 	@PUT

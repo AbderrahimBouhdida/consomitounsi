@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/template/template.xhtml">
+	<ui:param name="page_name" value="donation" />
+	<ui:define name="content">
+		<h:panelGroup>
+
+			<br />
+			<h:link outcome="/pages/admin/home">Home</h:link>
+
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td><h:outputText value="Name"></h:outputText></td>
+						<td><h:inputText value="#{donationbean.name}"></h:inputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Type"></h:outputText></td>
+						<td><h:selectOneMenu value="#{donationbean.type}">
+								<f:selectItem itemLabel="Choose Type" itemValue="" />
+								<f:selectItems value="#{datadon.types}" />
+							</h:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Description"></h:outputText></td>
+						<td><h:inputTextarea value="#{donationbean.description}"></h:inputTextarea></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Image "></h:outputText></td>
+						<td><p:fileUpload value="#{donationbean.file}" mode="simple"
+								skinSimple="true" /></td>
+					</tr>
+
+					<tr>
+						<td colspan="2"><h:commandButton value="Add donation"
+								action="#{donationbean.addDonation()}" /></td>
+						<td colspan="2"><h:commandButton value="Update donation"
+								action="#{donationbean.updateDonation()}" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form>
+				<h:dataTable value="#{donationbean.donations}" var="don" border="1">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{don.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{don.type}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Descroption" />
+						</f:facet>
+						<h:outputText value="#{don.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Image" />
+						</f:facet>
+						<p:graphicImage library="uploads" name="#{don.image}" width="100"
+							height="100" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandButton
+							action="#{donationbean.removeDonation(don.iddon)}" value="Remove" />
+						<h:commandButton action="#{donationbean.displayDonation(don)}"
+							value="More Details" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

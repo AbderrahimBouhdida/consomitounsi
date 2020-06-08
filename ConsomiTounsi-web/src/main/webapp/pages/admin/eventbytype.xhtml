@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/template/template.xhtml">
+	<ui:param name="page_name" value="donation" />
+	<ui:define name="content">
+	<h:head>
+<!-- 	<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> -->
+<!-- 	<h:outputScript library="vendor/jquery" name="jquery.min.js" /> -->
+<!-- 	<h:outputScript library="vendor/chart.js" name="Chart.min.js" /> -->
+	</h:head>
+	
+		<h:panelGroup columns="2">
+			<h:form >
+
+
+			:)
+<!-- 			<p:chart type="bar" model="#{donationbean.barModel}" style="height:300px"/> -->
+			<p:pieChart model="#{eventbean.pieModel}" style="width: 100%; height: 500px;"/>
+				
+			</h:form>
+		</h:panelGroup>
+
+	</ui:define>
+</ui:composition>

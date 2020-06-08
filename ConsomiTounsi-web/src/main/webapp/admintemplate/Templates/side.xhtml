@@ -1,0 +1,304 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+			<div class="sidebar-container">
+				<div class="sidemenu-container navbar-collapse collapse fixed-menu">
+					<div id="remove-scroll" class="left-sidemenu">
+						<ul class="sidemenu page-header-fixed slimscroll-style"
+							data-keep-expanded="false" data-auto-scroll="true"
+							data-slide-speed="200" style="padding-top: 20px">
+							<li class="sidebar-toggler-wrapper hide">
+								<div class="sidebar-toggler"></div>
+							</li>
+							<li class="sidebar-user-panel">
+								<div class="user-panel">
+									<div class="pull-left image">
+										<img src="img/dp.jpg" class="img-circle user-img-circle"
+											alt="User Image" />
+									</div>
+									<div class="pull-left info">
+										<p>Dr.Kiran Patel</p>
+										<a href="#"> <span class="txtOnline">Online</span></a>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item"><a href="index.jsf"
+								class="nav-link nav-toggle"><i class="material-icons">Dashboard</i>
+									<span class="title">Dashboard jj</span></a></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">email</i> <span class="title">Email</span>
+									<span class="label label-rouded label-menu deepPink-bgcolor">3</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="email_inbox.jsf"
+										class="nav-link"><span class="title">Inbox</span></a></li>
+									<li class="nav-item"><a href="email_view.jsf"
+										class="nav-link"><span class="title">View Mail</span></a></li>
+									<li class="nav-item"><a href="email_compose.jsf"
+										class="nav-link"><span class="title">Compose Mail</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">assignment</i> <span class="title">Appointment</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="schedule.jsf"
+										class="nav-link"><span class="title">Doctor
+												Schedule</span></a></li>
+									<li class="nav-item"><a href="book_appointment.jsf"
+										class="nav-link"><span class="title">Book
+												Appointment</span></a></li>
+									<li class="nav-item"><a
+										href="book_appointment_material.jsf" class="nav-link"><span
+											class="title">Book Appointment Material</span></a></li>
+									<li class="nav-item"><a href="edit_appointment.jsf"
+										class="nav-link"><span class="title">Edit
+												Appointment</span></a></li>
+									<li class="nav-item"><a href="view_appointment.jsf"
+										class="nav-link"><span class="title">View All
+												Appointment</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">person</i> <span class="title">Doctors</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="all_doctors.jsf"
+										class="nav-link"><span class="title">All Doctor</span></a></li>
+									<li class="nav-item"><a href="add_doctor.jsf"
+										class="nav-link"><span class="title">Add Doctor</span></a></li>
+									<li class="nav-item"><a href="add_doctor_material.jsf"
+										class="nav-link"><span class="title">Add Doctor
+												Material</span></a></li>
+									<li class="nav-item"><a href="edit_doctor.jsf"
+										class="nav-link"><span class="title">Edit Doctor</span></a></li>
+									<li class="nav-item"><a href="doctor_profile.jsf"
+										class="nav-link"><span class="title">About Doctor</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">accessible</i> <span class="title">Patients</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="all_patients.jsf"
+										class="nav-link"><span class="title">All Patients</span></a></li>
+									<li class="nav-item"><a href="add_patient.jsf"
+										class="nav-link"><span class="title">Add Patient</span></a></li>
+									<li class="nav-item"><a href="add_patient_material.jsf"
+										class="nav-link"><span class="title">Add Patient
+												Material</span></a></li>
+									<li class="nav-item"><a href="edit_patient.jsf"
+										class="nav-link"><span class="title">Edit Patient</span></a></li>
+									<li class="nav-item"><a href="patient_profile.jsf"
+										class="nav-link"><span class="title">Patient
+												Profile</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">hotel</i> <span class="title">Room
+										Allotment</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="room_allotment.jsf"
+										class="nav-link"><span class="title">Alloted Rooms</span></a></li>
+									<li class="nav-item"><a href="add_room_allotment.jsf"
+										class="nav-link"><span class="title">New Allotment</span></a></li>
+									<li class="nav-item"><a
+										href="add_room_allotment_material.jsf" class="nav-link"><span
+											class="title">New Allotment Material</span></a></li>
+									<li class="nav-item"><a href="edit_room_allotment.jsf"
+										class="nav-link"><span class="title">Edit Allotment</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">monetization_on</i> <span class="title">Payments</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="payments.jsf"
+										class="nav-link"><span class="title">Payments</span></a></li>
+									<li class="nav-item"><a href="add_payment.jsf"
+										class="nav-link"><span class="title">Add Payments</span></a></li>
+									<li class="nav-item"><a href="invoice_payment.jsf"
+										class="nav-link"><span class="title">Patient
+												Invoice</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="widget.jsf"
+								class="nav-link nav-toggle"><i class="material-icons">widgets</i>
+									<span class="title">Widget</span></a></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">dvr</i> <span class="title">UI
+										Elements</span> <span class="label label-rouded label-menu">10</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="ui_buttons.jsf"
+										class="nav-link"><span class="title">Buttons</span></a></li>
+									<li class="nav-item"><a href="ui_tabs_accordions_navs.jsf"
+										class="nav-link"><span class="title">Tabs &amp;
+												Accordions</span></a></li>
+									<li class="nav-item"><a href="sweet_alert.jsf"
+										class="nav-link"><span class="title">Alert</span></a></li>
+									<li class="nav-item"><a href="ui_typography.jsf"
+										class="nav-link"><span class="title">Typography</span></a></li>
+									<li class="nav-item"><a href="ui_icons.jsf"
+										class="nav-link"><span class="title">Icons</span></a></li>
+									<li class="nav-item"><a href="ui_modal.jsf"
+										class="nav-link"><span class="title">Modals</span></a></li>
+									<li class="nav-item"><a href="ui_panels.jsf"
+										class="nav-link"><span class="title">Panels</span></a></li>
+									<li class="nav-item"><a href="ui_grid.jsf"
+										class="nav-link"><span class="title">Grids</span></a></li>
+									<li class="nav-item"><a href="calendar.jsf"
+										class="nav-link"><span class="title">Calender</span></a></li>
+									<li class="nav-item"><a href="ui_tree.jsf"
+										class="nav-link"><span class="title">Tree View</span></a></li>
+									<li class="nav-item"><a href="ui_carousel.jsf"
+										class="nav-link"><span class="title">Carousel</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">store</i> <span class="title">Material
+										Elements</span> <span
+									class="label label-rouded label-menu deepPink-bgcolor">14</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="material_button.jsf"
+										class="nav-link"><span class="title">Buttons</span></a></li>
+									<li class="nav-item"><a href="material_tab.jsf"
+										class="nav-link"><span class="title">Tabs</span></a></li>
+									<li class="nav-item"><a href="material_chips.jsf"
+										class="nav-link"><span class="title">Chips</span></a></li>
+									<li class="nav-item"><a href="material_grid.jsf"
+										class="nav-link"><span class="title">Grid</span></a></li>
+									<li class="nav-item"><a href="material_icons.jsf"
+										class="nav-link"><span class="title">Icon</span></a></li>
+									<li class="nav-item"><a href="material_form.jsf"
+										class="nav-link"><span class="title">Form</span></a></li>
+									<li class="nav-item"><a href="material_datepicker.jsf"
+										class="nav-link"><span class="title">DatePicker</span></a></li>
+									<li class="nav-item"><a href="material_select.jsf"
+										class="nav-link"><span class="title">Select Item</span></a></li>
+									<li class="nav-item"><a href="material_loading.jsf"
+										class="nav-link"><span class="title">Loading</span></a></li>
+									<li class="nav-item"><a href="material_menu.jsf"
+										class="nav-link"><span class="title">Menu</span></a></li>
+									<li class="nav-item"><a href="material_slider.jsf"
+										class="nav-link"><span class="title">Slider</span></a></li>
+									<li class="nav-item"><a href="material_tables.jsf"
+										class="nav-link"><span class="title">Tables</span></a></li>
+									<li class="nav-item"><a href="material_toggle.jsf"
+										class="nav-link"><span class="title">Toggle</span></a></li>
+									<li class="nav-item"><a href="material_badges.jsf"
+										class="nav-link"><span class="title">Badges</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">subtitles</i>
+									<span class="title">Forms</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="layouts_form.jsf"
+										class="nav-link"><span class="title">Form Layout</span></a></li>
+									<li class="nav-item"><a href="advance_form.jsf"
+										class="nav-link"><span class="title">Advance
+												Component</span></a></li>
+									<li class="nav-item"><a href="wizard_form.jsf"
+										class="nav-link"><span class="title">Form Wizard</span></a></li>
+									<li class="nav-item"><a href="validation_form.jsf"
+										class="nav-link"><span class="title">Form
+												Validation</span></a></li>
+									<li class="nav-item"><a href="editable_form.jsf"
+										class="nav-link"><span class="title">Editor</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">list</i>
+									<span class="title">Data Tables</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="basic_table.jsf"
+										class="nav-link"><span class="title">Basic Tables</span></a></li>
+									<li class="nav-item"><a href="advanced_table.jsf"
+										class="nav-link"><span class="title">Advance Tables</span></a></li>
+									<li class="nav-item"><a href="export_table.jsf"
+										class="nav-link"><span class="title">Export Tables</span></a></li>
+									<li class="nav-item"><a href="child_row_table.jsf"
+										class="nav-link"><span class="title">Child Row
+												Tables</span></a></li>
+									<li class="nav-item"><a href="group_table.jsf"
+										class="nav-link"><span class="title">Grouping</span></a></li>
+									<li class="nav-item"><a href="tableData.jsf"
+										class="nav-link"><span class="title">Tables With
+												Sourced Data</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">timeline</i>
+									<span class="title">Charts</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="charts_echarts.jsf"
+										class="nav-link"><span class="title">eCharts</span></a></li>
+									<li class="nav-item"><a href="charts_morris.jsf"
+										class="nav-link"><span class="title">Morris Charts</span></a></li>
+									<li class="nav-item"><a href="charts_chartjs.jsf"
+										class="nav-link"><span class="title">Chartjs</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">map</i>
+									<span class="title">Maps</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="google_maps.jsf"
+										class="nav-link"><span class="title">Google Maps</span></a></li>
+									<li class="nav-item"><a href="vector_maps.jsf"
+										class="nav-link"><span class="title">Vector Maps</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">description</i>
+									<span class="title">Extra pages</span> <span
+									class="label label-rouded label-menu purple-bgcolor">7</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="login.jsf" class="nav-link"><span
+											class="title">Login</span></a></li>
+									<li class="nav-item"><a href="sign_up.jsf"
+										class="nav-link"><span class="title">Sign Up</span></a></li>
+									<li class="nav-item"><a href="forgot_password.jsf"
+										class="nav-link"><span class="title">Forgot
+												Password</span></a></li>
+									<li class="nav-item"><a href="user_profile.jsf"
+										class="nav-link"><span class="title">Profile</span></a></li>
+									<li class="nav-item"><a href="contact.jsf"
+										class="nav-link"><span class="title">Contact Us</span></a></li>
+									<li class="nav-item"><a href="lock_screen.jsf"
+										class="nav-link"><span class="title">Lock Screen</span></a></li>
+									<li class="nav-item"><a href="page-404.jsf"
+										class="nav-link"><span class="title">404 Page</span></a></li>
+									<li class="nav-item"><a href="page-500.jsf"
+										class="nav-link"><span class="title">500 Page</span></a></li>
+									<li class="nav-item"><a href="blank_page.jsf"
+										class="nav-link"><span class="title">Blank Page</span></a></li>
+								</ul></li>
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle"><i class="material-icons">slideshow</i>
+									<span class="title">Multi Level Menu</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="javascript:;"
+										class="nav-link nav-toggle">Item 1</a>
+										<ul class="sub-menu">
+											<li class="nav-item"><a href="javascript:;"
+												class="nav-link nav-toggle">Arrow Toggle</a>
+												<ul class="sub-menu">
+													<li class="nav-item"><a href="javascript:;"
+														class="nav-link">Sample Link 1</a></li>
+													<li class="nav-item"><a href="#" class="nav-link">Sample
+															Link 2</a></li>
+													<li class="nav-item"><a href="#" class="nav-link">Sample
+															Link 3</a></li>
+												</ul></li>
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 1</a></li>
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 2</a></li>
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 3</a></li>
+										</ul></li>
+									<li class="nav-item"><a href="javascript:;"
+										class="nav-link nav-toggle">Arrow Toggle</a>
+										<ul class="sub-menu">
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 1</a></li>
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 1</a></li>
+											<li class="nav-item"><a href="#" class="nav-link">Sample
+													Link 1</a></li>
+										</ul></li>
+									<li class="nav-item"><a href="#" class="nav-link">Item
+											3</a></li>
+							</ul></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</ui:composition>
