@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/admintemplate/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+
+		<div class="row">
+			<div class="col-md-12 col-sm-12">
+				<div class="card card-box">
+					<div class="card-head">
+						<header>Basic Information</header>
+						<button id="panel-button"
+							class="mdl-button mdl-js-button mdl-button--icon pull-right"
+							data-upgraded=",MaterialButton">
+							<i class="material-icons">more_vert</i>
+						</button>
+						<ul
+							class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+							data-mdl-for="panel-button">
+							<li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action</li>
+							<li class="mdl-menu__item"><i class="material-icons">print</i>Another
+								action</li>
+							<li class="mdl-menu__item"><i class="material-icons">favorite</i>Something
+								else here</li>
+						</ul>
+					</div>
+					<div class="card-body" id="bar-parent">
+						<h:form enctype="multipart/form-data" id="form_sample_1"
+							class="form-horizontal" name="form_sample_1">
+							<pf:growl  autoupdate="true"></pf:growl>
+							<div class="form-body">
+								<div class="form-group row">
+									<label class="control-label col-md-3">Barecode <span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your Barecode"
+											class="form-control input-height"
+											value="#{productBean.barecode}"
+											required="true" requiredMessage="Please give a Barecode" />
+									</div>
+								</div>
+								
+								
+								<div class="form-group row">
+									<label class="control-label col-md-3">Product Name<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your name Product"
+											class="form-control input-height"
+											value="#{productBean.nameProduct}"
+											required="true" requiredMessage="Please give a Product Name" />
+									</div>
+								</div>
+								
+								
+								<div class="form-group row">
+									<label class="control-label col-md-3">Price<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your price"
+											class="form-control input-height"
+											value="#{productBean.price}"
+											required="true" requiredMessage="Please give a price" />
+									</div>
+								</div>
+								
+								
+								<div class="form-group row">
+									<label class="control-label col-md-3">Date Add<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<pf:calendar value="#{productBean.dateAdd}" type="popup"
+                                            style="padding-left:15px"
+                                            yearRange="c-100:c" navigator="true"
+                                            pattern="dd MMM yyyy"
+                                            required="true" requiredMessage="Please fill date of birth"></pf:calendar>
+									</div>
+								</div>
+								
+								<div class="form-group row">
+									<label class="control-label col-md-3">Date Expire<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<pf:calendar value="#{productBean.dateExpire}" type="popup"
+                                            style="padding-left:15px"
+                                            yearRange="c-100:c" navigator="true"
+                                            pattern="dd MMM yyyy"
+                                            required="true" requiredMessage="Please fill date of birth"></pf:calendar>
+									</div>
+								</div>
+								
+								
+								<div class="form-group row">
+									<label class="control-label col-md-3">description<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your description"
+											class="form-control input-height"
+											value="#{productBean.description}"
+											required="true" requiredMessage="Please give a description" />
+									</div>
+								</div>
+								
+									<div class="form-group row">
+									<label class="control-label col-md-3">weight<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your weight"
+											class="form-control input-height"
+											value="#{productBean.weight}"
+											required="true" requiredMessage="Please give a weight" />
+									</div>
+								</div>
+								
+								
+									<div class="form-group row">
+									<label class="control-label col-md-3">quantity<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										<h:inputText p:placeholder="enter your quantity"
+											class="form-control input-height"
+											value="#{productBean.quantity}"
+											required="true" requiredMessage="Please give a quantity" />
+									</div>
+								</div>
+							
+							
+							
+							<div class="form-group row">
+									<label class="control-label col-md-3">picture<span
+										class="required">*</span></label>
+									<div class="col-md-5">
+										
+											
+											
+											<pf:fileUpload value="#{productBean.file}" mode="simple"
+											skinSimple="true"
+											fileUploadListener="#{productBean.handleFileUpload}" />
+											
+					
+				
+					
+					
+									</div>
+								</div>
+										
+								<div class="form-actions">
+									<div class="row">
+										<div class="offset-md-3 col-md-9">
+											<h:commandButton id="submit" class="btn btn-info m-r-20" value="Submit"
+												action="#{productBean.addProduct()}" />
+											<button type="button" class="btn btn-default">Cancel</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

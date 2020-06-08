@@ -14,5 +14,6 @@ public interface EventServiceRemote {
     public void updateEventv2(Event event);
     public Event findEventById(int id);
     public List<Event> findAllEvent();
+	public List<Object[]> eventsbytype();
 
 }

@@ -111,6 +111,12 @@
 			<version>3.0.19.Final</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>7.0</version>
+		</dependency>
 
 	</dependencies>
 

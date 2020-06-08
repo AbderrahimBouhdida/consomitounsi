@@ -1,0 +1,130 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<!-- start header -->
+		<div class="page-header navbar navbar-fixed-top">
+			<div class="page-header-inner">
+				<!-- logo start -->
+				<div class="page-logo">
+					<a href="#{request.contextPath}/panel/admin/index.jsf"><span class="logo-default"><img src="#{resource['panel:img/logo33.png']}" alt="ConsomiTounsi" height="50" width="200"/></span></a>
+				</div>
+				<!-- logo end -->
+				<ul class="nav navbar-nav navbar-left in">
+					<li><a href="#" class="menu-toggler sidebar-toggler"></a></li>
+				</ul>
+				<form class="search-form-opened" action="#" method="get">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search..."
+							name="query" /> <span class="input-group-btn"><a
+							href="javascript:;" class="btn submit"></a></span>
+					</div>
+				</form>
+				<!-- start mobile menu -->
+				<a href="javascript:;" class="menu-toggler responsive-toggler"
+					data-toggle="collapse" data-target=".navbar-collapse"></a>
+				<!-- end mobile menu -->
+				<!-- start header menu -->
+				<div class="top-menu">
+					<ul class="nav navbar-nav pull-right">
+						<!-- start language menu -->
+						
+						<!-- end language menu -->
+						<!-- start notification dropdown -->
+						
+						<!-- end notification dropdown -->
+						<!-- start message dropdown -->
+						
+						<!-- end message dropdown -->
+						<!-- start manage user dropdown -->
+						
+						<li class="dropdown dropdown-user"><a href="javascript:;"
+							class="dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-close-others="true"><img alt=""
+								class="img-circle" src="#{request.contextPath}/panel/resources/img/dp.jpg" /> <span
+								class="username username-hide-on-mobile">Kiran</span></a>
+							<ul class="dropdown-menu dropdown-menu-default">
+								<li><a href="#{request.contextPath}/panel/admin/user_profile.jsf">Profile</a></li>
+								<li><h:form><a href="#">&#160;&#160;&#160;<h:commandLink
+															action="#{loginBean.doLogout}"
+															value="Logout" /></a></h:form></li>
+							</ul></li>
+							
+						<!-- end manage user dropdown -->
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- end header -->
+		<!-- start color quick setting -->
+		
+		<!-- end color quick setting -->
+		<!-- start page container -->
+			<!-- start sidebar menu -->
+			<div class="sidebar-container">
+				<div class="sidemenu-container navbar-collapse collapse fixed-menu">
+					<div id="remove-scroll" class="left-sidemenu">
+						<ul class="sidemenu page-header-fixed slimscroll-style"
+							data-keep-expanded="false" data-auto-scroll="true"
+							data-slide-speed="200" style="padding-top: 20px">
+							<li class="sidebar-toggler-wrapper hide">
+								<div class="sidebar-toggler"></div>
+							</li>
+							<li class="sidebar-user-panel">
+								<div class="user-panel">
+									<div class="pull-left image">
+										<img src="#{request.contextPath}/panel/resources/img/dp.jpg" class="img-circle user-img-circle"
+											alt="User Image" />
+									</div>
+									<div class="pull-left info">
+										<p>Dr.Kiran Patel</p>
+										<a href="#"> <span class="txtOnline">Online</span></a>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item "><a href="#{request.contextPath}/panel/index.jsf"
+								class="nav-link nav-toggle"><i class="material-icons">dashboard</i>
+									<span class="title">Dashboard</span></a>
+								</li>
+							
+							
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">group</i> <span class="title">
+										Staff</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/all_staffs.jsf"
+										class="nav-link"><span class="title">All Staff</span></a></li>
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/add_staff.jsf"
+										class="nav-link"><span class="title">Add Staff</span></a></li>
+									
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">group</i> <span class="title">Clients</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/all_clients.jsf"
+										class="nav-link"><span class="title">All Clients</span></a></li>
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/add_client.jsf"
+										class="nav-link"><span class="title">Add Client</span></a></li>
+									
+									
+								</ul></li>
+							<li class="nav-item"><a href="#" class="nav-link nav-toggle"><i
+									class="material-icons">monetization_on</i> <span class="title">Payments</span></a>
+								<ul class="sub-menu">
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/payments.jsf"
+										class="nav-link"><span class="title">Payments</span></a></li>
+									<li class="nav-item"><a href="#{request.contextPath}/panel/admin/invoice_payment.jsf"
+										class="nav-link"><span class="title">Patient
+												Invoice</span></a></li>
+								</ul></li>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+		
+		
+
+</ui:composition>

@@ -12,7 +12,8 @@ public interface ProductRemote {
 	public int addProduct(Product product);
     public void removeProduct(int Barecode);
     public void updateProduct(Product productNewValues);
-    public Product findProductById(int Barecode);
+    public Product findProductBybarcode(int Barecode);
     public List<Product> findAllProduct();
+    public List<Product> getProduct();
 	
 }
