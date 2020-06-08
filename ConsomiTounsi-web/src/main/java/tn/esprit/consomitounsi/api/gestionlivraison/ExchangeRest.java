@@ -39,17 +39,17 @@ public class ExchangeRest {
 	@EJB
 	CategoryRemote csr;
 
-	@JWTTokenNeeded(roles = Roles.ADMIN)
-	@POST
-	@Path("add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addExchange(Exchange exchange) {
-
-		exchange.setProduct(psr.findProductById(exchange.getProduct().getBarecode()));
-
-		rsr.addExchange(exchange);
-		return Response.ok("exchange added successfully").build();
-	}
+//	@JWTTokenNeeded(roles = Roles.ADMIN)
+//	@POST
+//	@Path("add")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addExchange(Exchange exchange) {
+//
+//		exchange.setProduct(psr.findProductById(exchange.getProduct().getBarecode()));
+//
+//		rsr.addExchange(exchange);
+//		return Response.ok("exchange added successfully").build();
+//	}
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
@@ -103,19 +103,19 @@ public class ExchangeRest {
 
 	}
 
-	@JWTTokenNeeded(roles = Roles.ADMIN)
-	@PUT
-	@Path("{code}/update")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateExchange(@PathParam(value = "code") String code, Exchange ex) {
-		if (rsr.exchangeExist(ex.getCode().toUpperCase())) {
-			ex.setProduct(psr.findProductById(ex.getProduct().getBarecode()));
-			rsr.updateExchange(ex);
-			return Response.ok("exchange update successfully").build();
-		}
-
-		return Response.ok("check the entries").status(Status.BAD_REQUEST).build();
-	}
+//	@JWTTokenNeeded(roles = Roles.ADMIN)
+//	@PUT
+//	@Path("{code}/update")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response updateExchange(@PathParam(value = "code") String code, Exchange ex) {
+//		if (rsr.exchangeExist(ex.getCode().toUpperCase())) {
+//			ex.setProduct(psr.findProductById(ex.getProduct().getBarecode()));
+//			rsr.updateExchange(ex);
+//			return Response.ok("exchange update successfully").build();
+//		}
+//
+//		return Response.ok("check the entries").status(Status.BAD_REQUEST).build();
+//	}
 
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)

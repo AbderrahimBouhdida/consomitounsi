@@ -61,15 +61,15 @@ public class productRest {
 		product.removeProduct(Barecode);
 		return Response.status(Status.OK).entity("Product deleted").build();
 	}
-	
-	@POST
-    @Path("/edit")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response editproduct(Product prod) {
-    	product.updateProduct(prod);
-        return Response.ok(product.findProductById(prod.getBarecode())).build();
-    	//return Response.ok(cols.findAllCollection()).build();
-    }
+//	
+//	@POST
+//    @Path("/edit")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response editproduct(Product prod) {
+//    	product.updateProduct(prod);
+//        return Response.ok(product.findProductById(prod.getBarecode())).build();
+//    	//return Response.ok(cols.findAllCollection()).build();
+//    }
 
 }

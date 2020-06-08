@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/template/template.xhtml">
+	<ui:param name="page_name" value="collection" />
+	<ui:define name="content">
+
+		<h:panelGroup columns="2">
+			<h:form>
+				<ui:repeat var="col" value="#{collectionbean.collections}">
+
+					<div class="addresses-list__item card address-card">
+						<div class="address-card__body">
+							<div class="address-card__name">#{col.name}</div>
+								
+								<div class="address-card__name">#{col.type}</div>
+								
+							<div class="address-card__row">
+								<div class="address-card__row-title">Address</div>
+
+							</div>
+							<div class="address-card__row">
+								<div class="address-card__row-title">Phone</div>
+								<div class="address-card__row-content">#{col.description}</div>
+							</div>
+							<div class="address-card__footer">
+								<h:commandButton class="btn " value="Donate"
+									action="#{collectionbean.donate(col)}">
+									<f:ajax render="@form" /> 
+								</h:commandButton>
+
+							</div>
+						</div>
+					</div>
+
+
+					<div class="addresses-list__divider"></div>
+				</ui:repeat>
+
+			</h:form>
+		</h:panelGroup>
+
+	</ui:define>
+</ui:composition>

@@ -92,11 +92,13 @@ public class DonationServices implements DonationServiceRemote {
         
 		for (final Topdonators donator : result) {
 
-	       System.out.println("user"+donator.getUsr().getIdUser()+"has donated "+donator.getIdusr()+"times !");
+	       System.out.println("user"+donator.getUsr().getUsername()+"has donated "+donator.getIdusr()+"times !");
 	         
 	        
 	          
-			 out += "user"+Integer.toString(donator.getUsr().getIdUser())+" has donated "+Long.toString(donator.getIdusr())+"times !"+"\n";
+			// out += "user"+Integer.toString(donator.getUsr().getUsername())+" has donated "+Long.toString(donator.getIdusr())+"times !"+"\n";
+			 out += "user "+donator.getUsr().getUsername()+" has donated "+Long.toString(donator.getIdusr())+"times !"+"\n";
+
 					 
 	        
 	}

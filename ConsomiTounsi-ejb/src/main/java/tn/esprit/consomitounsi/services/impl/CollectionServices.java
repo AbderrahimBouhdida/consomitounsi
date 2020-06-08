@@ -36,7 +36,9 @@ public class CollectionServices implements CollectionServiceRemote {
 	public void updateCollection(Collection connectionNewValues) {
 		Collection coll = em.find(Collection.class, connectionNewValues.getIdcollection());
 		//coll.setPassword(connectionNewValues.getPassword());
-		coll.setName(connectionNewValues.getName());
+		//coll.setName(connectionNewValues.getName());
+		coll.addtoCollectedamount(connectionNewValues.getCollectedamount());
+		
 		
 	}
 	

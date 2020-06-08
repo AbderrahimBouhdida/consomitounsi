@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:p="http://primefaces.org/ui"
+	template="/store/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+	<h:form>
+	<!-- .block-products / end -->
+			<!-- .block-categories -->
+			<div
+				class="block block--highlighted block-categories block-categories--layout--classic">
+				<div class="container">
+					<div class="block-header">
+						<h3 class="block-header__title">Donate</h3>
+						<div class="block-header__divider"></div>
+					</div>
+					
+					<div class="block-categories__list">
+
+						<!-- 		loopthis -->	
+						<ui:repeat var="col" value="#{collectionbean.collections}">				
+						<div
+							class="block-categories__item category-card category-card--layout--classic">
+							<div class="category-card__body">
+								
+								<div class="category-card__image">
+								<p:graphicImage library="uploads" name="#{col.image}" width="130"
+							height="130" />
+								
+								</div>
+								<div class="category-card__content">
+								<div class="category-card__name">#{col.name}</div>
+									<div class="category-card__links">Type : #{col.type}</div>								
+									<div class="category-card__links">Description : #{col.description}</div>
+									<div class="category-card__links">goal : #{col.goal}</div>
+									
+									<div class="category-card__links">progression :
+									<h:outputText  value = "#{col.collectedamount * 100 / col.goal}" >
+                 					 <f:convertNumber pattern = "#00" />
+              					 </h:outputText>
+              					 %</div>
+              					
+									
+						
+									<div class="address-card__footer">
+								<h:commandButton class="btn " value="Donate"
+									action="#{collectionbean.donate(col)}">
+									<f:ajax render="@form" />
+								</h:commandButton>
+
+							</div>
+									
+								</div>
+							</div>
+						</div>
+						</ui:repeat>
+						<!-- loopthis -->
+						
+					
+					</div>
+					
+				</div>
+			</div>
+			<!-- .block-categories / end -->
+			<!-- .block-products-carousel -->
+			</h:form>
+			
+
+	</ui:define>
+</ui:composition>

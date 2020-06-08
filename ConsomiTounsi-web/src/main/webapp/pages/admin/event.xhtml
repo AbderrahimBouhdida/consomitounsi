@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/template/template.xhtml">
+	<ui:param name="page_name" value="event" />
+	<ui:define name="content">
+	<h:head>
+<!-- 	<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> -->
+	<h:outputScript library="vendor/jquery" name="jquery.min.js" />
+	</h:head>
+<h:panelGroup>
+
+
+            <br/>
+            <h:link outcome="/pages/admin/welcome">Home</h:link>
+
+        </h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td><h:outputText value="Name"></h:outputText></td>
+						<td><h:inputText value="#{eventbean.name}"></h:inputText></td>
+					</tr>
+						<tr>
+						<td><h:outputText value="Type"></h:outputText></td>
+						<td><h:selectOneMenu value="#{eventbean.type}">
+								<f:selectItem itemLabel="Choose Type" itemValue="" />
+								<f:selectItems value="#{dataevent.types}" />
+							</h:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Description"></h:outputText></td>
+						<td><h:inputTextarea value="#{eventbean.description}"></h:inputTextarea></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Image "></h:outputText></td>
+						<td><p:fileUpload value="#{eventbean.file}" mode="simple"
+								skinSimple="true" /></td>
+					</tr>
+					
+					<tr>
+						<td><h:outputText value="Participants Number"></h:outputText></td>
+						<td><h:inputText value="#{eventbean.participantsnumber}"></h:inputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Date !"></h:outputText></td>
+<!-- 						<td><h:inputText id="date" required="true" requiredMessage="Date is required" -->
+<!--   						  value="#{eventbean.date}"> -->
+  						  
+<!--    					 <f:convertDateTime pattern="yyyy-MM-dd" /> -->
+<!-- 							</h:inputText></td> -->
+							<td> <p:datePicker value="#{eventbean.date}" pattern="yyyy-MM-dd"  /></td>
+							<td></td>
+					</tr>
+				
+					<tr>
+						<td colspan="2"><h:commandButton value="Add Event" action="#{eventbean.addEvent()}" /></td>
+						<td colspan="2"><h:commandButton value="Update Event" action="#{eventbean.updateEvent()}" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form>
+				<h:dataTable value="#{eventbean.events}" var="eve"
+					border="1">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{eve.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{eve.type}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Descroption" />
+						</f:facet>
+						<h:outputText value="#{eve.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Image" />
+						</f:facet>
+						<p:graphicImage library="uploads" name="#{eve.image}" width="100"
+							height="100" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="participantsnumber" />
+						</f:facet>
+						<h:outputText value="#{eve.participantsnumber}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{eve.date}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandButton action="#{eventbean.removeEvent(eve.idevent)}"
+							value="Remove" />
+						<h:commandButton action="#{eventbean.displayEvent(eve)}"
+							value="More Details" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

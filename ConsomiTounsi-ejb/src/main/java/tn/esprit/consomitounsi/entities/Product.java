@@ -8,11 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 
+
 @Entity
 public class Product implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	//@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int Barecode;
+	private int barecode;
 	private String nameProduct;
 	private String picture;
 	private int price;
@@ -21,32 +27,68 @@ public class Product implements Serializable{
 	private Date dateAdd;
 	private double weight;
 	private int quantity;
-	 @ManyToOne
+	
+	
+	@ManyToOne
 	private Category category;
-	public Product() {
+	
+	 public Product() {
 		super();
 	}
 
-	
-	public Product(int barecode, String nameProduct, String picture, int price, String decription, Date dateExpire,
-			Date dateAdd, int quantity) {
+
+
+	public Product(int barecode, String nameProduct, String picture, int price, String description, Date dateExpire,
+			Date dateAdd, double weight, int quantity, Category category) {
 		super();
-		Barecode = barecode;
+		this.barecode = barecode;
 		this.nameProduct = nameProduct;
 		this.picture = picture;
 		this.price = price;
-		this.description = decription;
+		
 		this.dateExpire = dateExpire;
 		this.dateAdd = dateAdd;
+		this.weight = weight;
+		this.quantity = quantity;
+		this.category = category;
+	}
+
+
+
+
+	public Product(int barecode, String nameProduct, String picture, int price, String description, double weight,
+			int quantity) {
+		super();
+		this.barecode = barecode;
+		this.nameProduct = nameProduct;
+		this.picture = picture;
+		this.price = price;
+		
+		this.weight = weight;
 		this.quantity = quantity;
 	}
 
+
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+
 	public int getBarecode() {
-		return Barecode;
+		return barecode;
 	}
 
 	public void setBarecode(int barecode) {
-		Barecode = barecode;
+		this.barecode = barecode;
 	}
 
 	public String getNameProduct() {
@@ -73,14 +115,7 @@ public class Product implements Serializable{
 		this.price = price;
 	}
 
-	public String getDecription() {
-		return description;
-	}
-
-	public void setDecription(String decription) {
-		this.description = decription;
-	}
-
+	
 	public Date getDateExpire() {
 		return dateExpire;
 	}
@@ -95,6 +130,14 @@ public class Product implements Serializable{
 
 	public void setDateAdd(Date dateAdd) {
 		this.dateAdd = dateAdd;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 
 	public int getQuantity() {
@@ -112,15 +155,22 @@ public class Product implements Serializable{
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	public double getWeight() {
-		return weight;
-	}
-
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
-
 	
 	
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "Product [barecode=" + barecode + ", nameProduct=" + nameProduct + ", picture=" + picture + ", price="
+				+ price + ", description=" + description + ", dateExpire=" + dateExpire + ", dateAdd=" + dateAdd
+				+ ", weight=" + weight + ", quantity=" + quantity + ", category=" + category + "]";
+	}
+
 	
 }

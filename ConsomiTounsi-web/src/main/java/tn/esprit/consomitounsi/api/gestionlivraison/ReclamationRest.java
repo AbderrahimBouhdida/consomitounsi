@@ -57,18 +57,18 @@ public class ReclamationRest {
 	private static final String EXCHANGE = "exchange";
 	private static final String DECISION = "decision";
 
-	@JWTTokenNeeded(roles = Roles.USER)
-	@POST
-	@Path("add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addReclamation(@HeaderParam("Authorization") String token, Reclamation reclamation) {
-
-		User us = usr.findUserById(Session.getUserId(token));
-		reclamation.setUser(us);
-		reclamation.setProduct(psr.findProductById(reclamation.getProduct().getBarecode()));
-		rsr.addReclamation(reclamation);
-		return Response.ok("reclamation added successfully").build();
-	}
+//	@JWTTokenNeeded(roles = Roles.USER)
+//	@POST
+//	@Path("add")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addReclamation(@HeaderParam("Authorization") String token, Reclamation reclamation) {
+//
+//		User us = usr.findUserById(Session.getUserId(token));
+//		reclamation.setUser(us);
+//		reclamation.setProduct(psr.findProductById(reclamation.getProduct().getBarecode()));
+//		rsr.addReclamation(reclamation);
+//		return Response.ok("reclamation added successfully").build();
+//	}
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET

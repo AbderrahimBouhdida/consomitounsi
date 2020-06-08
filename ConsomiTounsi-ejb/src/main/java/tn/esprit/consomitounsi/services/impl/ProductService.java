@@ -24,7 +24,9 @@ public class ProductService implements ProductRemote {
 	public int addProduct(Product product) {
 		// TODO Auto-generated method stub
 		em.persist(product);
-        return product.getBarecode();
+		//Sms sms = new Sms();
+		//sms.sendSMS("+21622921857", "hzeeeeellooooo");
+		return product.getBarecode();
 	}
 
 	@Override
@@ -41,24 +43,33 @@ public class ProductService implements ProductRemote {
 		product.setNameProduct(productNewValues.getNameProduct());
 		product.setDateAdd(productNewValues.getDateAdd());
 		product.setDateExpire(productNewValues.getDateExpire());
-		product.setDecription(productNewValues.getDecription());
+		product.setDescription(productNewValues.getDescription());
 		product.setPrice(productNewValues.getPrice());
 		product.setQuantity(productNewValues.getQuantity());
 		product.setPicture(productNewValues.getPicture());
 	}
 
+	
+
 	@Override
-	public Product findProductById(int Barecode) {
+	public List<Product> findAllProduct() {
+		// TODO Auto-generated method stub
+		List<Product> product = em.createQuery("from Product", Product.class).getResultList();
+		
+        return product;
+	}
+
+	@Override
+	public Product findProductBybarcode(int Barecode) {
 		// TODO Auto-generated method stub
 		Product product = em.find(Product.class, Barecode);
         return product;
 	}
 
 	@Override
-	public List<Product> findAllProduct() {
+	public List<Product> getProduct() {
 		// TODO Auto-generated method stub
-		List<Product> product = em.createQuery("Select p from Product p", Product.class).getResultList();
-        return product;
+		return null;
 	}
 	
 }

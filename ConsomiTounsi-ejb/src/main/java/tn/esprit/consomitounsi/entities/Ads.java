@@ -13,13 +13,13 @@ import javax.persistence.ManyToOne;
 public class Ads  implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
 		private int idAds;
 		private String name;
 		private Date StartDay;
 		private Date EndDay;
 		private int ViewsNumber;
 		private int FinalViewsNumber;
-		
 		@ManyToOne
 		private User user;
 		

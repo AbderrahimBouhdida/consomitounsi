@@ -1,5 +1,6 @@
 package tn.esprit.consomitounsi.entities;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+
 
 @Entity
 public class Category  implements Serializable{

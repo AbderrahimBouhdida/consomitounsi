@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/template/template.xhtml">
+	<ui:param name="page_name" value="collection" />
+	<ui:define name="content">
+		<h:panelGroup>
+
+			<br />
+			<h:link outcome="/pages/admin/welcome">Home</h:link>
+
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td><h:outputText value="Name"></h:outputText></td>
+						<td><h:inputText value="#{collectionbean.name}"></h:inputText></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Type"></h:outputText></td>
+						<td><h:selectOneMenu value="#{collectionbean.type}">
+								<f:selectItem itemLabel="Choose Type" itemValue="" />
+								<f:selectItems value="#{data.types}" />
+							</h:selectOneMenu></td>
+					</tr>
+					<tr>
+						<td><h:outputText value="Description"></h:outputText></td>
+						<td><h:inputTextarea value="#{collectionbean.description}"></h:inputTextarea></td>
+					</tr>
+					<tr>
+						<!-- 						<td><h:outputText value="Image"></h:outputText></td> -->
+						<!-- 						<td><h:inputText value="#{collectionbean.image}"></h:inputText></td> -->
+						<td><h:outputText value="Image "></h:outputText></td>
+						<td><p:fileUpload value="#{collectionbean.file}"
+								mode="simple" skinSimple="true" /></td>
+						<!-- 						<td> -->
+						<!-- 								<p:fileUpload value="#{collectionbean.file}" -->
+						<!-- 									fileUploadListener="#{collectionbean.file}" -->
+						<!-- 									allowTypes="/(\.|\/)(gif|png|jpg|jpeg)$/" multiple="false" -->
+						<!-- 									mode="advanced" sizeLimit="100000" showButtons="false" /> -->
+						<!-- 							</td> -->
+						<!-- 						<td><p:fileUpload fileUploadListener="#{collectionbean.file}" -->
+						<!-- 								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="100000" -->
+						<!-- 								description="Select Images" /></td> -->
+
+						<!--  <td>   <p:fileUpload value="#{collectionbean.file}" mode="advanced" skinSimple="true" -->
+						<!--     update="messages" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" /> </td> -->
+
+
+
+					</tr>
+
+					<tr>
+						<td><h:outputText value="Goal"></h:outputText></td>
+						<td><h:inputText value="#{collectionbean.goal}"></h:inputText></td>
+					</tr>
+
+					<tr>
+						<td colspan="2"><h:commandButton value="Add collection"
+								action="#{collectionbean.addCollection()}" /></td>
+						<td colspan="2"><h:commandButton value="Update collection"
+								action="#{collectionbean.updateCollection()}" /></td>
+					</tr>
+				</table>
+			</h:form>
+		</h:panelGroup>
+		<h:panelGroup columns="2">
+			<h:form>
+				<h:dataTable value="#{collectionbean.collections}" var="col"
+					border="1">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{col.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Type" />
+						</f:facet>
+						<h:outputText value="#{col.type}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Descroption" />
+						</f:facet>
+						<h:outputText value="#{col.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Image" />
+						</f:facet>
+						<p:graphicImage library="uploads" name="#{col.image}" width="100"
+							height="100" />
+						<!-- 						<h:outputText value="#{col.image}" /> -->
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Goal" />
+						</f:facet>
+						<h:outputText value=" #{col.goal}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandButton
+							action="#{collectionbean.removeCollection(col.idcollection)}"
+							value="Remove" />
+						<h:commandButton action="#{collectionbean.displayCollection(col)}"
+							value="More Details" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
