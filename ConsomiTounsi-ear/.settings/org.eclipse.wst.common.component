@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ConsomiTounsi-ear">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+        <dependent-module archiveName="ConsomiTounsi-web.war" deploy-path="/" handle="module:/resource/ConsomiTounsi-web/ConsomiTounsi-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ConsomiTounsi-ejb.jar" deploy-path="/" handle="module:/resource/ConsomiTounsi-ejb/ConsomiTounsi-ejb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="argon2-jvm.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/de/mkammerer/argon2-jvm/2.5/argon2-jvm-2.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jna.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/net/java/dev/jna/jna/4.5.2/jna-4.5.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jjwt.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/io/jsonwebtoken/jjwt/0.9.1/jjwt-0.9.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-databind.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.9.6/jackson-databind-2.9.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mysql-connector-java.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="protobuf-java.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/google/protobuf/protobuf-java/3.6.1/protobuf-java-3.6.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="sendgrid-java.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sendgrid/sendgrid-java/4.4.6/sendgrid-java-4.4.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="java-http-client.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sendgrid/java-http-client/4.3.3/java-http-client-4.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpcore.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/httpcomponents/httpcore/4.4.12/httpcore-4.4.12.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="httpclient.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/apache/httpcomponents/httpclient/4.5.10/httpclient-4.5.10.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/commons-codec/commons-codec/1.11/commons-codec-1.11.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-core.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-core/2.10.2/jackson-core-2.10.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-annotations.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.10.2/jackson-annotations-2.10.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>

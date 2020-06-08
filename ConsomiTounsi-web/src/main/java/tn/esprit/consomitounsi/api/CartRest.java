@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.CartProduct;
-import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 

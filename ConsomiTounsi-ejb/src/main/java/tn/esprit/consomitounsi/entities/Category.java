@@ -1,5 +1,6 @@
 package tn.esprit.consomitounsi.entities;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+
 
 @Entity
 public class Category  implements Serializable{
@@ -32,6 +35,14 @@ public class Category  implements Serializable{
 		super();
 	}
 
+	public Category(int idCategory, String nom, String description, String type, List<Product> prod) {
+		super();
+		this.idCategory = idCategory;
+		this.nom = nom;
+		this.description = description;
+		this.type = type;
+		this.prod = prod;
+	}
 
 	public Category(int idCategory, String nom, String description, String type) {
 		super();
@@ -40,7 +51,6 @@ public class Category  implements Serializable{
 		this.description = description;
 		this.type = type;
 	}
-
 
 	public int getIdCategory() {
 		return idCategory;
@@ -56,7 +66,6 @@ public class Category  implements Serializable{
 		return nom;
 	}
 
-
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -66,6 +75,7 @@ public class Category  implements Serializable{
 		return description;
 	}
 
+	
 
 	public void setDescription(String description) {
 		this.description = description;

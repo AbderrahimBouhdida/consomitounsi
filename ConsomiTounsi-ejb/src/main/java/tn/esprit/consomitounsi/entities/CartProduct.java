@@ -3,10 +3,8 @@ package tn.esprit.consomitounsi.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -16,6 +14,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 public class CartProduct implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@EmbeddedId
 	private CartProdPk  cartProdPk;
 	@ManyToOne
@@ -50,7 +52,7 @@ public class CartProduct implements Serializable {
 		this.cartProdPk = cartProdPk;
 	}
 
-	
+
 
 	public int getQuantity() {
 		return quantity;
@@ -59,6 +61,24 @@ public class CartProduct implements Serializable {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
 	
 	
 }

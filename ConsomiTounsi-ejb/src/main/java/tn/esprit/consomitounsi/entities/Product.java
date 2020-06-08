@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 
+
 @Entity
 public class Product implements Serializable{
 	@Id
@@ -39,6 +40,7 @@ public class Product implements Serializable{
 		this.dateExpire = dateExpire;
 		this.dateAdd = dateAdd;
 		this.quantity = quantity;
+		this.weight = weight;
 	}
 
 	public int getBarecode() {
@@ -46,7 +48,7 @@ public class Product implements Serializable{
 	}
 
 	public void setBarecode(int barecode) {
-		Barecode = barecode;
+		this.Barecode = barecode;
 	}
 
 	public String getNameProduct() {
