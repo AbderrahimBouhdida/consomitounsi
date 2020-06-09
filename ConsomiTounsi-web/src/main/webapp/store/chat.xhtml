@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					
+				</div>
+				<div class="page-header__title">
+					<h1>Messages</h1>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-lg-8">
+					<div class="block">
+						<div class="posts-view">
+
+							<h:form id="f">
+								<h:panelGrid columns="2">
+                Text: <p:inputText value="#{chatBean.msg}" />
+									<p:commandButton value="Send!"
+										action="#{chatBean.sendMessage()}">
+										
+									</p:commandButton>
+								</h:panelGrid>
+								<h:panelGroup id="core">
+									
+									<p:dataScroller value="#{chatBean.messages}" var="message"
+										chunkSize="10">
+										<f:facet name="header">
+								            Messages
+								        </f:facet>
+
+										<h:panelGrid columns="2" style="width:100%"
+											columnClasses="detail">
+
+											<p:outputPanel>
+												<h:panelGrid columns="2" cellpadding="5">
+
+													<h:outputText value="Year:" />
+													<h:outputText value="#{chatBean.dec(message.message)}" style="font-weight: bold" />
+
+														
+												</h:panelGrid>
+											</p:outputPanel>
+										</h:panelGrid>
+									</p:dataScroller>
+								</h:panelGroup>
+
+							</h:form>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>

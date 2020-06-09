@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item active" aria-current="page">My
+								Account</li>
+						</ol>
+					</nav>
+				</div>
+				<div class="page-header__title">
+					<h1>My Account</h1>
+				</div>
+			</div>
+		</div>
+		<div class="block">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-3 d-flex">
+						<div class="account-nav flex-grow-1">
+							<h4 class="account-nav__title">Navigation</h4>
+							<h:form>
+								<ul>
+									<li class="account-nav__item "><a
+										href="#{request.contextPath}/account/dashboard.jsf">Dashboard</a></li>
+									<li class="account-nav__item"><h:commandLink
+											class="menu__item-link"
+											action="#{userBean.navToEditProfile()}" value="Edit Profile"/></li>
+									<li class="account-nav__item"><a
+										href="#{request.contextPath}/account/orders.jsf">Order
+											History</a></li>
+									<li class="account-nav__item "><a
+										href="#{request.contextPath}/account/addresses.jsf">Addresses</a></li>
+									<li class="account-nav__item"><h:commandLink
+											action="#{loginBean.doLogout}" class="menu__item-link"
+											value="Logout" /></li>
+								</ul>
+							</h:form>
+						</div>
+					</div>
+					<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+						<div class="card">
+							<div class="card-header">
+								<h5>Edit Address</h5>
+							</div>
+							<div class="card-divider"></div>
+							<div class="card-body">
+								<div class="row no-gutters">
+									<div class="col-12 col-lg-10 col-xl-8">
+										<h:form>
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label for="checkout-first-name">First Name</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.adrToMod.firstName}" />
+											</div>
+											<div class="form-group col-md-6">
+												<label for="checkout-last-name">Last Name</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.adrToMod.lastName}" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="checkout-company-name">Company Name <span
+												class="text-muted">(Optional)</span></label>
+											<h:inputText class="form-control"
+												value="#{addressBean.adrToMod.companyName}" />
+										</div>
+										<div class="form-group">
+											<label for="checkout-country">Country</label>
+											<h:selectOneMenu value="#{addressBean.country}"
+												class="form-control form-control-select2">
+												<f:selectItem itemValue="Tunisia" itemLabel="Tunisia" />
+											</h:selectOneMenu>
+										</div>
+										<div class="form-group">
+											<label for="checkout-street-address">Street Address</label>
+											<h:inputText class="form-control"
+												value="#{addressBean.adrToMod.street}" />
+										</div>
+										<div class="form-group">
+											<label for="checkout-city">Town / City</label>
+											<h:inputText class="form-control"
+												value="#{addressBean.adrToMod.city}" />
+										</div>
+										<div class="form-group">
+											<label for="checkout-state">State / County</label>
+											<h:selectOneMenu value="#{addressBean.state}"
+												class="form-control form-control-select2">
+												<f:selectItems value="#{addressBean.states}" var="status"
+													itemValue="#{status}" itemLabel="#{states.displayName}" />
+											</h:selectOneMenu>
+										</div>
+										<div class="form-group">
+											<label for="checkout-postcode">Postcode / ZIP</label>
+											<h:inputText class="form-control"
+												value="#{addressBean.adrToMod.zipCode}"
+												onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+
+										</div>
+										<div class="form-group">
+											<label for="checkout-postcode">Mobile Phone</label>
+											<h:inputText class="form-control"
+												value="#{addressBean.adrToMod.phone}"
+												onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+										</div>
+										<div class="form-group">
+												<label for="checkout-postcode">Set Default ?</label>
+												<h:selectBooleanCheckbox 
+													value="#{addressBean.def}"/>
+											</div>
+										<div class="form-group mt-3 mb-0">
+											
+												<h:commandButton
+													class="btn btn-primary product-card__addtocart"
+													value="Save" action="#{addressBean.confirmModAddr(loginBean.user)}">
+												</h:commandButton>
+											
+										</div>
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

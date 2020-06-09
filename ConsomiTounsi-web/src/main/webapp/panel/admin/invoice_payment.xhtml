@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/panel/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tabbable-line">
+					<div class="tab-content">
+						<div class="tab-pane active fontawesome-demo" id="tab1">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card card-topline-red">
+										
+										<h:form id="form">
+										<div class="card-body">
+											
+												
+											
+											<div class="white-box">
+										<h3>
+											<b>INVOICE</b> <span class="pull-right"># <h:outputLabel value="#{billBean.bill.idBill}"></h:outputLabel> </span>
+										</h3>
+										<hr />
+										<div class="row">
+											<div class="col-md-12">
+												<div class="pull-left">
+													<address>
+														<img src="img/invoice_logo.png" alt="logo"
+															class="logo-default" />
+														
+													</address>
+												</div>
+												<div class="pull-right text-right">
+													<address>
+														<p class="addr-font-h3">To,</p>
+														<p class="font-bold addr-font-h4"><h:outputText value="#{billBean.bill.cart.user.firstName} #{billBean.bill.cart.user.lastName}"/> </p>
+														<p class="text-muted m-l-30">
+															<h:outputText value="#{billBean.bill.billing.street}"/><br /> <h:outputText value="#{billBean.bill.billing.city}"/><br />
+															<h:outputText value="#{billBean.bill.billing.state}"/><br /> <h:outputText value="#{billBean.bill.billing.zipCode}"/> <BR />
+															<h:outputText value="#{billBean.bill.billing.country}"/>
+														</p>
+														<p class="m-t-30">
+															<b>Invoice Date :</b> <h:outputText value="#{billBean.bill.billDate}"/>
+														</p>
+														
+													</address>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="table-responsive m-t-40">
+													<table class="table table-hover">
+														<thead>
+															<tr>
+																
+																<th>Item Name</th>
+																<th class="text-right">Quantity</th>
+																<th class="text-right">Unit Cost</th>
+																<th class="text-right">Total</th>
+															</tr>
+														</thead>
+														<tbody>
+															<ui:repeat var="item" value="#{billBean.bill.cart.products}">
+															<tr>
+																<td>#{item.product.nameProduct}</td>
+																<td class="text-right">#{item.quantity}</td>
+																<td class="text-right">#{item.product.price}</td>
+																<td class="text-right">#{item.product.price*item.quantity}</td>
+															</tr>
+														</ui:repeat>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="pull-right m-t-30 text-right">
+													<p>Sub - Total amount: <h:outputLabel value="#{billBean.bill.cart.totalPrice}"/> TND</p>
+													<p>vat (19%) : <h:outputLabel value="#{billBean.bill.cart.totalPrice * 0.19}">
+																		<f:convertNumber pattern="#.00"></f:convertNumber></h:outputLabel> TND</p>
+													<hr />
+													<h3>
+														<b>Total :</b><h:outputLabel value="#{(billBean.bill.cart.totalPrice * 0.19)+billBean.bill.cart.totalPrice}"/> TND
+													</h3>
+												</div>
+												<div class="clearfix"></div>
+												<hr />
+												<div class="text-right">
+													<button onclick="javascript:window.print();"
+														class="btn btn-default btn-outline" type="button">
+														<span> Print</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+											
+										</div>
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

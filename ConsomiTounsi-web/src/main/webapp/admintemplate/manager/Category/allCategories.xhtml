@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/panel/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tabbable-line">
+					<div class="tab-content">
+						<div class="tab-pane active fontawesome-demo" id="tab1">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card card-topline-red">
+										<div class="card-head">
+											<div class="tools">
+												<a class="fa fa-repeat btn-color box-refresh"
+													href="javascript:;"></a> <a
+													class="t-collapse btn-color fa fa-chevron-down"
+													href="javascript:;"></a> <a
+													class="t-close btn-color fa fa-times" href="javascript:;"></a>
+											</div>
+										</div>
+
+										<h:form>
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6 col-sm-6 col-xs-6">
+
+														<div class="btn-group ">
+															<a
+																class="btn deepPink-bgcolor btn-outline dropdown-toggle"
+																data-toggle="dropdown">Actions</a>
+
+
+															<ul class="dropdown-menu pull-right">
+																<li><h:commandLink value="Delete"
+																		action="#{categoryBean.delete()}">
+
+
+																	</h:commandLink></li>
+															</ul>
+														</div>
+
+													</div>
+													<div class="col-md-6 col-sm-6 col-xs-6">
+														<div class="btn-group pull-right">
+															<h:commandLink action="addCategory" value="New"
+																styleClass="btn btn-info"></h:commandLink>
+														</div>
+													</div>
+												</div>
+
+												<style type="text/css">
+.value {
+	font-weight: bold;
+}
+
+.ui-datatable {
+	margin-bottom: 25px
+}
+
+.ui-datatable .ui-datatable-footer {
+	text-align: left;
+}
+
+.ui-datalist ul {
+	padding: 0 0 0 10px;
+	margin: 5px 0;
+}
+
+.ui-datatable .ui-button-icon-only .ui-button-text {
+	padding: 0;
+	line-height: 1.2;
+}
+</style>
+												<div class="table-scrollable">
+													<p:dataTable var="cat" value="#{categoryBean.cat}"
+														rows="10" paginator="true"
+														paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+														currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+														rowsPerPageTemplate="5,10,15">
+
+
+														<p:column headerText="idCategory">
+															<h:outputLabel value="#{cat.idCategory}" />
+														</p:column>
+
+														<p:column headerText="nom">
+															<h:outputText value="#{cat.nom}" />
+														</p:column>
+
+
+
+														<p:column headerText="description">
+															<h:outputText value="#{cat.description}" />
+														</p:column>
+
+
+														<p:column headerText="type">
+															<h:outputText value="#{cat.type}" />
+														</p:column>
+
+														<p:column headerText="Stock">
+															<h:outputText value="#{cat.stock}" />
+														</p:column>
+
+
+
+														<p:column headerText="Actions" styleClass="center">
+															<h:commandLink styleClass="btn btn-primary btn-xs"
+																action="#{categoryBean.navToMod(cat)}">
+																<i class="fa fa-pencil"></i>
+															</h:commandLink>
+
+															<h:commandLink class="btn btn-danger btn-xs"
+																action="#{categoryBean.removeCategory(cat.idCategory)}">
+																<i class="fa fa-trash-o "></i>
+																<f:ajax render="@form" />
+															</h:commandLink>
+														</p:column>
+														<f:facet name="paginatorTopLeft">
+															<p:commandButton type="button" icon="pi pi-refresh" />
+														</f:facet>
+
+														<f:facet name="paginatorBottomRight">
+															<p:commandButton type="button" icon="pi pi-cloud-upload" />
+														</f:facet>
+
+													</p:dataTable>
+												</div>
+											</div>
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+	</ui:define>
+</ui:composition>

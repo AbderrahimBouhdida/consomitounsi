@@ -1,0 +1,364 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use
+										xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item active" aria-current="page">
+								Checkout</li>
+						</ol>
+					</nav>
+				</div>
+				<div class="page-header__title">
+					<h1>Checkout</h1>
+				</div>
+			</div>
+		</div>
+		<div class="checkout block">
+		<h:form id="f">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-6 col-xl-7">
+						<div class="card mb-lg-0">
+							<div class="card-body">
+								<h3 class="card-title">Billing details</h3>
+								
+
+									<div class="form-group">
+
+										<label for="checkout-state">Choose Existing address</label> <br />
+										<h:selectOneMenu value="#{addressBean.selectedAdr}"
+											class="form-control form-control-select2"
+											converter="addressConverter">
+											<f:selectItems
+												value="#{addressBean.addresses(loginBean.user)}"
+												var="address" itemValue="#{address}"
+												itemLabel="#{address.firstName} #{address.lastName}" />
+											<p:ajax update="f:pn" />
+										</h:selectOneMenu>
+									</div>
+									<div class="form-group">
+										<h:selectBooleanCheckbox id="checkB"
+											value="#{addressBean.addBilling}"
+											label="Ship to a different address?">
+											<f:ajax render="pn"></f:ajax>
+										</h:selectBooleanCheckbox>
+										<h:outputLabel for="checkB">Add a new address ? </h:outputLabel>
+									</div>
+
+
+									<div class="card-divider"></div>
+									<br />
+									<h:panelGroup id="pn">
+										<h:panelGroup rendered="#{addressBean.addBilling}">
+											<div class="form-row">
+												<div class="form-group col-md-6">
+													<label for="checkout-first-name">First Name</label>
+													<h:inputText class="form-control" id="fn"
+														value="#{addressBean.billingAdr.firstName}" />
+												</div>
+												<div class="form-group col-md-6">
+													<label for="checkout-last-name">Last Name</label>
+													<h:inputText class="form-control"
+														value="#{addressBean.billingAdr.lastName}" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="checkout-company-name">Company Name <span
+													class="text-muted">(Optional)</span></label>
+												<h:inputText class="form-control"
+													value="#{addressBean.billingAdr.companyName}" />
+											</div>
+											<div class="form-group">
+												<label for="checkout-country">Country</label>
+												<h:selectOneMenu value="#{addressBean.country}"
+													class="form-control form-control-select2">
+													<f:selectItem itemValue="Tunisia" itemLabel="Tunisia" />
+												</h:selectOneMenu>
+											</div>
+											<div class="form-group">
+												<label for="checkout-street-address">Street Address</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.billingAdr.street}" />
+											</div>
+											<div class="form-group">
+												<label for="checkout-city">Town / City</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.billingAdr.city}" />
+											</div>
+											<div class="form-group">
+												<label for="checkout-state">State / County</label>
+												<h:selectOneMenu value="#{addressBean.state}"
+													class="form-control form-control-select2">
+													<f:selectItems value="#{addressBean.states}" var="status"
+														itemValue="#{status}" itemLabel="#{states.displayName}" />
+												</h:selectOneMenu>
+											</div>
+											<div class="form-group">
+												<label for="checkout-postcode">Postcode / ZIP</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.billingAdr.zipCode}"
+													onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+
+											</div>
+											<div class="form-group">
+												<label for="checkout-postcode">Mobile Phone</label>
+												<h:inputText class="form-control"
+													value="#{addressBean.billingAdr.phone}"
+													onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+											</div>
+										</h:panelGroup>
+									</h:panelGroup>
+								
+							</div>
+							<div class="card-divider"></div>
+							
+								<div class="card-body">
+									<h3 class="card-title">Shipping Details</h3>
+									<div class="form-group">
+										<h:selectBooleanCheckbox id="check"
+											value="#{addressBean.same}"
+											label="Ship to a different address?">
+											<f:ajax render="shipping"></f:ajax>
+										</h:selectBooleanCheckbox>
+										<h:outputLabel for="check">Ship to a different address? </h:outputLabel>
+									</div>
+									<h:panelGroup id="shipping">
+										<h:panelGroup rendered="#{addressBean.same}">
+											<div class="form-group">
+
+												<label for="checkout-state">Choose Existing address</label>
+												<br />
+												<h:selectOneMenu value="#{addressBean.selectedShipping}"
+													class="form-control form-control-select2"
+													converter="addressConverter">
+													<f:selectItems
+														value="#{addressBean.addresses(loginBean.user)}"
+														var="address" itemValue="#{address}"
+														itemLabel="#{address.firstName} #{address.lastName}" />
+													<p:ajax update="sh:ship" />
+												</h:selectOneMenu>
+											</div>
+											<div class="form-group">
+												<h:selectBooleanCheckbox id="checkS"
+													value="#{addressBean.addShipping}"
+													label="Ship to a different address?">
+													<f:ajax render="ship"></f:ajax>
+												</h:selectBooleanCheckbox>
+												<h:outputLabel for="checkS">Add a new address ? </h:outputLabel>
+											</div>
+											<br />
+											<h:panelGroup id="ship">
+												<h:panelGroup rendered="#{addressBean.addShipping}">
+													<div class="form-row">
+														<div class="form-group col-md-6">
+															<label for="checkout-first-name">First Name</label>
+															<h:inputText class="form-control" 
+																value="#{addressBean.shippingAdr.firstName}" />
+														</div>
+														<div class="form-group col-md-6">
+															<label for="checkout-last-name">Last Name</label>
+															<h:inputText class="form-control"
+																value="#{addressBean.shippingAdr.lastName}" />
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="checkout-company-name">Company Name <span
+															class="text-muted">(Optional)</span></label>
+														<h:inputText class="form-control"
+															value="#{addressBean.shippingAdr.companyName}" />
+													</div>
+													<div class="form-group">
+														<label for="checkout-country">Country</label>
+														<h:selectOneMenu value="#{addressBean.country}"
+															class="form-control form-control-select2">
+															<f:selectItem itemValue="Tunisia" itemLabel="Tunisia" />
+														</h:selectOneMenu>
+													</div>
+													<div class="form-group">
+														<label for="checkout-street-address">Street
+															Address</label>
+														<h:inputText class="form-control"
+															value="#{addressBean.shippingAdr.street}" />
+													</div>
+													<div class="form-group">
+														<label for="checkout-city">Town / City</label>
+														<h:inputText class="form-control"
+															value="#{addressBean.shippingAdr.city}" />
+													</div>
+													<div class="form-group">
+														<label for="checkout-state">State / County</label>
+														<h:selectOneMenu value="#{addressBean.shippingState}"
+															class="form-control form-control-select2">
+															<f:selectItems value="#{addressBean.states}" var="status"
+																itemValue="#{status}" itemLabel="#{states.displayName}" />
+														</h:selectOneMenu>
+													</div>
+													<div class="form-group">
+														<label for="checkout-postcode">Postcode / ZIP</label>
+														<h:inputText class="form-control"
+															value="#{addressBean.shippingAdr.zipCode}"
+															onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+
+													</div>
+													<div class="form-group">
+														<label for="checkout-postcode">Mobile Phone</label>
+														<h:inputText class="form-control"
+															value="#{addressBean.shippingAdr.phone}"
+															onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" />
+													</div>
+												</h:panelGroup>
+											</h:panelGroup>
+										</h:panelGroup>
+									</h:panelGroup>
+								</div>
+							
+						</div>
+					</div>
+					<div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+						<div class="card mb-0">
+							<h:form>
+								<div class="card-body">
+									<h3 class="card-title">Your Order</h3>
+									<table class="checkout__totals">
+										<thead class="checkout__totals-header">
+											<tr>
+												<th>Product</th>
+												<th>Total</th>
+											</tr>
+										</thead>
+										<tbody class="checkout__totals-products">
+
+											<ui:repeat value="#{cartBean.items}" var="item"
+												varStatus="status">
+												<tr>
+													<td>#{item.product.nameProduct} × #{item.quantity}</td>
+													<td>#{item.product.price*item.quantity}</td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+										<tbody class="checkout__totals-subtotals">
+											<tr>
+												<th>Subtotal</th>
+												<td>#{cartBean.subtotal} TND</td>
+											</tr>
+											<tr>
+												<th>Shipping</th>
+												<td>#{cartBean.shipping} TND</td>
+											</tr>
+											<tr>
+												<th>Tax</th>
+												<td>#{cartBean.tax} TND</td>
+											</tr>
+										</tbody>
+										<tfoot class="checkout__totals-footer">
+											<tr>
+												<th>Total</th>
+												<td>#{cartBean.total} TND</td>
+											</tr>
+										</tfoot>
+									</table>
+									<div class="payment-methods">
+										<ul class="payment-methods__list">
+											<li
+												class="payment-methods__item payment-methods__item--active">
+												<label class="payment-methods__item-header"><span
+													class="payment-methods__item-radio input-radio"><span
+														class="input-radio__body"><input
+															class="input-radio__input" name="checkout_payment_method"
+															type="radio" checked="checked" /> </span></span> <span
+													class="payment-methods__item-title">Direct bank
+														transfer</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">Make
+														your payment directly into our bank account. Please use
+														your Order ID as the payment reference. Your order will
+														not be shipped until the funds have cleared in our
+														account.</div>
+												</div>
+											</li>
+											<li class="payment-methods__item"><label
+												class="payment-methods__item-header"><span
+													class="payment-methods__item-radio input-radio"><span
+														class="input-radio__body"><input
+															class="input-radio__input" name="checkout_payment_method"
+															type="radio" /> </span></span> <span
+													class="payment-methods__item-title">Check payments</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">Please
+														send a check to Store Name, Store Street, Store Town,
+														Store State / County, Store Postcode.</div>
+												</div></li>
+											<li class="payment-methods__item"><label
+												class="payment-methods__item-header"><span
+													class="payment-methods__item-radio input-radio"><span
+														class="input-radio__body"><input
+															class="input-radio__input" name="checkout_payment_method"
+															type="radio" /> </span></span> <span
+													class="payment-methods__item-title">Cash on delivery</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">Pay
+														with cash upon delivery.</div>
+												</div></li>
+											<li class="payment-methods__item"><label
+												class="payment-methods__item-header"><span
+													class="payment-methods__item-radio input-radio"><span
+														class="input-radio__body"><input
+															class="input-radio__input" name="checkout_payment_method"
+															type="radio" /> </span></span> <span
+													class="payment-methods__item-title">PayPal</span></label>
+												<div class="payment-methods__item-container">
+													<div class="payment-methods__item-description text-muted">Pay
+														via PayPal; you can pay with your credit card if you don’t
+														have a PayPal account.</div>
+												</div></li>
+										</ul>
+									</div>
+									<div class="checkout__agree form-group">
+										<div class="form-check">
+											<span class="form-check-input input-check"><span
+												class="input-check__body"><input
+													class="input-check__input" type="checkbox"
+													id="checkout-terms" /> <svg class="input-check__icon"
+														width="9px" height="7px">
+<use xlink:href="#{resource['images:sprite.svg']}#check-9x7"></use>
+</svg></span></span> <label class="form-check-label" for="checkout-terms">I have
+												read and agree to the website <a target="_blank"
+												href="#{request.contextPath}/store/terms-and-conditions.jsf">terms
+													and conditions</a>*
+											</label>
+										</div>
+									</div>
+									<h:commandButton class="btn btn-primary btn-xl btn-block"
+										value="Place Order"
+										action="#{addressBean.placeOreder()}"
+									></h:commandButton>
+									
+								</div>
+							</h:form>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>

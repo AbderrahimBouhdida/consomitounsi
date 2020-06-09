@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.CartProduct;
-import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 
@@ -77,9 +76,9 @@ public class CartRest {
 		User us = new User();
 		boolean removed;
 		us.setIdUser(id);
-		removed = cartservice.removeProd(us, pid);
+		/*removed = cartservice.removeProd(us, pid);
 		if(removed)
-			return Response.ok("removed").build();
+			return Response.ok("removed").build();*/
 		return Response.ok("Item doesn't exists").build();
 	}
 	@Path("/mod/{id}")

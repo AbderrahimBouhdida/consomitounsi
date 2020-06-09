@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+<meta name="generator"
+	content="HTML Tidy for HTML5 for Linux version 5.6.0" />
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<meta name="description" content="Responsive Admin Template" />
+<meta name="author" content="RedstarHospital" />
+<title>ConsomiTounsi | #{title}</title>
+<!-- google font -->
+<link
+	href="#{request.contextPath}/panel/resources/css/cssbc32.css?family=Open+Sans:400,300,600,700&amp;subset=all"
+	rel="stylesheet" type="text/css" />
+<!-- icons -->
+<link href="#{request.contextPath}/panel/resources/assets/bundles/simple-line-icons/simple-line-icons.min.css"
+	rel="stylesheet" type="text/css" />
+<link href="#{request.contextPath}/panel/resources/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="#{request.contextPath}/panel/resources/css/icone91f.css?family=Material+Icons" />
+<!--bootstrap -->
+<link href="#{request.contextPath}/panel/resources/assets/bundles/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css" />
+<!-- Material Design Lite CSS -->
+<link rel="stylesheet" href="#{request.contextPath}/panel/resources/assets/bundles/material/material.min.css" />
+<link rel="stylesheet" href="#{request.contextPath}/panel/resources/css/material_style.css" />
+<!-- Theme Styles -->
+<link href="#{request.contextPath}/panel/resources/css/theme_style.css" rel="stylesheet"
+	id="rt_style_components" type="text/css" />
+<link href="#{request.contextPath}/panel/resources/css/plugins.min.css" rel="stylesheet" type="text/css" />
+<link href="#{request.contextPath}/panel/resources/css/style.css" rel="stylesheet" type="text/css" />
+<link href="#{request.contextPath}/panel/resources/css/responsive.css" rel="stylesheet" type="text/css" />
+<link href="#{request.contextPath}/panel/resources/css/theme-color.css" rel="stylesheet" type="text/css" />
+<!-- favicon -->
+<link rel="shortcut icon" href="#{request.contextPath}/panel/resources/img/favicon.ico" />
+<h:outputScript library="primefaces" name="jquery/jquery.js"  />
+<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"  />
+</h:head>
+
+<body
+	class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md logo-red red-sidebar-color header-red">
+
+	<div class="page-wrapper">
+
+		<ui:include src="header.xhtml" />
+		<div class="page-container">
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<div class="page-bar">
+						<div class="page-title-breadcrumb">
+							<div class="pull-left">
+								<div class="page-title">#{name}</div>
+							</div>
+							<ol class="breadcrumb page-breadcrumb pull-right">
+								<li><a class="parent-item" href="index.jsf">Home</a></li>
+								<li class="active">#{name}</li>
+							</ol>
+						</div>
+					</div>
+					<!-- start widget -->
+					<ui:insert name="content" />
+				</div>
+			</div>
+		</div>
+		<ui:include src="settings.xhtml" />
+	</div>
+	<ui:include src="footer.xhtml" />
+</body>
+</html>

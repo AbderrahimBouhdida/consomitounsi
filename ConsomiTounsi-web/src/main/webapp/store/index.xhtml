@@ -1,0 +1,722 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="page_name" value="Home" />
+	<ui:param name="cat" value="true" />
+	<ui:define name="content">
+
+		
+		<div
+			class="block-slideshow block-slideshow--layout--with-departments block">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 d-none d-lg-block"></div>
+					<div class="col-12 col-lg-9">
+						<div class="block-slideshow__body">
+							<div class="owl-carousel">
+								<a class="block-slideshow__slide" href="#">
+									<div
+										class="block-slideshow__slide-image block-slideshow__slide-image--desktop"
+										style="background-image: url('#{resource['images:slides/unnamed.jpg']}')"></div>
+									<div
+										class="block-slideshow__slide-image block-slideshow__slide-image--mobile"
+										style="background-image: url('#{resource['images:slides/unnamed.jpg']}')">
+									</div>
+									<div class="block-slideshow__slide-content">
+										<div class="block-slideshow__slide-title">
+											100%<br /> Made in tunisia
+										</div>
+										
+										<div class="block-slideshow__slide-button">
+											<span class="btn btn-primary btn-lg">Shop Now</span>
+										</div>
+									</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-slideshow / end -->
+		<!-- .block-features -->
+		<div class="block block-features block-features--layout--classic">
+			<div class="container">
+				<div class="block-features__list">
+					<div class="block-features__item">
+						<div class="block-features__icon">
+							<svg width="48px" height="48px">
+<use xlink:href="#{resource['images:sprite.svg']}#fi-free-delivery-48"></use>
+</svg>
+						</div>
+						<div class="block-features__content">
+							<div class="block-features__title">Free Shipping</div>
+							<div class="block-features__subtitle">For orders from $50</div>
+						</div>
+					</div>
+					<div class="block-features__divider"></div>
+					<div class="block-features__item">
+						<div class="block-features__icon">
+							<svg width="48px" height="48px">
+<use xlink:href="#{resource['images:sprite.svg']}#fi-24-hours-48"></use>
+</svg>
+						</div>
+						<div class="block-features__content">
+							<div class="block-features__title">Support 24/7</div>
+							<div class="block-features__subtitle">Call us anytime</div>
+						</div>
+					</div>
+					<div class="block-features__divider"></div>
+					<div class="block-features__item">
+						<div class="block-features__icon">
+							<svg width="48px" height="48px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#fi-payment-security-48"></use>
+</svg>
+						</div>
+						<div class="block-features__content">
+							<div class="block-features__title">100% Safety</div>
+							<div class="block-features__subtitle">Only secure payments</div>
+						</div>
+					</div>
+					<div class="block-features__divider"></div>
+					<div class="block-features__item">
+						<div class="block-features__icon">
+							<svg width="48px" height="48px">
+<use xlink:href="#{resource['images:sprite.svg']}#fi-tag-48"></use>
+</svg>
+						</div>
+						<div class="block-features__content">
+							<div class="block-features__title">Hot Offers</div>
+							<div class="block-features__subtitle">Discounts up to 90%</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-features / end -->
+		<!-- .block-products-carousel -->
+		<div class="block block-products-carousel" data-layout="grid-4"
+			data-mobile-grid-columns="2">
+			<div class="container">
+				<div class="block-header">
+					<h3 class="block-header__title">Featured Products</h3>
+					<div class="block-header__divider"></div>
+
+					<div class="block-header__arrows-list">
+						<button class="block-header__arrow block-header__arrow--left"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-7x11"></use>
+</svg>
+						</button>
+						<button class="block-header__arrow block-header__arrow--right"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-7x11"></use>
+</svg>
+						</button>
+					</div>
+				</div>
+				<div class="block-products-carousel__slider">
+					<div class="block-products-carousel__preloader"></div>
+					<div class="owl-carousel">
+						<ui:repeat value="#{productBean.product}" var="prod"
+							varStatus="myVarStatus">
+							<div class="block-products-carousel__column">
+								<div class="block-products-carousel__cell">
+
+									<div class="product-card product-card--hidden-actions">
+										<div class="product-card__image product-image">
+											<a href="product.jsf" class="product-image__body"><img
+												class="product-image__img"
+												src="#{resource['images:products/product-1.jpg']}" alt="" /></a>
+										</div>
+										<div class="product-card__info">
+											<div class="product-card__name">
+												<a href="#{request.contextPath}/store/product.jsf">#{prod.nameProduct}</a>
+											</div>
+
+
+										</div>
+										<div class="product-card__actions">
+											<div class="product-card__availability">
+												Availability: <span class="text-success">In Stock</span>
+											</div>
+											<div class="product-card__prices">#{prod.price} TND</div>
+											<h:form>
+												<div class="product-card__buttons">
+													<h:commandButton
+														class="btn btn-primary product-card__addtocart"
+														value="Add To Cart"
+														action="#{cartBean.addProd(prod,loginBean.user)}">
+														<f:ajax render=":miniCart :count" />
+													</h:commandButton>
+													<h:commandButton
+														class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
+														value="Add To Cart"
+														action="#{cartBean.addProd(prod,loginBean.user)}">
+														<f:ajax render=":miniCart count" />
+													</h:commandButton>
+													<button
+														class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+														type="button">
+														<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#wishlist-16"></use>
+</svg>
+													</button>
+													<button
+														class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare"
+														type="button">
+														<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#compare-16"></use>
+</svg>
+													</button>
+												</div>
+											</h:form>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</ui:repeat>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-products-carousel / end -->
+		<!-- .block-banner -->
+		<div class="block block-banner">
+			<div class="container">
+				<a href="#" class="block-banner__body">
+					<div class="block-banner__image block-banner__image--desktop"
+						style="background-image: url('#{resource['images:banners/banner-1.jpg']}')"></div>
+					<div class="block-banner__image block-banner__image--mobile"
+						style="background-image: url('#{resource['images:banners/banner-1-mobile.jpg']}')">
+					</div>
+					<div class="block-banner__title">
+						Hundreds<br class="block-banner__mobile-br" /> Hand Tools
+					</div>
+					<div class="block-banner__text">Hammers, Chisels, Universal
+						Pliers, Nippers, Jigsaws, Saws</div>
+					<div class="block-banner__button">
+						<span class="btn btn-sm btn-primary">Shop Now</span>
+					</div>
+				</a>
+			</div>
+		</div>
+		<!-- .block-banner / end -->
+		<!-- .block-products -->
+		<div class="block block-products block-products--layout--large-first"
+			data-mobile-grid-columns="2">
+			<div class="container">
+				<div class="block-header">
+					<h3 class="block-header__title">Bestsellers</h3>
+					<div class="block-header__divider"></div>
+				</div>
+				<div class="block-products__body">
+					<div class="block-products__featured">
+						<div class="block-products__featured-item">
+							<div class="product-card product-card--hidden-actions">
+								<button class="product-card__quickview" type="button">
+									<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#quickview-16"></use>
+</svg>
+								</button>
+								<div class="product-card__badges-list">
+									<div class="product-card__badge product-card__badge--new">New</div>
+								</div>
+								<div class="product-card__image product-image">
+									<a href="product.jsf" class="product-image__body"><img
+										class="product-image__img"
+										src="#{resource['images:products/product-1.jpg']}" alt="" /></a>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__name">
+										<a href="product.jsf">Electric Planer Brandix KL370090G
+											300 Watts</a>
+									</div>
+
+									<ul class="product-card__features-list">
+										<li>Speed: 750 RPM</li>
+										<li>Power Source: Cordless-Electric</li>
+										<li>Battery Cell Type: Lithium</li>
+										<li>Voltage: 20 Volts</li>
+										<li>Battery Capacity: 2 Ah</li>
+									</ul>
+								</div>
+								<div class="product-card__actions">
+									<div class="product-card__availability">
+										Availability: <span class="text-success">In Stock</span>
+									</div>
+									<div class="product-card__prices">$749.00</div>
+									<div class="product-card__buttons">
+										<button class="btn btn-primary product-card__addtocart"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+											type="button">
+											<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#wishlist-16"></use>
+</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="block-products__list">
+						<!-- Start -->
+						<div class="block-products__list-item">
+							<div class="product-card product-card--hidden-actions">
+								<button class="product-card__quickview" type="button">
+									<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#quickview-16"></use>
+</svg>
+								</button>
+								<div class="product-card__badges-list">
+									<div class="product-card__badge product-card__badge--hot">Hot</div>
+								</div>
+								<div class="product-card__image product-image">
+									<a href="product.jsf" class="product-image__body"><img
+										class="product-image__img"
+										src="#{resource['images:products/product-2.jpg']}" alt="" /></a>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__name">
+										<a href="product.jsf">Undefined Tool IRadix DPS3000SY 2700
+											Watts</a>
+									</div>
+									<ul class="product-card__features-list">
+										<li>Speed: 750 RPM</li>
+										<li>Power Source: Cordless-Electric</li>
+										<li>Battery Cell Type: Lithium</li>
+										<li>Voltage: 20 Volts</li>
+										<li>Battery Capacity: 2 Ah</li>
+									</ul>
+								</div>
+								<div class="product-card__actions">
+									<div class="product-card__availability">
+										Availability: <span class="text-success">In Stock</span>
+									</div>
+									<div class="product-card__prices">$1,019.00</div>
+									<div class="product-card__buttons">
+										<button class="btn btn-primary product-card__addtocart"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+											type="button">
+											<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#wishlist-16"></use>
+</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-products / end -->
+		<!-- .block-categories -->
+		<div
+			class="block block--highlighted block-categories block-categories--layout--classic">
+			<div class="container">
+				<div class="block-header">
+					<h3 class="block-header__title">Popular Categories</h3>
+					<div class="block-header__divider"></div>
+				</div>
+				<div class="block-categories__list">
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-1.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Power Tools</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Screwdrivers</a></li>
+									<li><a href="#">Milling Cutters</a></li>
+									<li><a href="#">Sanding Machines</a></li>
+									<li><a href="#">Wrenches</a></li>
+									<li><a href="#">Drills</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">572 Products</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-2.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Hand Tools</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Screwdrivers</a></li>
+									<li><a href="#">Hammers</a></li>
+									<li><a href="#">Spanners</a></li>
+									<li><a href="#">Handsaws</a></li>
+									<li><a href="#">Paint Tools</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">134 Products</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-4.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Machine Tools</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Lathes</a></li>
+									<li><a href="#">Milling Machines</a></li>
+									<li><a href="#">Grinding Machines</a></li>
+									<li><a href="#">CNC Machines</a></li>
+									<li><a href="#">Sharpening Machines</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">301 Products</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-3.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Power Machinery</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Generators</a></li>
+									<li><a href="#">Compressors</a></li>
+									<li><a href="#">Winches</a></li>
+									<li><a href="#">Plasma Cutting</a></li>
+									<li><a href="#">Electric Motors</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">79 Products</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-5.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Measurement</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Tape Measure</a></li>
+									<li><a href="#">Theodolites</a></li>
+									<li><a href="#">Thermal Imagers</a></li>
+									<li><a href="#">Calipers</a></li>
+									<li><a href="#">Levels</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">366 Products</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="block-categories__item category-card category-card--layout--classic">
+						<div class="category-card__body">
+							<div class="category-card__image">
+								<a href="#"><img
+									src="#{resource['images:categories/category-6.jpg']}" alt="" /></a>
+							</div>
+							<div class="category-card__content">
+								<div class="category-card__name">
+									<a href="#">Clothes and PPE</a>
+								</div>
+								<ul class="category-card__links">
+									<li><a href="#">Winter Workwear</a></li>
+									<li><a href="#">Summer Workwear</a></li>
+									<li><a href="#">Helmets</a></li>
+									<li><a href="#">Belts and Bags</a></li>
+									<li><a href="#">Work Shoes</a></li>
+								</ul>
+								<div class="category-card__all">
+									<a href="#">Show All</a>
+								</div>
+								<div class="category-card__products">81 Products</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-categories / end -->
+		<!-- .block-products-carousel -->
+		<div class="block block-products-carousel" data-layout="horizontal"
+			data-mobile-grid-columns="2">
+			<div class="container">
+				<div class="block-header">
+					<h3 class="block-header__title">New Arrivals</h3>
+					<div class="block-header__divider"></div>
+					<div class="block-header__arrows-list">
+						<button class="block-header__arrow block-header__arrow--left"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-7x11"></use>
+</svg>
+						</button>
+						<button class="block-header__arrow block-header__arrow--right"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-7x11"></use>
+</svg>
+						</button>
+					</div>
+				</div>
+				<div class="block-products__body">
+
+					<div class="block-products__list">
+						<!-- Start -->
+						<div class="block-products__list-item">
+							<div class="product-card product-card--hidden-actions">
+								<button class="product-card__quickview" type="button">
+									<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#quickview-16"></use>
+</svg>
+								</button>
+								<div class="product-card__badges-list">
+									<div class="product-card__badge product-card__badge--hot">Hot</div>
+								</div>
+								<div class="product-card__image product-image">
+									<a href="product.jsf" class="product-image__body"><img
+										class="product-image__img"
+										src="#{resource['images:products/product-2.jpg']}" alt="" /></a>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__name">
+										<a href="product.jsf">Undefined Tool IRadix DPS3000SY 2700
+											Watts</a>
+									</div>
+									<ul class="product-card__features-list">
+										<li>Speed: 750 RPM</li>
+										<li>Power Source: Cordless-Electric</li>
+										<li>Battery Cell Type: Lithium</li>
+										<li>Voltage: 20 Volts</li>
+										<li>Battery Capacity: 2 Ah</li>
+									</ul>
+								</div>
+								<div class="product-card__actions">
+									<div class="product-card__availability">
+										Availability: <span class="text-success">In Stock</span>
+									</div>
+									<div class="product-card__prices">$1,019.00</div>
+									<div class="product-card__buttons">
+										<button class="btn btn-primary product-card__addtocart"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
+											type="button">Add To Cart</button>
+										<button
+											class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+											type="button">
+											<svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#wishlist-16"></use>
+</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- END -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-products-carousel / end -->
+		<!-- .block-posts -->
+		<div class="block block-posts" data-layout="list"
+			data-mobile-columns="1">
+			<div class="container">
+				<div class="block-header">
+					<h3 class="block-header__title">Latest News</h3>
+					<div class="block-header__divider"></div>
+					<div class="block-header__arrows-list">
+						<button class="block-header__arrow block-header__arrow--left"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-7x11"></use>
+</svg>
+						</button>
+						<button class="block-header__arrow block-header__arrow--right"
+							type="button">
+							<svg width="7px" height="11px">
+<use
+									xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-7x11"></use>
+</svg>
+						</button>
+					</div>
+				</div>
+				<div class="block-posts__slider">
+					<div class="owl-carousel">
+						<div class="post-card">
+							<div class="post-card__image">
+								<a href="#"><img
+									src="#{resource['images:posts/post-1.jpg']}" alt="" /></a>
+							</div>
+							<div class="post-card__info">
+								<div class="post-card__category">
+									<a href="#">Special Offers</a>
+								</div>
+								<div class="post-card__name">
+									<a href="#">Philosophy That Addresses Topics Such As
+										Goodness</a>
+								</div>
+								<div class="post-card__date">October 19, 2019</div>
+								<div class="post-card__content">In one general sense,
+									philosophy is associated with wisdom, intellectual culture and
+									a search for knowledge. In that sense, all cultures...</div>
+								<div class="post-card__read-more">
+									<a href="#" class="btn btn-secondary btn-sm">Read More</a>
+								</div>
+							</div>
+						</div>
+						<div class="post-card">
+							<div class="post-card__image">
+								<a href="#"><img
+									src="#{resource['images:posts/post-2.jpg']}" alt="" /></a>
+							</div>
+							<div class="post-card__info">
+								<div class="post-card__category">
+									<a href="#">Latest News</a>
+								</div>
+								<div class="post-card__name">
+									<a href="#">Logic Is The Study Of Reasoning And Argument
+										Part 2</a>
+								</div>
+								<div class="post-card__date">September 5, 2019</div>
+								<div class="post-card__content">In one general sense,
+									philosophy is associated with wisdom, intellectual culture and
+									a search for knowledge. In that sense, all cultures...</div>
+								<div class="post-card__read-more">
+									<a href="#" class="btn btn-secondary btn-sm">Read More</a>
+								</div>
+							</div>
+						</div>
+						<div class="post-card">
+							<div class="post-card__image">
+								<a href="#"><img
+									src="#{resource['images:posts/post-3.jpg']}" alt="" /></a>
+							</div>
+							<div class="post-card__info">
+								<div class="post-card__category">
+									<a href="#">New Arrivals</a>
+								</div>
+								<div class="post-card__name">
+									<a href="#">Some Philosophers Specialize In One Or More
+										Historical Periods</a>
+								</div>
+								<div class="post-card__date">August 12, 2019</div>
+								<div class="post-card__content">In one general sense,
+									philosophy is associated with wisdom, intellectual culture and
+									a search for knowledge. In that sense, all cultures...</div>
+								<div class="post-card__read-more">
+									<a href="#" class="btn btn-secondary btn-sm">Read More</a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-posts / end -->
+		<!-- .block-brands -->
+		<div class="block block-brands">
+			<div class="container">
+				<div class="block-brands__slider">
+					<div class="owl-carousel">
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-1.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-2.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-3.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-4.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-5.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-6.png']}"
+								alt="" /></a>
+						</div>
+						<div class="block-brands__item">
+							<a href="#"><img src="#{resource['images:logos/logo-7.png']}"
+								alt="" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .block-brands / end -->
+		<!-- .block-product-columns -->
+
+	</ui:define>
+</ui:composition>

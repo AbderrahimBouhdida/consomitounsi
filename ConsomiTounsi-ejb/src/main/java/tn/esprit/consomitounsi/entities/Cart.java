@@ -3,6 +3,8 @@ package tn.esprit.consomitounsi.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,9 +36,10 @@ public class Cart implements Serializable{
 	private boolean isCurrent; 
 	@Temporal(TemporalType.DATE)
 	private Date created;
-	
-	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<CartProduct> products;
+	
+	
 	public Cart() {
 	}
 	

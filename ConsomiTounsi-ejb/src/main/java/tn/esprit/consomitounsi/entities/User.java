@@ -6,9 +6,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class User implements Serializable{
@@ -17,12 +21,14 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private int idUser;
-	private int role;
+	@Enumerated(EnumType.STRING)
+	private Roles role;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String username;
 	private String password;
+	@Temporal(TemporalType.DATE)
 	private Date dob;
 	private String address;
 	private String phone;
@@ -30,11 +36,14 @@ public class User implements Serializable{
 	private String salt;
 	private String verifToken;
 	private boolean isValid;
+	private boolean isLocked;
+	@Enumerated(EnumType.STRING)
+	private Genders gender;
 	
 	public User() {
 	}
 
-	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
+	public User(Roles role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img) {
 		this.role = role;
 		this.firstName = firstName;
@@ -49,7 +58,7 @@ public class User implements Serializable{
 	}
 	
 
-	public User(int role, String firstName, String lastName, String email, String username, String password, Date dob,
+	public User(Roles role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img, String salt) {
 		this.role = role;
 		this.firstName = firstName;
@@ -64,7 +73,7 @@ public class User implements Serializable{
 		this.salt = salt;
 	}
 
-	public User(int idUser, int role, String firstName, String lastName, String email, String username, String password,
+	public User(int idUser, Roles role, String firstName, String lastName, String email, String username, String password,
 			Date dob, String address, String phone, String img, String salt) {
 		this.idUser = idUser;
 		this.role = role;
@@ -114,11 +123,11 @@ public class User implements Serializable{
 		this.idUser = idUser;
 	}
 
-	public int getRole() {
+	public Roles getRole() {
 		return role;
 	}
 
-	public void setRole(int role) {
+	public void setRole(Roles role) {
 		this.role = role;
 	}
 
@@ -193,5 +202,21 @@ public class User implements Serializable{
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void setLocked(boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+
+	public Genders getGender() {
+		return gender;
+	}
+
+	public void setGender(Genders gender) {
+		this.gender = gender;
+	}
+
 }

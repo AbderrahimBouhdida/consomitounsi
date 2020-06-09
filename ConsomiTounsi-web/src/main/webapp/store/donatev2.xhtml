@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/store/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+	<h:panelGroup columns="2">
+			<h:form>
+			<h:head>
+
+
+			<title>Doante</title>
+
+			<!-- CSS-->
+			<link rel="stylesheet" href="vendor/donate/style.css"></link>
+
+		</h:head>
+
+		<body>
+		
+
+
+
+
+			<main role="main"> <!-- progress bar -->
+
+			<div class="donation--container">
+
+				<h1 id="donation--user" class="donation--user">Your Progress
+					User</h1>
+				<span class="donation--title">Reached:</span> <span
+					id="donation--goal" class="donation--goal" />
+
+				<div class="donation--bar">
+
+					<div class="donation--rounded">
+
+						<div id="donation--progress" class="donation--progress"
+							style="width: 0px;" />
+					</div>
+
+					<div id="donation--number" class="donation--number"
+						style="left: 0px;" />
+					<span id="donation--status" class="donation--status" />
+				</div>
+				<form class="form--container">
+					<!--         <input id="donation-x-amount" class="input" type="number" min="1" placeholder="$ enter amount" /> -->
+					<!--         <input id="donate" class="button" type="submit" value="Donate" /> -->
+					<h:inputText id="donation--amount" class="input" type="number"
+						min="1" placeholder="$ enter amount"
+						value="#{collectionbean.colToMod.collectedamount}"></h:inputText>
+						
+					<h:form >
+					<h:commandButton id="donate" class="button" type="submit"
+						value="Donate" action="#{collectionbean.addmoney()}" >
+						
+						
+						
+						</h:commandButton></h:form>
+					<!--         <label id="doncol" hidden="" >60</label> -->
+					<!--         <label id="dongoal" hidden="" >100</label> -->
+					<div>
+						<h:outputText style="display:none"
+							value="#{collectionbean.colToMod.collectedamount}" id="doncol" />
+					</div>
+					<div>
+						<h:outputText style="display:none"
+							value="#{collectionbean.colToMod.goal}" id="dongoal" />
+					</div>
+
+
+
+
+
+
+				</form>
+			</div>
+			</main>
+
+
+
+
+			<!-- JS-->
+
+			<script src="vendor/donate/script.js" type="text/javascript"></script>
+			
+
+		</body>	
+			
+			</h:form>
+		</h:panelGroup>
+			
+
+	</ui:define>
+</ui:composition>

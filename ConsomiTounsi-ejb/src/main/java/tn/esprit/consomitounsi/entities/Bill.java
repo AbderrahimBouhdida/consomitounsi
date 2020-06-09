@@ -23,8 +23,14 @@ public class Bill implements Serializable{
 	private int idBill;
 	@OneToOne
 	private Cart cart;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date billDate;
+	@OneToOne
+	private Adress shipping;
+	@OneToOne
+	private Adress billing;
+	
+	
 	public int getIdBill() {
 		return idBill;
 	}
@@ -42,6 +48,18 @@ public class Bill implements Serializable{
 	}
 	public void setBillDate(Date billDate) {
 		this.billDate = billDate;
+	}
+	public Adress getShipping() {
+		return shipping;
+	}
+	public void setShipping(Adress shipping) {
+		this.shipping = shipping;
+	}
+	public Adress getBilling() {
+		return billing;
+	}
+	public void setBilling(Adress billing) {
+		this.billing = billing;
 	}
 	
 	

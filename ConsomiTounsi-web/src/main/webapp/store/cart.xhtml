@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:param name="page_name" value="Cart" />
+	<ui:define name="content">
+<h:messages/>
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item active" aria-current="page">Shopping
+								Cart</li>
+						</ol>
+					</nav>
+				</div>
+				<div class="page-header__title">
+					<h1>Shopping Cart</h1>
+				</div>
+			</div>
+		</div>
+		<h:form id="allCart">
+			<h:panelGroup rendered="#{cartBean.openCart() eq false}" id="empty">
+				<div class="block-empty__body">
+					<div class="block-empty__message">Your shopping cart is
+						empty!</div>
+					<div class="block-empty__actions">
+						<a class="btn btn-primary btn-sm" href="index.jsf">Continue</a>
+					</div>
+				</div>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{cartBean.openCart()}">
+				<h:form id="allCart">
+					<div class="cart block">
+						<div class="container">
+							<table class="cart__table cart-table">
+								<thead class="cart-table__head">
+									<tr class="cart-table__row">
+										<th class="cart-table__column cart-table__column--image">Image</th>
+										<th class="cart-table__column cart-table__column--product">
+											Product</th>
+										<th class="cart-table__column cart-table__column--price">Price</th>
+										<th class="cart-table__column cart-table__column--quantity">
+											Quantity</th>
+										<th class="cart-table__column cart-table__column--total">Total</th>
+										<th class="cart-table__column cart-table__column--remove"></th>
+									</tr>
+								</thead>
+								<tbody class="cart-table__body">
+									<h:form>
+									<ui:repeat value="#{cartBean.items}" var="item" varStatus="status">
+										<tr class="cart-table__row">
+											<td class="cart-table__column cart-table__column--image">
+												<div class="product-image">
+													<a href="#" class="product-image__body"><img
+														class="product-image__img"
+														src="#{resource['images:products/product-1.jpg']}" alt="" /></a>
+												</div>
+											</td>
+											<td class="cart-table__column cart-table__column--product"><a
+												href="#" class="cart-table__product-name">#{item.product.nameProduct}</a>
+												</td>
+											<td class="cart-table__column cart-table__column--price"
+												data-title="Price">#{item.product.price} TND</td>
+											<td class="cart-table__column cart-table__column--quantity"
+												data-title="Quantity">
+												
+												
+												<div class="input">
+													<h:inputText class="form-control input-number__input" type="number"
+														value="#{item.quantity}" p:placeholder="#{item.quantity}"
+														onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" >
+														<f:ajax   event="keyup" />
+														</h:inputText>
+												</div>
+												
+												<h:commandButton class="btn "
+												  action="#{cartBean.modProd(item.product,loginBean.user,item.quantity)}"
+														>
+														
+														<svg width="12px" height="12px">
+<use xlink:href="#{resource['images:sprite.svg']}#cross-12"></use>
+</svg>
+													</h:commandButton>
+													
+													
+											</td>
+											<td class="cart-table__column cart-table__column--total"
+												data-title="Total">#{item.product.price*item.quantity} TND</td>
+											<td class="cart-table__column cart-table__column--remove">
+												<h:commandButton class="btn btn-light btn-sm btn-svg-icon"
+													action="#{cartBean.removeProd(item.product,loginBean.user)}">
+													<f:ajax render="@form count miniCart empty allCart" />
+													<svg width="12px" height="12px">
+<use xlink:href="#{resource['images:sprite.svg']}#cross-12"></use>
+</svg>
+												</h:commandButton>
+											</td>
+										</tr>
+									</ui:repeat>
+									</h:form>
+								</tbody>
+							</table>
+							<div class="cart__actions">
+								
+								<div class="cart__buttons">
+									<a href="index.jsf" class="btn btn-light">Continue Shopping</a>
+									
+								</div>
+							</div>
+							<div class="row justify-content-end pt-5">
+								<div class="col-12 col-md-7 col-lg-6 col-xl-5">
+									<div class="card">
+										<div class="card-body">
+											<h3 class="card-title">Cart Totals</h3>
+											<table class="cart__totals">
+												<thead class="cart__totals-header">
+													<tr>
+														<th>Subtotal</th>
+														<td>#{cartBean.subtotal} TND</td>
+													</tr>
+												</thead>
+												<tbody class="cart__totals-body">
+													<tr>
+														<th>Shipping</th>
+														<td>#{cartBean.shipping} TND</td>
+													</tr>
+													<tr>
+														<th>Tax</th>
+														<td>#{cartBean.tax} TND</td>
+													</tr>
+												</tbody>
+												<tfoot class="cart__totals-footer">
+													<tr>
+														<th>Total</th>
+														<td>#{cartBean.total} TND</td>
+													</tr>
+												</tfoot>
+											</table>
+											<a
+												class="btn btn-primary btn-xl btn-block cart__checkout-button"
+												href="#{request.contextPath}/store/checkout.jsf">Proceed to checkout</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/panel/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+<h:panelGroup columns="2">
+			<h:form>
+		
+				<table>
+					<tr>
+						<td><h:outputText value="idCategory"></h:outputText></td>
+						<td><h:inputText value="#{categoryBean.idCategory}"></h:inputText></td>
+					</tr>
+					<tr>
+					<td><h:outputText value="nom"></h:outputText></td>
+						<td><h:inputText value="#{categoryBean.nom}"></h:inputText></td>
+					</tr>
+					<tr>
+					<td><h:outputText value="description"></h:outputText></td>
+						<td><h:inputText value="#{categoryBean.description}"></h:inputText></td>
+					</tr>
+					<tr>
+					<td><h:outputText value="type"></h:outputText></td>
+						<td><h:inputText value="#{categoryBean.type}"></h:inputText></td>
+					</tr>
+					<tr>
+					<td><h:outputText value="Stock"></h:outputText></td>
+						<td><h:inputText value="#{categoryBean.stock}"></h:inputText></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h:commandButton value="Update category" action="#{categoryBean.updateCategory()}" /></td>
+					</tr>
+
+				</table>
+				
+					
+			</h:form>
+		</h:panelGroup>
+		
+		
+	</ui:define>
+</ui:composition>

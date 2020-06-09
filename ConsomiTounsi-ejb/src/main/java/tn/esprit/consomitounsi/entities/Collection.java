@@ -2,7 +2,6 @@ package tn.esprit.consomitounsi.entities;
 
 import java.io.Serializable;
 
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 
 
 @Entity
@@ -54,6 +54,8 @@ public class Collection implements Serializable{
 		this.goal = goal;
 		this.collectedamount = collectedamount;
 	}
+	
+	
 
 	public int getIdcollection() {
 		return idcollection;
@@ -110,6 +112,9 @@ public class Collection implements Serializable{
 	public void setCollectedamount(int collectedamount) {
 		this.collectedamount = collectedamount;
 	}
+	public void addtoCollectedamount(int collectedamount) {
+		this.collectedamount += collectedamount;
+	}
 
 	public User getUser() {
 		return user;
@@ -121,8 +126,5 @@ public class Collection implements Serializable{
 	
 	
 
-	
-	
-	
 
 }

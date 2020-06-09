@@ -20,6 +20,9 @@ import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 
 
+
+
+
 @Stateless
 @LocalBean
 public class CartServices implements ICartServicesRemote{
@@ -50,12 +53,12 @@ public class CartServices implements ICartServicesRemote{
 
 	@Override
 	public List<Cart> findCartByUserId(User id) {
-		System.out.println("called");
+		
 		TypedQuery<Cart> query = em.createQuery("select c from Cart c where user=:user", Cart.class);
 		query.setParameter("user", id);
 		List<Cart> carts = new ArrayList<Cart>();
 		try { carts = query.getResultList(); }
-		catch (Exception e) { System.out.println("Erreur : " + e); }
+		catch (Exception e) { }
 		return carts;
 	}
 	
@@ -73,7 +76,6 @@ public class CartServices implements ICartServicesRemote{
 		List<Cart> cr = new ArrayList<Cart>();
 		try {
 			cr = query.getResultList();
-			System.out.println(cr.size());
 			return (cr.size()>0) ? true:false;
 			}catch (Exception e) {
 				return false;
@@ -88,59 +90,66 @@ public class CartServices implements ICartServicesRemote{
 		query.setParameter("curr", true);
 		Cart cr = null;
 		try {
-			System.out.println("geeeeeeeeeeeeeeeeeeeeez");
 			cr = query.getSingleResult();
-			System.out.println(cr.getIdCart());
 				return cr;
 		
 		}catch (Exception e) {
-			System.out.println("Error "+e);
+			
 			return null;
 		}
 	}
 
 	@Override
-	public boolean addProdCart(User user, CartProduct prod) {
+	public boolean addProdCart(User user, Product prod) {
 		Cart cr = findActiveCartByUserId(user);
+		if(cr==null)
+			return false;
 		CartProdPk pk = new CartProdPk();
 		pk.setCart(cr.getIdCart());
-		pk.setProd(prod.getCartProdPk().getProd());
-		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		pk.setProd(prod.getBarecode());
+		Product ppp = em.find(Product.class, prod.getBarecode());
 		CartProduct cp = new CartProduct();
 		cp.setCartProdPk(pk);
-		cp.setQuantity(120);
+		cp.setQuantity(prod.getQuantity());
 		if(!prodExist(cr, ppp)) {
 			em.persist(cp);
+			ppp.setQuantity(ppp.getQuantity()-prod.getQuantity());
+			cr.setTotalPrice(cr.getTotalPrice()+(prod.getQuantity()*prod.getPrice()));
 			return true;
 		}
-		System.out.println("exists");
 		return false;
 	}
 	
 	@Override
-	public boolean removeProd(User user,CartProduct prod) {
+	public boolean removeProd(User user,Product prod) {
 		Cart cr = findActiveCartByUserId(user);
-		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		Product ppp = em.find(Product.class, prod.getBarecode());
 		if(prodExist(cr, ppp)) {
 			CartProdPk cpk = new CartProdPk();
 			cpk.setCart(cr.getIdCart());
-			cpk.setProd(prod.getCartProdPk().getProd());
+			cpk.setProd(prod.getBarecode());
 			em.remove(em.find(CartProduct.class, cpk));
+			ppp.setQuantity(ppp.getQuantity()+prod.getQuantity());
+			cr.setTotalPrice(cr.getTotalPrice()-(prod.getQuantity()*prod.getPrice()));
 			return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public boolean modProd(User user,CartProduct prod) {
+	public boolean modProd(User user,Product prod) {
 		Cart cr = findActiveCartByUserId(user);
-		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		Product ppp = em.find(Product.class, prod.getBarecode());
+		
 		if(prodExist(cr, ppp)) {
 			CartProdPk cpk = new CartProdPk();
 			cpk.setCart(cr.getIdCart());
-			cpk.setProd(prod.getCartProdPk().getProd());
+			cpk.setProd(prod.getBarecode());
 			CartProduct cp = em.find(CartProduct.class, cpk);
-			cp.setQuantity(prod.getQuantity());;
+			int diff=prod.getQuantity()-cp.getQuantity();
+			ppp.setQuantity(ppp.getQuantity()-diff);
+			cp.setQuantity(cp.getQuantity()+diff);
+			cr.setTotalPrice(cr.getTotalPrice()+(diff*ppp.getPrice()));
 			return true;
 		}
 		return false;
@@ -152,6 +161,7 @@ public class CartServices implements ICartServicesRemote{
 		List<CartProduct> prods = cr.getProducts();//.stream().map(x -> em.find(Product.class, x.getCartProdPk().getProd())).collect(Collectors.toList());
 		return prods;
 	}
+	
 	
 	public boolean prodExist(Cart cr, Product pr) {
 		Product prod=em.find(Product.class, pr.getBarecode());
@@ -167,4 +177,37 @@ public class CartServices implements ICartServicesRemote{
 		EmailService ems = new EmailService();
 		ems.sendEmail("imousrf3@gmail.com", "testing", "bouhdida.abderrahim@gmail.com", "Hello There");
 	}
+
+	@Override
+	public boolean addProdCart(User user, CartProduct prod) {
+		Cart cr = findActiveCartByUserId(user);
+		if(cr==null)
+			return false;
+		CartProdPk pk = new CartProdPk();
+		pk.setCart(cr.getIdCart());
+		pk.setProd(prod.getCartProdPk().getProd());
+		Product ppp = em.find(Product.class, prod.getCartProdPk().getProd());
+		CartProduct cp = new CartProduct();
+		cp.setCartProdPk(pk);
+		cp.setQuantity(120);
+		if(!prodExist(cr, ppp)) {
+			em.persist(cp);
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void closeCart(Cart cart) {
+		Cart cr = em.find(Cart.class,cart.getIdCart());
+		cr.setCurrent(false);
+	}
+
+	@Override
+	public boolean modProd(User user, CartProduct prod) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }
