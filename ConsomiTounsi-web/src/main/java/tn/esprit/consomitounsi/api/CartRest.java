@@ -76,9 +76,9 @@ public class CartRest {
 		User us = new User();
 		boolean removed;
 		us.setIdUser(id);
-		removed = cartservice.removeProd(us, pid);
+		/*removed = cartservice.removeProd(us, pid);
 		if(removed)
-			return Response.ok("removed").build();
+			return Response.ok("removed").build();*/
 		return Response.ok("Item doesn't exists").build();
 	}
 	@Path("/mod/{id}")

@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/panel/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tabbable-line">
+					<div class="tab-content">
+						<div class="tab-pane active fontawesome-demo" id="tab1">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="card card-topline-red">
+										<div class="card-head">
+											<div class="tools">
+												<a class="fa fa-repeat btn-color box-refresh"
+													href="javascript:;"></a> <a
+													class="t-collapse btn-color fa fa-chevron-down"
+													href="javascript:;"></a> <a
+													class="t-close btn-color fa fa-times" href="javascript:;"></a>
+											</div>
+										</div>
+										<h:form id="form">
+										<div class="card-body">
+											<div class="row">
+												<div class="col-md-6 col-sm-6 col-xs-6">
+													
+													<div class="btn-group ">
+														<a
+															class="btn deepPink-bgcolor btn-outline dropdown-toggle"
+															data-toggle="dropdown">Actions</a>
+														<ul class="dropdown-menu pull-right">
+															<li><h:commandLink value="Delete" action="#{userBean.deleteUsers()}">
+																	
+																</h:commandLink>
+															</li>
+															<li><h:commandLink value="Lock" action="#{userBean.lockAccounts()}">
+																	
+																</h:commandLink></li>
+															<li><h:commandLink value="Unlock" action="#{userBean.unlockAccounts()}">
+																	
+																</h:commandLink></li>
+														</ul>
+													</div>
+													
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-6">
+													<div class="btn-group pull-right">
+														<h:commandLink action="add_client?faces-redirect=true" value="New" styleClass="btn btn-info" ></h:commandLink>
+													</div>
+												</div>
+											</div>
+											<style type="text/css">
+											    .value {
+											        font-weight: bold;
+											    }
+											     
+											    .ui-datatable {
+											        margin-bottom: 25px
+											    }
+											     
+											    .ui-datatable .ui-datatable-footer {
+											        text-align:left;
+											    }
+											     
+											    .ui-datalist ul {
+											        padding: 0 0 0 10px;
+											        margin: 5px 0;
+											    }
+											     
+											    .ui-datatable .ui-button-icon-only .ui-button-text {
+											        padding: 0;
+											        line-height: 1.2;
+											    }
+											</style>
+											
+											<div class="table-scrollable">
+												
+												<p:growl id="msgs" sticky="true"></p:growl>
+												<p:dataTable var="user" value="#{userBean.users}" rows="10"
+													selection="#{userBean.selectedUsers}" rowKey="#{user.idUser}"
+													paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+													currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+													rowsPerPageTemplate="5,10,15"
+													tableStyleClass="table table-hover table-checkable order-column full-width">
+													
+													<f:facet name="header">
+											            Users
+											        </f:facet>
+													 <p:column selectionMode="multiple" style="width:30px;text-align:center"/>
+													<p:column headerText="Id" styleClass="center" style="width:70px">
+														<h:outputText value="#{user.idUser}" />
+													</p:column>
+													<p:column headerText="Image" styleClass="patient-img" style="width: 60px;">
+														<h:graphicImage library="uploads" name="#{user.img}"/>
+													</p:column>
+													<p:column headerText="First name" styleClass="center">
+														<h:outputText value="#{user.firstName}" />
+													</p:column>
+
+													<p:column headerText="Last name" styleClass="center">
+														<h:outputText value="#{user.lastName}" />
+													</p:column>
+
+													<p:column headerText="Username" styleClass="center">
+														<h:outputText value="#{user.username}" />
+													</p:column>
+
+													<p:column headerText="Birth Date" styleClass="center">
+														<h:outputText value="#{user.dob}" />
+													</p:column>
+
+													<p:column headerText="Sexe" styleClass="center">
+														<h:outputText value="#{user.gender}" />
+													</p:column>
+
+													<p:column headerText="Email" styleClass="center" style="width:300px">
+														<h:outputText value="#{user.email}" />
+													</p:column>
+
+													<p:column headerText="Phone" styleClass="center">
+														<h:outputText value="#{user.phone}" />
+													</p:column>
+
+													<p:column headerText="Verified" styleClass="center" style="width:70px">
+														<p:selectBooleanCheckbox value="#{user.valid}"
+															disabled="true" />
+													</p:column>
+
+													<p:column headerText="Locked" styleClass="center" style="width:70px">
+														<p:selectBooleanCheckbox value="#{user.locked}"
+															disabled="true" />
+													</p:column>
+													<p:column headerText="Actions" styleClass="center">
+														<h:commandLink styleClass="btn btn-primary btn-xs"
+															action="#{userBean.navToMod(user)}">
+															<i class="fa fa-pencil"></i>
+														</h:commandLink>
+														<h:commandLink class="btn btn-danger btn-xs"
+															action="#{userBean.deleteUser(user)}">
+															<i class="fa fa-trash-o "></i>
+															<f:ajax render="@form"/>
+														</h:commandLink>
+														<h:commandLink class="btn btn-danger btn-xs"
+															rendered="#{not user.locked}"
+															action="#{userBean.lockAccount(user)}">
+															<i class="fa fa-lock"></i>
+															<f:ajax render="@form"/>
+														</h:commandLink>
+														<h:commandLink class="btn btn-danger btn-xs"
+															rendered="#{user.locked}"
+															action="#{userBean.unlockAccount(user)}">
+															<i class="fa fa-unlock-alt"></i>
+															<f:ajax render="@form"/>
+														</h:commandLink>
+													</p:column>
+
+												</p:dataTable>
+											
+											</div>
+											
+										</div>
+										</h:form>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

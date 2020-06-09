@@ -16,6 +16,10 @@ import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.User;
 import tn.esprit.consomitounsi.services.intrf.IBillServiceRemote;
 
+
+
+
+
 @Stateless
 @LocalBean
 public class BillServices implements IBillServiceRemote{
@@ -27,7 +31,7 @@ public class BillServices implements IBillServiceRemote{
 	@Override
 	public int addBill(Bill bill) {
 		em.persist(bill);
-		return 0;
+		return bill.getIdBill();
 	}
 	@Override
 	public boolean removeBill(int idBill) {
@@ -59,7 +63,7 @@ public class BillServices implements IBillServiceRemote{
 		
 	}
 	@Override
-	public List<Bill> findBillsByUser(User user) {//to do 
+	public List<Bill> findBillsByUser(User user) {
 		TypedQuery<Cart> query = em.createQuery("select c from Cart c where user=:user", Cart.class);
 		query.setParameter("user", user);
 		List<Cart> carts = new ArrayList<Cart>();

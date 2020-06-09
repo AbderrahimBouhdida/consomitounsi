@@ -3,7 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	template="/store/Templates/template.xhtml">
+	template="/WEB-INF/Templates/template.xhtml">
 	<ui:param name="cat" value="false" />
 	<ui:define name="content">
 
@@ -21,11 +21,11 @@
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
 										class="breadcrumb-arrow" width="6px" height="9px">
-<use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
 </svg></li>
 								<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
 										class="breadcrumb-arrow" width="6px" height="9px">
-<use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
 </svg></li>
 								<li class="breadcrumb-item active" aria-current="page">Contact
 									Us</li>

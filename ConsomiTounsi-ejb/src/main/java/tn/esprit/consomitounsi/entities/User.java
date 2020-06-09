@@ -1,5 +1,6 @@
 package tn.esprit.consomitounsi.entities;
 
+
 //test v2
 import java.io.Serializable;
 import java.util.Date;
@@ -10,13 +11,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-public class User implements Serializable {
+public class User implements Serializable{
 
 	private static final long serialVersionUID = 1210738760881297022L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private int idUser;
 	@Enumerated(EnumType.STRING)
 	private Roles role;
@@ -25,6 +28,7 @@ public class User implements Serializable {
 	private String email;
 	private String username;
 	private String password;
+	@Temporal(TemporalType.DATE)
 	private Date dob;
 	private String address;
 	private String phone;
@@ -32,6 +36,9 @@ public class User implements Serializable {
 	private String salt;
 	private String verifToken;
 	private boolean isValid;
+	private boolean isLocked;
+	@Enumerated(EnumType.STRING)
+	private Genders gender;
 	
 	public User() {
 	}
@@ -49,6 +56,7 @@ public class User implements Serializable {
 		this.phone = phone;
 		this.img = img;
 	}
+	
 
 	public User(Roles role, String firstName, String lastName, String email, String username, String password, Date dob,
 			String address, String phone, String img, String salt) {
@@ -193,6 +201,22 @@ public class User implements Serializable {
 
 	public void setImg(String img) {
 		this.img = img;
+	}
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void setLocked(boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+
+	public Genders getGender() {
+		return gender;
+	}
+
+	public void setGender(Genders gender) {
+		this.gender = gender;
 	}
 
 }

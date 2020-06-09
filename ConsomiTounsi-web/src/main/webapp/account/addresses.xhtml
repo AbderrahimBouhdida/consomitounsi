@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item active" aria-current="page">My
+								Account</li>
+						</ol>
+					</nav>
+				</div>
+				<div class="page-header__title">
+					<h1>My Account</h1>
+				</div>
+			</div>
+		</div>
+		<div class="block">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-lg-3 d-flex">
+						<div class="account-nav flex-grow-1">
+							<h4 class="account-nav__title">Navigation</h4>
+							<h:form>
+								<ul>
+									<li class="account-nav__item"><a
+										href="#{request.contextPath}/account/dashboard.jsf">Dashboard</a></li>
+									<li class="account-nav__item"><h:commandLink
+											class="menu__item-link"
+											action="#{userBean.navToEditProfile()}" value="Edit Profile"/></li>
+									<li class="account-nav__item"><a
+										href="#{request.contextPath}/account/orders.jsf">Order
+											History</a></li>
+									<li class="account-nav__item account-nav__item--active"><a
+										href="#{request.contextPath}/account/addresses.jsf">Addresses</a></li>
+									<li class="account-nav__item"><h:commandLink
+											action="#{loginBean.doLogout}" class="menu__item-link"
+											value="Logout" /></li>
+								</ul>
+							</h:form>
+						</div>
+					</div>
+					<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+						<h:form>
+						<div class="addresses-list">
+							<h:commandLink class="addresses-list__item addresses-list__item--new"
+											action="/account/add-address?faces-redirect=true">
+							
+								<div class="addresses-list__plus"></div>
+								<div class="btn btn-secondary btn-sm">Add New</div>
+							</h:commandLink>
+							<div class="addresses-list__divider"></div>
+							<ui:repeat var="address"
+								value="#{addressBean.addresses(loginBean.user)}">
+								
+									<div class="addresses-list__item card address-card">
+										<h:panelGroup rendered="#{address.defAdress}">
+											<div class="address-card__badge">Default Address</div>
+										</h:panelGroup>
+										<div class="address-card__body">
+											<div class="address-card__name">#{address.firstName}
+												#{address.lastName}</div>
+											<div class="address-card__row">
+												<div class="address-card__row-title">Address</div>
+												<div class="address-card__row-content">
+													#{address.street}<br />
+													#{address.city}<br /> #{address.state}<br />
+													#{address.zipCode}<br />
+												</div>
+											</div>
+											<div class="address-card__row">
+												<div class="address-card__row-title">Phone</div>
+												<div class="address-card__row-content">#{address.phone}</div>
+											</div>
+											<div class="address-card__footer">
+												<h:commandButton
+													class="btn "
+													value="Edit" action="#{addressBean.modAddress(address)}">
+													<f:ajax render="@form" />
+												</h:commandButton>
+												<h:commandButton
+													class="btn btn-primary product-card__addtocart"
+													value="remove" action="#{addressBean.delAddress(address)}">
+													<f:ajax render="@form" />
+												</h:commandButton>
+											</div>
+										</div>
+									</div>
+								
+						
+						<div class="addresses-list__divider"></div>
+						</ui:repeat>
+
+
+					</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		</div>
+	</ui:define>
+</ui:composition>
