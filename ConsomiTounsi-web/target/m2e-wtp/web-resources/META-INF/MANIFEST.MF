@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: bouhdida
-Build-Jdk: 1.8.0_252
+Built-By: kimoz
+Build-Jdk: 1.8.0_181
 Created-By: Maven Integration for Eclipse
 

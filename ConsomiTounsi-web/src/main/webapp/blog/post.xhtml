@@ -1,0 +1,629 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:x="http://java.sun.com/jsp/jstl/xml"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+		<!-- jquery library -->
+
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+
+		<script>
+			function getDuration(target) {
+				var currentTop = $(window).scrollTop(), rate = 0.5, // 1000px/500ms
+				distance;
+				distance = Math.abs(currentTop - target);
+				return distance * rate;
+			}
+
+			$(document).ready(function() {
+				//click event to scroll to bottom
+				$('.scrollToBottom').click(function() {
+
+					//$('html,body').animate({scrollTop:$(document).height()},1000); this scrolls to bottom page
+					var position = $("#commentsYo").offset().top;
+					$('html,body').animate({
+						scrollTop : position
+					}, 2000);
+
+					return false;
+
+				});
+			});
+		</script>
+
+		<style>
+.popup {
+	-webkit-box-shadow: 9px -1px 15px 0px rgba(255, 50, 50, 0.9);
+	-moz-box-shadow: 9px -1px 15px 0px rgba(255, 50, 50, 0.9);
+	box-shadow: 9px -1px 15px 0px rgba(255, 50, 50, 0.9);
+	width: 100%;
+	height: 100%;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.popup-content {
+	height: 300px;
+	width: 500px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	position: relative;
+}
+
+.close {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	cursor: pointer;
+}
+</style>
+
+
+
+		<div class="page-header">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a
+								href="#{request.contextPath}/blog/blog-classic.jsf">Home</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use
+										xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item"><a href=""> Post
+									##{SubjectBean.postIdSubject}</a> <svg class="breadcrumb-arrow"
+									width="6px" height="9px">
+<use
+										xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+							<li class="breadcrumb-item active" aria-current="page">Post</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-lg-8"
+					style="padding-left: 0px; padding-right: 0px;">
+					<div class="block post post--layout--classic">
+
+						<div class="post__header post-header post-header--layout--classic">
+							<div class="post-header__categories">
+								<a href="#" style="margin-right:5px">#{SubjectBean.postCategory} </a>
+								
+							</div>
+							<h:form>
+					
+									<h:commandButton  class="btn btn-danger" rendered="#{not SubjectBean.postResolved}"
+																	value="not resolved" action="#{SubjectBean.resolvedSubj()}" >
+																<f:ajax render="@form" ></f:ajax>
+																</h:commandButton>
+																
+																<h:outputText class="badge badge-success"
+																	value="resolved" rendered="#{SubjectBean.postResolved}" >
+																</h:outputText>
+														
+																</h:form>
+																
+							<div class="post-author"
+								style="border-top-width: 0px; border-left-width: 0px; border-bottom-width: 0px; border-right-width: 0px;">
+								<div class="post-author__avatar">
+									<a href="#"><h:graphicImage library="uploads"
+											name="#{SubjectBean.postUserImage}" width="50" height="50"></h:graphicImage>
+									</a>
+								</div>
+								<div class="post-author__info">
+									<h:panelGroup class="post-card__category">
+										<font size="3px"> <a href="#"><h:outputText
+													value="#{SubjectBean.postUserName}" /></a>
+										</font>
+									</h:panelGroup>
+									<h1 class="post-header__title">#{SubjectBean.postTitle}</h1>
+									<div class="post-header__meta" style="margin-bottom: 0px;">
+										<!--  <div class="post-header__meta-item">
+									By <a href="#"><h:outputText
+											value="#{SubjectBean.postUserName}" /></a>
+								</div>	-->
+										<form>
+											<div class="post-header__meta-item"
+												style="margin-bottom: 0px;">
+												<p style="margin-left: 480px;">
+													<a href="#"> Posted #{SubjectBean.postDateAGO} </a>
+												</p>
+															
+											</div>
+										</form>
+
+									</div>
+
+								</div>
+							</div>
+							<br></br>
+
+						</div>
+						<h:panelGroup class="post-card__info">
+							<table>
+								<td>
+								<h:form>
+									<h:commandButton class="block-header__arrow block-header__arrow--left"
+										 style="margin-bottom: 20px;"  action="#{SubjectBean.pushup(SubjectBean.postIdSubject)}" >
+							
+									</h:commandButton>
+									
+									<p style="margin-left: 10px; margin-bottom: 0px;" rendered="#{not SubjectBean.spamed}">#{SubjectBean.countvote(SubjectBean.postIdSubject)}</p>
+									<h:commandButton  class="block-header__arrow block-header__arrow--right"
+									     style="margin-top: 20px;" action="#{SubjectBean.pushdown(SubjectBean.postIdSubject)}" >
+										
+									</h:commandButton>
+									</h:form>
+								</td>
+								<td><h:panelGroup class="post-card__image">
+										<f:facet name="header">
+											<h:outputText value="Image" />
+										</f:facet>
+										<h:graphicImage library="uploads"
+											name="#{SubjectBean.postImage}"></h:graphicImage>
+									</h:panelGroup></td>
+							</table>
+
+							<form>
+
+								<div class="post-header__meta">
+
+									<font size="1.9px"> <a class="scrollToBottom" href="#">
+											#{SubjectBean.nbrComment(SubjectBean.postIdSubject)}
+											Comment(s)</a></font>
+								</div>
+							</form>
+
+							<h:panelGroup class="post__content typography">
+								<p>
+									<h:panelGroup class="post-card__content">
+										<h:outputText value="#{SubjectBean.postContent}" />
+									</h:panelGroup>
+								</p>
+								<blockquote>
+									<p>
+
+										<h:outputText value="#{SubjectBean.postQuote}" />
+
+									</p>
+									<p>
+
+										<cite><h:outputText value="#{SubjectBean.postCite}" /></cite>
+									</p>
+								</blockquote>
+
+							</h:panelGroup>
+
+						</h:panelGroup>
+
+
+						<div class="post__footer">
+							<div class="post__tags-share-links">
+								<div class="post__tags tags">
+									<div class="tags__list">
+										<a href="#">Promotion</a> <a href="#">Power Tool</a> <a
+											href="#">Wrench</a> <a href="#">Electrodes</a>
+									</div>
+								</div>
+								<div class="post__share-links share-links">
+									<ul class="share-links__list">
+										<li class="share-links__item share-links__item--type--like">
+											<a href="#">Like</a>
+										</li>
+										<li class="share-links__item share-links__item--type--tweet">
+											<a href="#">Tweet</a>
+										</li>
+										<li class="share-links__item share-links__item--type--pin"><a
+											href="#">Pin It</a></li>
+										<li class="share-links__item share-links__item--type--counter">
+											<a href="#">4K</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+
+						</div>
+
+
+						<section class="post__section">
+							<div class="block block-posts" data-layout="list"
+								data-mobile-columns="1">
+								<div class="container">
+									<div class="block-header">
+										<h3 class="block-header__title">Similar Posts</h3>
+
+										<div class="block-header__divider"></div>
+										<div class="block-header__arrows-list">
+											<button class="block-header__arrow block-header__arrow--left"
+												type="button">
+												<svg width="7px" height="11px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-7x11"></use>
+</svg>
+											</button>
+											<button
+												class="block-header__arrow block-header__arrow--right"
+												type="button">
+												<svg width="7px" height="11px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-7x11"></use>
+</svg>
+											</button>
+										</div>
+									</div>
+									<div class="block-posts__slider">
+										<div class="owl-carousel">
+											<ui:repeat value="#{SubjectBean.postsByCategory()}"
+												var="LatestSubs" varStatus="status">
+												<h:form>
+													<table>
+														<div class="post-card">
+															<tr>
+																<div class="post-card__image">
+																	<a href="#"><h:graphicImage library="uploads"
+																			name="#{LatestSubs.image}"></h:graphicImage></a>
+																</div>
+															</tr>
+															<tr>
+																<div class="post-card__info">
+																	<div>
+																		<a href="#">#{LatestSubs.category}</a>
+																	</div>
+
+																	<div class="post-card__name">
+																		<a href="#">#{LatestSubs.subjectitle}</a>
+																	</div>
+																	<div class="widget-posts__date">
+																		<h:outputText value="#{LatestSubs.subjectdate}">
+																			
+																		</h:outputText>
+																	</div>
+																	<div class="post-card__content">#{LatestSubs.content}</div>
+
+																	<h:commandButton class="btn btn-primary"
+																		action="#{SubjectBean.postDetailIndex(LatestSubs)}"
+																		value="Read more">
+																	</h:commandButton>
+
+																</div>
+															</tr>
+
+														</div>
+													</table>
+												</h:form>
+											</ui:repeat>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+
+
+						<section class="post__section">
+							<h4 id="commentsYo" class="post__section-title">#{SubjectBean.nbrComment(SubjectBean.postIdSubject)}
+								Comment(s)</h4>
+							<h:form>
+								<ui:repeat
+									value="#{SubjectBean.getAllResponses(SubjectBean.postIdSubject)}"
+									var="resp">
+									<ol class="comments-list comments-list--level--0">
+										<li class="comments-list__item">
+											<div class="comment">
+												<h:panelGroup class="post-card__image">
+
+													<h:graphicImage library="uploads" name="#{resp.user.img}"
+														width="50" height="50"></h:graphicImage>
+												</h:panelGroup>
+												<div class="comment__content">
+													<div class="comment__header">
+
+
+
+														<div class="comment__author">
+															<p style="margin-left: 0.5em; margin-right: 0.5em">
+																<a href="#">#{resp.user.firstName} </a>
+															</p>
+
+															<p>
+																<h:outputText value="#{resp.content}"
+																	rendered="#{not SubjectBean.editing}"
+																	style="margin-left: 10px;">
+
+																</h:outputText>
+																<h:inputText value="#{resp.content}"
+																	rendered="#{SubjectBean.editing}">
+
+																</h:inputText>
+
+															</p>
+
+														</div>
+
+
+
+														<h:panelGroup class="block-sidebar__item">
+															<ul class="pagination justify-content-center">
+																<li><h:commandLink class="buttedit" id="xxxbutt"
+																		value="Edit" action="#{SubjectBean.editComment(resp)}">
+
+																	</h:commandLink> 
+																	
+																	<h:commandLink value="Delete"
+																		action="#{SubjectBean.deleteResponse(resp)}"
+																		style="margin-left: 10px;margin-right: 10px;">
+																		<f:ajax render="@form"></f:ajax>
+																	</h:commandLink> 
+																	<h:commandButton
+																		class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+																		value="Like"
+																		action="#{SubjectBean.likeResponsejsf(resp)}"
+																		style="width: 62px;font-size: 15px;">
+
+
+																	</h:commandButton> <h:commandButton
+																		class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist"
+																		value="Dislike"
+																		action="#{SubjectBean.dislikeResponsejsf(resp)}"
+																		style="width: 62px;font-size: 15px;">
+																	</h:commandButton> <svg width="16px" height="16px">
+<use xlink:href="#{resource['images:sprite.svg']}#wishlist-16"></use>
+</svg> <span class="indicator__value"
+																	style="font-size: 10px; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-radius: 1000px; border-color: black; background: transparent; color: black; border-style: solid; border-width: thin; top: -30px; right: -15px;">#{SubjectBean.countLikeDislike(resp)}</span>
+
+
+
+																</li>
+
+
+
+															</ul>
+
+
+														</h:panelGroup>
+														<p:growl id="msgs" showDetail="true" />
+
+
+
+
+
+													</div>
+
+
+
+												</div>
+											</div>
+
+										</li>
+
+									</ol>
+								</ui:repeat>
+
+							</h:form>
+
+
+
+
+
+						</section>
+						<!-- <div class="popup">
+							<div class="popup-content">
+
+								<h2 class="title">Edit your comment</h2>
+								<h:form enctype="multipart/form-data">
+
+									<div class="form-group">
+										<label for="comment-content">Comment</label>
+										<h:inputTextarea class="form-control" id="comment-content"
+											rows="3" value=""></h:inputTextarea>
+									</div>
+									<div class="form-group mt-4">
+
+										<h:commandButton class="btn btn-primary btn-lg"
+											value="Post Comment">
+										</h:commandButton>
+									</div>
+								</h:form>
+
+								<a href="#{request.contextPath}/blog/post.jsf"> <img
+									alt="ConsomiTounsi" src="#{resource['images:icon/close2.png']}"
+									width="25" height="25" class="close" />
+								</a>
+							</div>
+						</div>
+						 -->
+						<section class="post__section">
+							<h4 class="post__section-title">Write a Comment</h4>
+							<h:form>
+
+								<div class="form-group">
+									<label for="comment-content">Comment</label>
+									<h:inputTextarea class="form-control" id="comment-content"
+										rows="6" value="#{SubjectBean.content}"></h:inputTextarea>
+								</div>
+								<div class="form-group mt-4">
+
+									<h:commandButton class="btn btn-primary btn-lg"
+										action="#{SubjectBean.addComent(SubjectBean.postIdSubject)}"
+										value="Post Comment">
+									</h:commandButton>
+									
+									
+								</div>
+									<h:commandButton class="btn btn-primary btn-lg"
+									
+										rendered="#{not SubjectBean.spamed}"
+																	value="Report Subject" action="#{SubjectBean.spamsubj()}"   style="margin-left:550px;background-color:black;color:red">
+									</h:commandButton>
+										<h:outputText class="badge badge-success"
+																	value="Reported" rendered="#{SubjectBean.spamed}" style="background-color:black;" >
+																</h:outputText>
+									
+							</h:form>
+						</section>
+					</div>
+				</div>
+				<div class="col-12 col-lg-4">
+					<h:form>
+						<h:panelGroup class="block-sidebar__item">
+							<a href="#{request.contextPath}/blog/blog-classic.jsf" class="btn btn-outline-danger" 
+							style="margin-top: 142px;margin-left:20px"
+						>All posts
+								 </a>
+						
+						</h:panelGroup>
+						</h:form>
+					<div class="block block-sidebar block-sidebar--position--end"
+						style="margin-top:20px">
+					
+						<div class="block-sidebar__item">
+						
+						</div>
+
+
+						<div class="block-sidebar__item">
+							<div class="block-sidebar__item">
+								<div class="widget-posts widget">
+									<h4 class="widget__title">Most popular Posts</h4>
+									<div class="widget-posts__list">
+
+										<ui:repeat value="#{SubjectBean.getMostPopularSubs()}"
+											var="subsbycat" varStatus="status">
+											<div class="widget-posts__item">
+												<div class="widget-posts__image">
+													<f:facet name="header">
+														<h:outputText value="Image" />
+													</f:facet>
+													<h:graphicImage library="uploads" name="#{subsbycat.image}"
+														width="85" height="75"></h:graphicImage>
+												</div>
+												<div class="widget-posts__info">
+													<div class="widget-posts__name">
+														<h6>
+															<a href="#">#{subsbycat.subjectitle}</a>
+														</h6>
+													</div>
+													<div class="comment__author">
+														<h:panelGroup class="post-card__category">
+															<a href="#"><h:outputText
+																	value="#{subsbycat.user.firstName}" /></a>
+														</h:panelGroup>
+													</div>
+													<div class="widget-posts__date">
+														<h:outputText value="#{subsbycat.subjectdate}">
+															
+														</h:outputText>
+													</div>
+													<h:form>
+													<h:commandButton class="btn btn-primary"
+														action="#{SubjectBean.postDetailMostPopSubs(subsbycat)}"
+														value="Read more" style="font-size:15px;line-height:1px;padding:10;transition:all .1s ease-in-out;">
+													</h:commandButton>
+</h:form>
+												</div>
+											</div>
+										</ui:repeat>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="block-sidebar__item"></div>
+
+						<div class="block-sidebar__item">
+							<div class="widget-comments widget">
+								<h4 class="widget__title">Latest Comments</h4>
+								<ul class="widget-comments__list">
+									<li class="widget-comments__item"><ui:repeat
+											value="#{SubjectBean.latestResponses}" var="resp" >
+											<div class="widget-comments__author"
+												style="margin-top: 20px;">
+												<h6>
+													<a href="#"><h:graphicImage library="uploads"
+															name="#{resp.user.img}" width="20" height="20"></h:graphicImage>
+													</a> <a href="#" title="#{resp.user.firstName}">#{resp.user.firstName}</a>
+												</h6>
+											</div>
+											<div class="widget-comments__content">
+												<font size="0.1px">#{resp.content}</font>
+											</div>
+											<div class="widget-comments__meta">
+												<div class="widget-comments__date">
+
+													<h:outputText value="#{resp.dateResponse}">
+														
+													</h:outputText>
+												</div>
+												<div class="widget-comments__name">
+													On <a href="#"
+														title="Curabitur quam augue vestibulum in mauris fermentum pellentesque libero">
+
+													</a>
+												</div>
+											</div>
+										</ui:repeat></li>
+								</ul>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  <script>
+		$('#xxxbutt').each(function () {
+			console.log("ok1");
+
+			document
+					.getElementById("xxxbutt")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "flex";
+								console.log("ok2");
+
+							})
+			console.log("ok3");
+
+			document
+					.querySelector(".close")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "none";
+							})
+							
+		});
+		
+		</script>
+		-->
+	</ui:define>
+</ui:composition>
