@@ -1,0 +1,814 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/Templates/template.xhtml">
+
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS -->
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+			crossorigin="anonymous"></script>
+		<script src="libraries/p5.js" type="text/javascript"></script>
+
+		<script src="libraries/p5.dom.js" type="text/javascript"></script>
+		<script src="libraries/p5.sound.js" type="text/javascript"></script>
+
+
+
+		<style type="text/css">
+.text {
+	display: inline-block;
+	width: 600px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+
+		<style>
+.popup {
+	background: rgba(0, 0, 0, 0.6);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.popup-content {
+	height: 450px;
+	width: 700px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	position: relative;
+}
+
+.close {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	cursor: pointer;
+}
+</style>
+
+		<style>
+.fileupload-buttonbar {
+	background: transparent none;
+	border: none;
+}
+</style>
+
+		<div class="page-header ">
+			<div class="page-header__container container">
+				<div class="page-header__breadcrumb">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="index.jsf">Blog</a> <svg
+									class="breadcrumb-arrow" width="6px" height="9px">
+<use
+										xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+
+							<li class="breadcrumb-item active" aria-current="page">All
+								our subjects</li>
+
+						</ol>
+
+					</nav>
+				</div>
+				<div class="page-header__title">
+					<h1>All Subjects</h1>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+				<div class="col-12 col-lg-8">
+					<div class="block">
+
+
+
+						<div class="posts-view">
+							<ui:repeat value="#{SubjectBean.allSubjects}" var="sub"
+								varStatus="status">
+								<h:form>
+									<ul class="pagination justify-content-center">
+										<h:panelGroup
+											class="posts-view__list posts-list posts-list--layout--classic">
+											<h:panelGroup class="posts-list__body">
+												<h:panelGroup class="posts-list__item">
+													<li class="bbb"><h:panelGroup
+															class="post-card post-card--layout--grid post-card--size--lg">
+
+															<div class="post-card__name" style="text-align: center;">
+																<font size="5px"> <h:commandLink
+																		action="#{SubjectBean.postDetail(sub)}">
+																		<h:outputText value="#{sub.subjectitle}" />
+																	</h:commandLink>
+																</font>
+															</div>
+
+															<div class="wishlist__column wishlist__column--stock">
+																<h:outputText class="badge badge-success"
+																	value="#{sub.category}" style="margin-left:320px;">
+																</h:outputText>
+															</div>
+
+															<h:panelGroup class="post-card__image">
+
+																<h:graphicImage library="uploads" name="#{sub.image}"></h:graphicImage>
+															</h:panelGroup>
+															<h:panelGroup class="post-card__info">
+																<h:panelGroup class="post-card__category">
+																	<a href="#">Posted By : <h:outputText
+																			value="#{sub.user.firstName}" /></a>
+																</h:panelGroup>
+
+																<h:panelGroup class="post-card__date">
+																	<p>Date:#{sub.subjectdate}</p>
+																</h:panelGroup>
+																<h:panelGroup class="post-card__date"
+																	style="margin-left: 120px;">
+																	<h:commandLink>
+																	<a href="#" 
+																		id="editSubButt">Edit </a></h:commandLink>
+
+
+																</h:panelGroup>
+																<h:panelGroup class="post-card__date"
+																	style="margin-left: 7px;">
+																	<h:commandLink
+																		action="#{SubjectBean.deleteSubject(sub.idsubject)}">
+																		<h:outputText value="Delete" />
+																		<h:outputText />
+																	</h:commandLink>
+																</h:panelGroup>
+
+																<h:panelGroup class="post-card__content">
+																	<p class="text">
+																		<h:outputText value="#{sub.content}" />
+																	</p>
+																</h:panelGroup>
+																<h:panelGroup class="post-card__content">
+																	<h:outputText
+																		value="#{SubjectBean.nbrComment(sub.idsubject)}" /> Comments</h:panelGroup>
+																<h:panelGroup class="post-card__read-more">
+																	<h:commandButton class="btn btn-primary"
+																		action="#{SubjectBean.postDetail(sub)}"
+																		value="Read more">
+																	</h:commandButton>
+																</h:panelGroup>
+															</h:panelGroup>
+														</h:panelGroup></li>
+												</h:panelGroup>
+											</h:panelGroup>
+										</h:panelGroup>
+									</ul>
+								</h:form>
+							</ui:repeat>
+
+							<div class="posts-view__pagination">
+								<ul class="pagination justify-content-center">
+									<li class="page-item disabled"><a
+										class="page-link page-link--with-arrow" href="#"
+										aria-label="Previous"><svg
+												class="page-link__arrow page-link__arrow--left"
+												aria-hidden="true" width="8px" height="13px">
+<use
+													xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-8x13"></use>
+</svg></a></li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item active"><a class="page-link" href="#">2
+											<span class="sr-only">(current)</span>
+									</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item"><a
+										class="page-link page-link--with-arrow" href="#"
+										aria-label="Next"><svg
+												class="page-link__arrow page-link__arrow--right"
+												aria-hidden="true" width="8px" height="13px">
+<use
+													xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-8x13"></use>
+</svg></a></li>
+								</ul>
+							</div>
+						</div>
+
+
+
+
+
+					</div>
+				</div>
+				<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
+
+
+
+
+				<div class="col-12 col-lg-4">
+
+					<div class="block block-sidebar block-sidebar--position--end">
+
+
+						<h:panelGroup class="block-sidebar__item">
+							<a href="#" class="btn btn-outline-danger" id="addSubButt">Add
+								Subject </a>
+							<!--  <a href="#ex1" class="btn btn-outline-danger" rel="modal:open">Add
+								subject</a>-->
+						</h:panelGroup>
+
+						<div class="block-sidebar__item">
+
+
+							<div class="form-search">
+								<div class="widget-search">
+
+									<form class="widget-search__body" id="search-books">
+
+										<input class="widget-search__input" id="search-input"
+											placeholder="search using any criteria..." type="text"
+											autocomplete="off" spellcheck="false" />
+										<button class="widget-search__button" type="submit">
+											<svg width="20px" height="20px">
+										<use xlink:href="#{resource['images:sprite.svg']}#search-20"></use>
+																											</svg>
+										</button>
+									</form>
+
+								</div>
+							</div>
+
+						</div>
+
+						<div class="block-sidebar__item">
+							<div
+								class="widget-categories widget-categories--location--blog widget">
+								<h4 class="widget__title">Categories</h4>
+								<ul class="widget-categories__list" data-collapse=""
+									data-collapse-opened-class="widget-categories__item--open">
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg> Plants</a>
+										</div>
+									</li>
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg> Animals</a>
+										</div>
+										<div class="widget-categories__subs" data-collapse-content="">
+											<ul>
+												<li><a href="#">Spring Sales</a></li>
+												<li><a href="#">Summer Sales</a></li>
+												<li><a href="#">Autumn Sales</a></li>
+												<li><a href="#">Christmas Sales</a></li>
+												<li><a href="#">Other Sales</a></li>
+											</ul>
+										</div>
+									</li>
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg> Tools</a>
+										</div>
+									</li>
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg> gardening</a>
+										</div>
+									</li>
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+<use
+														xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg> other</a>
+										</div>
+									</li>
+									<li class="widget-categories__item" data-collapse-item="">
+										<div class="widget-categories__row">
+											<a href="#"><svg class="widget-categories__arrow"
+													width="6px" height="9px">
+
+
+</svg></a>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="block-sidebar__item">
+							<div class="widget-posts widget">
+								<h4 class="widget__title">Latest Posts</h4>
+								<div class="widget-posts__list">
+
+									<ui:repeat value="#{SubjectBean.latestSubjects}"
+										var="LatestSubs" varStatus="status">
+										<div class="widget-posts__item">
+											<div class="widget-posts__image">
+												<f:facet name="header">
+													<h:outputText value="Image" />
+												</f:facet>
+												<h:graphicImage library="uploads" name="#{LatestSubs.image}"
+													width="85" height="75"></h:graphicImage>
+											</div>
+											<div class="widget-posts__info">
+												<div class="widget-posts__name">
+													<h6>
+														<a href="#">#{LatestSubs.subjectitle}</a>
+													</h6>
+												</div>
+												<div class="comment__author">
+													<h:panelGroup class="post-card__category">
+														<a href="#"><h:outputText
+																value="#{LatestSubs.user.firstName}" /></a>
+													</h:panelGroup>
+												</div>
+												<div class="widget-posts__date">
+													<h:outputText value="#{LatestSubs.subjectdate}">
+														
+													</h:outputText>
+												</div>
+
+											</div>
+										</div>
+									</ui:repeat>
+
+
+								</div>
+							</div>
+						</div>
+						<!--  <div class="block-sidebar__item">
+								<div class="widget-newsletter widget">
+									
+									
+									<form class="widget-newsletter__form" action="#">
+										<label for="widget-newsletter-email" class="sr-only">Email
+											Address</label> <input id="widget-newsletter-email" type="text"
+											class="form-control" placeholder="Email Address" />
+										<button type="submit" class="btn btn-primary mt-3">Subscribe</button>
+									</form>
+								</div>
+							</div>-->
+						<div class="block-sidebar__item">
+							<div class="widget-comments widget">
+								<h4 class="widget__title">Latest Comments</h4>
+								<ul class="widget-comments__list">
+									<li class="widget-comments__item">
+										<div class="widget-comments__author">
+											<a href="#">Loyd Walker</a>
+										</div>
+										<div class="widget-comments__content">In one general
+											sense, philosophy is associated with wisdom, intellectual
+											culture and a search for knowledge...</div>
+										<div class="widget-comments__meta">
+											<div class="widget-comments__date">2 hours ago</div>
+											<div class="widget-comments__name">
+												On <a href="#"
+													title="Curabitur quam augue vestibulum in mauris fermentum pellentesque libero">
+													Curabitur quam augue vestibulum in mauris fermentum
+													pellentesque libero</a>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  
+		<div id="ex1" class="modal">
+			<h2 class="title" style="margin-left: 120px;">Add subject</h2>
+
+
+			<div>
+				<h:form enctype="multipart/form-data">
+					<table>
+						<tr>
+
+							<div class="form-group">
+								<td colspan="2"><label for="checkout-company-name">SubjectTitle<span
+										class="text-muted"></span>
+								</label></td>
+								<td><h:inputText type="text" class="widget-search__input"
+										placeholder="..." value="#{SubjectBean.subjectitle}">
+									</h:inputText></td>
+
+							</div>
+
+						</tr>
+
+						<tr>
+							<div class="form-group">
+								<td colspan="2"><label for="checkout-company-name">Content
+										<span class="text-muted"></span>
+								</label></td>
+								<td><h:inputText type="text" class="widget-search__input"
+										placeholder="..." value="#{SubjectBean.content}">
+									</h:inputText></td>
+
+							</div>
+						</tr>
+
+						<tr>
+							<div class="form-group">
+								<td colspan="2"><label for="checkout-company-name">Quote
+										<span class="text-muted"></span>
+								</label></td>
+								<td><h:inputText type="text" class="widget-search__input"
+										placeholder="..." value="#{SubjectBean.quote}">
+									</h:inputText></td>
+							</div>
+						</tr>
+						<tr>
+
+
+							<div class="form-group col-md-6">
+								<td colspan="2"><label for="checkout-first-name">Cite</label></td>
+								<td><h:inputText placeholder="..." type="text"
+										class="widget-search__input" value="#{SubjectBean.cite}"></h:inputText></td>
+
+							</div>
+
+
+						</tr>
+						<tr>
+
+							<div class="form-group">
+								<td colspan="2"><label for="checkout-country">Category</label></td>
+								<td><h:selectOneMenu value="#{SubjectBean.category}"
+										class="form-control form-control-select2">
+										<f:selectItem itemValue="Plants" itemLabel="Plants" />
+										<f:selectItem itemValue="Animals" itemLabel="Animals" />
+										<f:selectItem itemValue="Tools" itemLabel="Tools" />
+									</h:selectOneMenu></td>
+							</div>
+						</tr>
+
+						<tr>
+							<td colspan="2"><h:outputText value="Image "></h:outputText></td>
+							<td><p:fileUpload class="fileupload-buttonbar"
+									value="#{SubjectBean.file}" mode="simple" skinSimple="true"
+									style="margin-left: 40px;" /></td>
+
+
+						</tr>
+
+
+					</table>
+					<div style="margin-left: 110px;">
+						<h:commandButton class="btn btn-outline-danger" value="Add"
+							action="#{SubjectBean.addSubject()}" />
+						<a href="#" class="btn btn-outline-info" rel="modal:close">Back</a>
+					</div>
+				</h:form>
+
+			</div>
+
+
+
+
+		</div> -->
+
+		<div class="popup">
+			<div class="popup-content">
+
+
+				<h2 class="title">Edit Subject</h2>
+
+				<a href="#{request.contextPath}/blog/blog-classic.jsf"> <img
+					alt="ConsomiTounsi" src="#{resource['images:icon/close2.png']}"
+					width="25" height="25" class="close" />
+				</a>
+				<div>
+					<h:form enctype="multipart/form-data">
+						<table>
+							<tr>
+
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">SubjectTitle<span
+											class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.subjectitle}">
+										</h:inputText></td>
+
+								</div>
+							</tr>
+
+							<tr>
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">Content
+											<span class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.content}">
+										</h:inputText></td>
+
+								</div>
+							</tr>
+
+							<tr>
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">Quote
+											<span class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.quote}">
+										</h:inputText></td>
+								</div>
+							</tr>
+							<tr>
+
+
+								<div class="form-group col-md-6">
+									<td colspan="2"><label for="checkout-first-name">Cite</label></td>
+									<td><h:inputText placeholder="..." type="text"
+											class="form-control" value="#{SubjectBean.cite}"></h:inputText></td>
+
+								</div>
+
+
+							</tr>
+							<tr>
+
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-country">Category</label></td>
+									<td><h:selectOneMenu value="#{SubjectBean.category}"
+											class="form-control form-control-select2">
+											<f:selectItem itemValue="Plants" itemLabel="Plants" />
+											<f:selectItem itemValue="Animals" itemLabel="Animals" />
+											<f:selectItem itemValue="Tools" itemLabel="Tools" />
+										</h:selectOneMenu></td>
+								</div>
+							</tr>
+
+							<tr>
+								<td colspan="2"><h:outputText value="Image "></h:outputText></td>
+								<td><p:fileUpload class="ui-fileupload-simple ui-widget"
+										value="#{SubjectBean.file}" mode="simple" skinSimple="true" /></td>
+
+
+							</tr>
+							<div class="form-group mt-3 mb-0">
+
+								<tr>
+
+
+									<td><h:commandButton class="btn btn-outline-danger"
+											value="Add" action="#{SubjectBean.addSubject()}" /></td>
+									<td><h:commandButton class="btn btn-outline-info"
+											value="Back" action="/blog/blog-classic?faces-redirect=true">
+										</h:commandButton></td>
+
+								</tr>
+							</div>
+
+						</table>
+
+					</h:form>
+
+				</div>
+
+
+
+
+
+			</div>
+
+		</div>
+
+		<div class="popup">
+			<div class="popup-content">
+
+
+				<h2 class="title">Add Subject</h2>
+
+				<a href="#{request.contextPath}/blog/blog-classic.jsf"> <img
+					alt="ConsomiTounsi" src="#{resource['images:icon/close2.png']}"
+					width="25" height="25" class="close" />
+				</a>
+				<div>
+					<h:form enctype="multipart/form-data">
+						<table>
+							<tr>
+
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">SubjectTitle<span
+											class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.subjectitle}">
+										</h:inputText></td>
+
+								</div>
+							</tr>
+
+							<tr>
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">Content
+											<span class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.content}">
+										</h:inputText></td>
+
+								</div>
+							</tr>
+
+							<tr>
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-company-name">Quote
+											<span class="text-muted"></span>
+									</label></td>
+									<td><h:inputText type="text" class="form-control"
+											placeholder="..." value="#{SubjectBean.quote}">
+										</h:inputText></td>
+								</div>
+							</tr>
+							<tr>
+
+
+								<div class="form-group col-md-6">
+									<td colspan="2"><label for="checkout-first-name">Cite</label></td>
+									<td><h:inputText placeholder="..." type="text"
+											class="form-control" value="#{SubjectBean.cite}"></h:inputText></td>
+
+								</div>
+
+
+							</tr>
+							<tr>
+
+								<div class="form-group">
+									<td colspan="2"><label for="checkout-country">Category</label></td>
+									<td><h:selectOneMenu value="#{SubjectBean.category}"
+											class="form-control form-control-select2">
+											<f:selectItem itemValue="Plants" itemLabel="Plants" />
+											<f:selectItem itemValue="Animals" itemLabel="Animals" />
+											<f:selectItem itemValue="Tools" itemLabel="Tools" />
+										</h:selectOneMenu></td>
+								</div>
+							</tr>
+
+							<tr>
+								<td colspan="2"><h:outputText value="Image "></h:outputText></td>
+								<td><p:fileUpload class="ui-fileupload-simple ui-widget"
+										value="#{SubjectBean.file}" mode="simple" skinSimple="true" /></td>
+
+
+							</tr>
+							<div class="form-group mt-3 mb-0">
+
+								<tr>
+
+
+									<td><h:commandButton class="btn btn-outline-danger"
+											value="Add" action="#{SubjectBean.addSubject()}" /></td>
+									<td><h:commandButton class="btn btn-outline-info"
+											value="Back" action="/blog/blog-classic?faces-redirect=true">
+										</h:commandButton></td>
+
+								</tr>
+							</div>
+
+						</table>
+
+					</h:form>
+
+				</div>
+
+
+
+
+
+			</div>
+
+		</div>
+
+
+		<script>
+			document
+					.getElementById("addSubButt")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "flex";
+							})
+
+			document
+					.querySelector(".close")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "none";
+							})
+		</script>
+
+		<script>
+			document
+					.getElementById("editSubButt")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "flex";
+							})
+
+			document
+					.querySelector(".close")
+					.addEventListener(
+							"click",
+							function() {
+								document.querySelector(".popup").style.display = "none";
+							})
+		</script>
+
+
+
+		<script>
+			$(document)
+					.ready(
+							function() {
+								console.log("ok1");
+
+								$('#search-input').keyup(function() {
+									search_table($(this).val());
+									console.log("okok");
+
+								});
+								function search_table(value) {
+									console.log("ok2");
+
+									$('.bbb')
+											.each(
+													function() {
+														var found = 'false';
+														$(this)
+																.each(
+																		function() {
+																			if ($(
+																					this)
+																					.text()
+																					.toLowerCase()
+																					.indexOf(
+																							value
+																									.toLowerCase()) >= 0) {
+																				found = 'true';
+																			}
+																			console
+																					.log("ok3");
+
+																		});
+														if (found == 'true') {
+															$(this).show();
+														} else {
+															$(this).hide();
+														}
+													});
+									console.log("ok4");
+
+								}
+							});
+		</script>
+
+
+
+	</ui:define>
+</ui:composition>

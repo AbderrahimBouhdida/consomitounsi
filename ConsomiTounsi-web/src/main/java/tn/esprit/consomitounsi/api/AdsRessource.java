@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response.Status;
 import tn.esprit.consomitounsi.entities.Ads;
 import tn.esprit.consomitounsi.services.intrf.AdsRemote;
 
+
+
 @Path("Ads")
 @RequestScoped
 public class AdsRessource {
