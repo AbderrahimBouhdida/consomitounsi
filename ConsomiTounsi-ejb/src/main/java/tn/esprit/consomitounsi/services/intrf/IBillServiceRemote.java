@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 import tn.esprit.consomitounsi.entities.Bill;
 import tn.esprit.consomitounsi.entities.User;
 
+
 @Remote
 public interface IBillServiceRemote {
 	public int addBill(Bill bill);

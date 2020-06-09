@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+										class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+								<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
+										class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-6x9"></use>
+</svg></li>
+								<li class="breadcrumb-item active" aria-current="page">My
+									Account</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>My Account</h1>
+					</div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								<h4 class="account-nav__title">Navigation</h4>
+								<h:form>
+								<ul>
+									<li class="account-nav__item"><a
+										href="#{request.contextPath}/account/dashboard.jsf">Dashboard</a></li>
+									<li class="account-nav__item"><h:commandLink
+											class="menu__item-link"
+											action="#{userBean.navToEditProfile()}" value="Edit Profile"/></li>
+									<li class="account-nav__item account-nav__item--active"><a
+										href="#{request.contextPath}/account/orders.jsf">Order
+											History</a></li>
+									<li class="account-nav__item "><a
+										href="#{request.contextPath}/account/addresses.jsf">Addresses</a></li>
+									<li class="account-nav__item"><h:commandLink
+											action="#{loginBean.doLogout}" class="menu__item-link"
+											value="Logout" /></li>
+								</ul>
+							</h:form>
+							</div>
+						</div>
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="card">
+								<div class="card-header">
+									<h5>Order History</h5>
+								</div>
+								<div class="card-divider"></div>
+								<div class="card-table">
+									<div class="table-responsive-sm">
+										<table>
+											<thead>
+												<tr>
+													<th>Order</th>
+													<th>Date</th>
+													<th>Status</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><a href="#{request.contextPath}/account/order-details.jsf">#8132</a></td>
+													<td>02 April, 2019</td>
+													<td>Pending</td>
+													<td>$2,719.00 for 5 item(s)</td>
+												</tr>
+												<tr>
+													<td><a href="#{request.contextPath}/account/order-details.jsf">#7592</a></td>
+													<td>28 March, 2019</td>
+													<td>Pending</td>
+													<td>$374.00 for 3 item(s)</td>
+												</tr>
+												<tr>
+													<td><a href="/account/order-details.jsf">#7192</a></td>
+													<td>15 March, 2019</td>
+													<td>Shipped</td>
+													<td>$791.00 for 4 item(s)</td>
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="card-divider"></div>
+								<div class="card-footer">
+									<ul class="pagination justify-content-center">
+										<li class="page-item disabled"><a
+											class="page-link page-link--with-arrow" href="#"
+											aria-label="Previous"><svg
+													class="page-link__arrow page-link__arrow--left"
+													aria-hidden="true" width="8px" height="13px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-left-8x13"></use>
+</svg></a></li>
+										<li class="page-item"><a class="page-link" href="#">1</a></li>
+										<li class="page-item active"><a class="page-link"
+											href="#">2 <span class="sr-only">(current)</span></a></li>
+										<li class="page-item"><a class="page-link" href="#">3</a></li>
+										<li class="page-item"><a
+											class="page-link page-link--with-arrow" href="#"
+											aria-label="Next"><svg
+													class="page-link__arrow page-link__arrow--right"
+													aria-hidden="true" width="8px" height="13px">
+<use xlink:href="#{resource['images:sprite.svg']}#arrow-rounded-right-8x13"></use>
+</svg></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	</ui:define>
+</ui:composition>

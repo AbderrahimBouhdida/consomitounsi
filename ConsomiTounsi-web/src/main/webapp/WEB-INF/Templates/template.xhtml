@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<h:head>
+<meta name="generator"
+	content="HTML Tidy for HTML5 for Linux version 5.6.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no" />
+<title>ConsomiTounsi - #{page_name}</title>
+
+<h:outputStylesheet library="css" name="css2234.css?family=Roboto:400,400i,500,500i,700,700i"/>
+<h:outputStylesheet library="vendor" name="bootstrap/css/bootstrap.min.css"/>
+<h:outputStylesheet library="vendor" name="owl-carousel/assets/owl.carousel.min.css"/>
+<h:outputStylesheet library="vendor" name="photoswipe/photoswipe.css"/>
+<h:outputStylesheet library="vendor" name="photoswipe/default-skin/default-skin.css"/>
+<h:outputStylesheet library="vendor" name="select2/css/select2.min.css"/>
+<h:outputStylesheet library="vendor" name="fontawesome/css/all.min.css"/>
+<h:outputStylesheet library="css" name="style.css"/>
+<h:outputStylesheet library="fonts" name="stroyka/stroyka.css"/>
+<h:outputScript library="primefaces" name="jquery/jquery.js"  />
+<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"  />
+</h:head>
+
+<body
+	class="page-header-fixed sidemenu-closed-hidelogo page-content-white page-md logo-red red-sidebar-color header-red">
+
+	<div class="site">
+		<ui:param name="category" value="#{cat}" />
+		<ui:include src="header.xhtml" />
+
+		<div class="site__body">
+			<ui:insert name="content" />
+		</div>
+		<ui:include src="footer.xhtml" />
+	</div>
+
+
+
+</body>
+</html>

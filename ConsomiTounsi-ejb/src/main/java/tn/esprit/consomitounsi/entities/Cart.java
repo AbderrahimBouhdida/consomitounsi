@@ -4,24 +4,28 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+
+
 @Entity
-public class Cart implements Serializable {
+public class Cart implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1308884803640646306L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private int idCart;
 	@ManyToOne
 	private User user;
@@ -32,10 +36,18 @@ public class Cart implements Serializable {
 	private boolean isCurrent; 
 	@Temporal(TemporalType.DATE)
 	private Date created;
-	
-	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "cart",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<CartProduct> products;
+	
+	
 	public Cart() {
+	}
+	
+	
+	
+	public Cart(User user, boolean isCurrent) {
+		this.user = user;
+		this.isCurrent = isCurrent;
 	}
 
 
@@ -61,19 +73,35 @@ public class Cart implements Serializable {
 
 	
 
+	public Date getCreated() {
+		return created;
+	}
+
+
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
 
 
 	public int getIdCart() {
 		return idCart;
 	}
 
+
+
 	public void setIdCart(int idCart) {
 		this.idCart = idCart;
 	}
 
+
+
 	public User getUser() {
 		return user;
 	}
+
+
 
 	public void setUser(User user) {
 		this.user = user;
@@ -91,37 +119,43 @@ public class Cart implements Serializable {
 		this.products = products;
 	}
 
+
+
 	public int getTotalQty() {
 		return totalQty;
 	}
+
+
 
 	public void setTotalQty(int totalQty) {
 		this.totalQty = totalQty;
 	}
 
+
+
 	public float getTotalPrice() {
 		return totalPrice;
 	}
+
+
 
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
+
+
 	public boolean isCurrent() {
 		return isCurrent;
 	}
+
+
 
 	public void setCurrent(boolean isCurrent) {
 		this.isCurrent = isCurrent;
 	}
 
-	public Date getCreated() {
-		return created;
-	}
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
 
 	@Override
 	public int hashCode() {

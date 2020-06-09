@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/panel/Templates/template.xhtml">
+	<ui:param name="page_name" value="test" />
+	<ui:define name="content">
+
+		<div class="row">
+						<div class="col-md-12">
+							<div class="card card-topline-red">
+								<div class="card-head">
+									<div class="tools">
+										<a class="fa fa-repeat btn-color box-refresh"
+											href="javascript:;"></a> <a
+											class="t-collapse btn-color fa fa-chevron-down"
+											href="javascript:;"></a> <a
+											class="t-close btn-color fa fa-times" href="javascript:;"></a>
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="table-scrollable">
+										<table
+											class="table table-hover table-checkable order-column full-width"
+											id="example4">
+											<thead>
+												<tr>
+													<th class="center">Bill No</th>
+													<th class="center">Patient</th>
+													<th class="center">Doctor</th>
+													<th class="center">Date</th>
+													<th class="center">Charges</th>
+													<th class="center">Tax</th>
+													<th class="center">Discount</th>
+													<th class="center">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr class="odd gradeX">
+													<td class="center">111</td>
+													<td class="center">Jenish Shah</td>
+													<td class="center">DR. John Deo</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">112</td>
+													<td class="center">Priya Patel</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">239$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">113</td>
+													<td class="center">Mayank Jani</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">456$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">114</td>
+													<td class="center">Priya Patel</td>
+													<td class="center">DR. John Deo</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">115</td>
+													<td class="center">Jenish Shah</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">239$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">116</td>
+													<td class="center">Priya Patel</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">456$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">117</td>
+													<td class="center">Mayank Jani</td>
+													<td class="center">DR. John Deo</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">423$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">118</td>
+													<td class="center">Priya Patel</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">239$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">119</td>
+													<td class="center">Mayank Jani</td>
+													<td class="center">DR. John Deo</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">423$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">120</td>
+													<td class="center">Jenish Shah</td>
+													<td class="center">DR. Megha Trivedi</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">121</td>
+													<td class="center">Priya Patel</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">239$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">122</td>
+													<td class="center">Jayna Sharma</td>
+													<td class="center">DR. Megha Trivedi</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">423$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">123</td>
+													<td class="center">Jenish Shah</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">239$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">124</td>
+													<td class="center">Jayna Sharma</td>
+													<td class="center">DR. Megha Trivedi</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">127$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">423$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">125</td>
+													<td class="center">Sonali Malik</td>
+													<td class="center">Dr.Rajesh</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">340$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">126</td>
+													<td class="center">Jayna Sharma</td>
+													<td class="center">DR. John Deo</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">510$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">423$</td>
+												</tr>
+												<tr class="odd gradeX">
+													<td class="center">127</td>
+													<td class="center">Sonali Malik</td>
+													<td class="center">DR. Megha Trivedi</td>
+													<td class="center">12 Jan 2012</td>
+													<td class="center">127$</td>
+													<td class="center">10%</td>
+													<td class="center">5$</td>
+													<td class="center">358$</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		
+	</ui:define>
+</ui:composition>

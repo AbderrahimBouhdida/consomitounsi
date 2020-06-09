@@ -8,6 +8,7 @@ import javax.ejb.Remote;
 
 import tn.esprit.consomitounsi.entities.Cart;
 import tn.esprit.consomitounsi.entities.CartProduct;
+import tn.esprit.consomitounsi.entities.Product;
 import tn.esprit.consomitounsi.entities.User;
 
 
@@ -22,7 +23,10 @@ public interface ICartServicesRemote {
 	public boolean addProdCart(User user,CartProduct prod);
 	public Cart findActiveCartByUserId(User user);
 	public List<CartProduct> getCurrUserProds(User user);
-	public boolean removeProd(User user,CartProduct prod);
+	public boolean removeProd(User user,Product prod);
 	public boolean modProd(User user,CartProduct prod);
 	public void testEmail() throws IOException, URISyntaxException;
+	boolean addProdCart(User user, Product prod);
+	boolean modProd(User user, Product prod);
+	void closeCart(Cart cart);
 }

@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+
+		<div class="page-header">
+			<div class="page-header__container container">
+
+				<div class="page-header__title">
+					<h1>My Order</h1>
+				</div>
+			</div>
+		</div>
+		<div class="block">
+			<h:form>
+				<div class="container">
+					<div class="row">
+
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="card">
+								<div class="order-header">
+									<h5 class="order-header__title">Order #<h:outputLabel value="#{billBean.bill.idBill}"></h:outputLabel></h5>
+									<div class="order-header__subtitle">
+										Was placed on
+										<mark class="order-header__date"><h:outputLabel value="#{billBean.bill.billDate}">
+																			
+																		<f:convertDateTime pattern="dd MMM yyyy"></f:convertDateTime>	
+																		</h:outputLabel></mark>
+										and is currently
+										<mark class="order-header__status"><h:outputLabel value="Status"></h:outputLabel></mark>
+										.
+									</div>
+								</div>
+								<div class="card-divider"></div>
+								<div class="text-right">
+													<button onclick="javascript:window.print();"
+														class="btn btn-default btn-outline" type="button">
+														<span> Print</span>
+													</button>
+												</div>
+								<div class="card-table">
+									<div class="table-responsive-sm">
+										<table>
+											<thead>
+												<tr>
+													<th>Product</th>
+													<th>Total</th>
+												</tr>
+											</thead>
+											<tbody class="card-table__body card-table__body--merge-rows">
+												<ui:repeat value="#{billBean.bill.cart.products}" var="item"
+													varStatus="status">
+													<tr>
+														<td>#{item.product.nameProduct} × #{item.quantity}</td>
+														<td>#{item.product.price*item.quantity}</td>
+													</tr>
+												</ui:repeat>
+											</tbody>
+											<tbody class="card-table__body card-table__body--merge-rows">
+												<tr>
+													<th>Subtotal</th>
+													<td><h:outputLabel value="#{billBean.bill.cart.totalPrice}"/> TND</td>
+												</tr>
+												<!--<tr>
+													<th>Shipping</th>
+													<td>#{cartBean.shipping} TND</td>
+												</tr>-->
+												<tr>
+													<th>Tax</th>
+													<td><h:outputLabel value="#{billBean.bill.cart.totalPrice * 0.19}">
+																		<f:convertNumber pattern="#.00"></f:convertNumber></h:outputLabel> TND</td>
+												</tr>
+											</tbody>
+											<tfoot class="checkout__totals-footer">
+												<tr>
+													<th>Total</th>
+													<td><h:outputLabel value="#{(billBean.bill.cart.totalPrice * 0.19)+billBean.bill.cart.totalPrice}"/> TND</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row mt-3 no-gutters mx-n2">
+								<div class="col-sm-6 col-12 px-2">
+									<div class="card address-card address-card--featured">
+										<div class="address-card__body">
+											<div class="address-card__badge address-card__badge--muted">Shipping
+												Address</div>
+											<div class="address-card__name">#{billBean.bill.shipping.firstName}
+												#{billBean.bill.shipping.lastName}</div>
+											<div class="defaultAdr-card__row">
+												<div class="address-card__row-title">Address</div>
+												<div class="address-card__row-content">
+													#{billBean.bill.shipping.street}<br />
+													#{billBean.bill.shipping.city}<br />
+													#{billBean.bill.shipping.state}<br />
+													#{billBean.bill.shipping.zipCode}<br />
+												</div>
+											</div>
+											<div class="address-card__row">
+												<div class="address-card__row-title">Phone</div>
+												<div class="address-card__row-content">#{billBean.bill.shipping.phone}</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6 col-12 px-2 mt-sm-0 mt-3">
+									<div class="card address-card address-card--featured">
+										<div class="address-card__body">
+											<div class="address-card__badge address-card__badge--muted">Billing
+												Address</div>
+											<div class="address-card__name">#{billBean.bill.billing.firstName}
+												#{billBean.bill.billing.lastName}</div>
+											<div class="defaultAdr-card__row">
+												<div class="address-card__row-title">Address</div>
+												<div class="address-card__row-content">
+													#{billBean.bill.billing.street}<br />
+													#{billBean.bill.billing.city}<br />
+													#{billBean.bill.billing.state}<br />
+													#{billBean.bill.billing.zipCode}<br />
+												</div>
+											</div>
+											<div class="address-card__row">
+												<div class="address-card__row-title">Phone</div>
+												<div class="address-card__row-content">#{billBean.bill.billing.phone}</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+
+
+
+
+	</ui:define>
+</ui:composition>

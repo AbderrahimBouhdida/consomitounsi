@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	template="/WEB-INF/Templates/template.xhtml">
+	<ui:param name="cat" value="false" />
+	<ui:define name="content">
+
+		<div class="page-header">
+				<div class="page-header__container container">
+					<div class="page-header__breadcrumb">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.jsf">Home</a> <svg
+										class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
+</svg></li>
+								<li class="breadcrumb-item"><a href="#">Breadcrumb</a> <svg
+										class="breadcrumb-arrow" width="6px" height="9px">
+<use xlink:href="images/sprite.svg#arrow-rounded-right-6x9"></use>
+</svg></li>
+								<li class="breadcrumb-item active" aria-current="page">My
+									Account</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="page-header__title">
+						<h1>My Account</h1>
+					</div>
+				</div>
+			</div>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-lg-3 d-flex">
+							<div class="account-nav flex-grow-1">
+								<h4 class="account-nav__title">Navigation</h4>
+								<h:form>
+								<ul>
+									<li class="account-nav__item"><a
+										href="#{request.contextPath}/account/dashboard.jsf">Dashboard</a></li>
+									<li class="account-nav__item"><h:commandLink
+											class="menu__item-link"
+											action="#{userBean.navToEditProfile()}" value="Edit Profile"/></li>
+									<li class="account-nav__item account-nav__item--active"><a
+										href="#{request.contextPath}/account/orders.jsf">Order
+											History</a></li>
+									<li class="account-nav__item "><a
+										href="#{request.contextPath}/account/addresses.jsf">Addresses</a></li>
+									<li class="account-nav__item"><h:commandLink
+											action="#{loginBean.doLogout}" class="menu__item-link"
+											value="Logout" /></li>
+								</ul>
+							</h:form>
+							</div>
+						</div>
+						<div class="col-12 col-lg-9 mt-4 mt-lg-0">
+							<div class="card">
+								<div class="card-header">
+									<h5>Order History</h5>
+								</div>
+								<div class="card-divider"></div>
+								<div class="card-table">
+									<div class="table-responsive-sm">
+										<h:form>
+										<p:dataTable var="bill" value="#{billBean.userBills()}" rows="10"
+													paginator="true"
+													paginatorPosition="bottom"
+													paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+													currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+													rowsPerPageTemplate="5,10,15"
+													tableStyleClass="table table-hover table-checkable order-column full-width">
+													
+													<f:facet name="header">
+											            Orders
+											        </f:facet>
+													 
+													<p:column headerText="Order number" styleClass="center" style="width:70px">
+														<h:outputText value="#{bill.idBill}" />
+													</p:column>
+													<p:column headerText="Date" styleClass="center" style="width:70px">
+														<h:outputText value="#{bill.billDate}" />
+													</p:column>
+													<p:column headerText="Status" styleClass="center" style="width:70px">
+														<h:outputText value="no Status" />
+													</p:column>
+													<p:column headerText="Actions" styleClass="center">
+														<h:commandLink styleClass="btn btn-primary btn-xs"
+															action="#{billBean.userBillDetails(bill)}"
+															value="Details">
+															
+														</h:commandLink>
+														
+													</p:column>
+
+												</p:dataTable>
+												</h:form>
+									</div>
+								</div>
+								
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	</ui:define>
+</ui:composition>
