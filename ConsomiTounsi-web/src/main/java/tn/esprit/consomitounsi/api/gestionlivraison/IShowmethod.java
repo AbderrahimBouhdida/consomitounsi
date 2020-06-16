@@ -119,7 +119,7 @@ public class IShowmethod {
 		Map<String, Object> obj = new HashMap<>();
 		obj.put("id", String.valueOf(del.getId()));
 		obj.put("deliveryState", del.getDeliveryState());
-		obj.put("addresseInformation", del.getAddressInformation());
+		obj.put("addresse", del.getBill().getShipping());
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		obj.put("deliveryDate", del.getDeliveryDate() != null ? dateFormat.format(del.getDeliveryDate()) : "");

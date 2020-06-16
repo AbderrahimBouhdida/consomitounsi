@@ -2,17 +2,24 @@ package tn.esprit.consomitounsi.entities.gestionlivraison;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.Embedded;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import tn.esprit.consomitounsi.entities.Bill;
 
 @Entity
 public class Delivery implements Serializable {
@@ -27,20 +34,28 @@ public class Delivery implements Serializable {
 	private int id;
 	@Enumerated(EnumType.STRING)
 	private DeliveryState deliveryState;
-	@Embedded
-	private Address addressInformation;
+
+	@OneToOne
+	private Bill bill;
 
 	@Temporal(TemporalType.DATE)
 	private Date deliveryDate;
 
+	@Temporal(TemporalType.DATE)
+	private Date toDo;
+
+	@Transient
 	private String description;
+
+	@ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+	private Set<String> items = new HashSet<>();
 
 	@ManyToOne
 	private DeliveryMan deliveryMan;
 
 	private Date deliveredDate;
 
-	private double cost;
+	private float cost;
 
 	public Delivery() {
 		super();
@@ -62,11 +77,11 @@ public class Delivery implements Serializable {
 		this.deliveryDate = deliveryDate;
 	}
 
-	public double getCost() {
+	public float getCost() {
 		return cost;
 	}
 
-	public void setCost(double cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
 
@@ -94,12 +109,12 @@ public class Delivery implements Serializable {
 		this.deliveryState = deliveryState;
 	}
 
-	public Address getAddressInformation() {
-		return addressInformation;
+	public Set<String> getItems() {
+		return items;
 	}
 
-	public void setAddressInformation(Address addressInformation) {
-		this.addressInformation = addressInformation;
+	public void setItems(Set<String> items) {
+		this.items = items;
 	}
 
 	public String getDescription() {
@@ -110,6 +125,22 @@ public class Delivery implements Serializable {
 		this.description = description;
 	}
 
+	public Date getToDo() {
+		return toDo;
+	}
+
+	public void setToDo(Date toDo) {
+		this.toDo = toDo;
+	}
+
+	public Bill getBill() {
+		return bill;
+	}
+
+	public void setBill(Bill bill) {
+		this.bill = bill;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -117,8 +148,6 @@ public class Delivery implements Serializable {
 		result = prime * result + id;
 		return result;
 	}
-
-	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -134,10 +163,9 @@ public class Delivery implements Serializable {
 
 	@Override
 	public String toString() {
-		return id + ", deliveryState=" + deliveryState + ", addressInformation=" + addressInformation
-				+ ", deliveryDate=" + deliveryDate + ", description=" + description + ", deliveryMan="
-				+ deliveryMan.getFirstName() + " " + deliveryMan.getLastName() + ", deliveredDate=" + deliveredDate
-				+ ", cost=" + cost;
+		return "Delivery [id=" + id + ", deliveryState=" + deliveryState + ", address=" + bill.getShipping()
+				+ ", deliveryDate=" + deliveryDate + ", toDo=" + toDo + ", description=" + description + ", items="
+				+ items + ", deliveryMan=" + deliveryMan + ", deliveredDate=" + deliveredDate + ", cost=" + cost + "]";
 	}
 
 }

@@ -33,6 +33,15 @@ public class Bonus implements Serializable {
 	public Bonus() {
 		super();
 	}
+	
+	
+
+	public Bonus(double amount) {
+		super();
+		this.amount = amount;
+	}
+
+
 
 	public int getId() {
 		return id;

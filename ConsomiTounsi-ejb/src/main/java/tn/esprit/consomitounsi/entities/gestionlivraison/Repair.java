@@ -1,96 +1,35 @@
 package tn.esprit.consomitounsi.entities.gestionlivraison;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
-
-import tn.esprit.consomitounsi.entities.Product;
-import tn.esprit.consomitounsi.entities.User;
 
 @Entity
-public class Repair implements Serializable {
+public class Repair extends ReclamationTreatment implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Temporal(TemporalType.DATE)
-	private Date created;
-	@Temporal(TemporalType.DATE)
-	private Date doneOn;
 
 	private String description;
 
-	@ManyToOne
-	private User user;
-
-	@ManyToOne
-	private Product product;
-
-	private boolean done;
-
-	@Min(value = 0)
 	private double cost;
 
 	public Repair() {
 
 	}
 
-	public Repair(Date created, Product product, User user) {
-		this.created = created;
-		this.product = product;
-		this.user = user;
+	public Repair(String description, double cost, Reclamation reclamation) {
+		super(reclamation);
+		this.description = description;
+		this.cost = cost;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Date getDoneOn() {
-		return doneOn;
-	}
-
-	public void setDoneOn(Date doneOn) {
-		this.doneOn = doneOn;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public boolean isDone() {
-		return done;
-	}
-
-	public void setDone(boolean done) {
-		this.done = done;
+	public Repair(int id, String description, double cost, Reclamation reclamation) {
+		super(id, reclamation);
+		this.description = description;
+		this.cost = cost;
 	}
 
 	public double getCost() {
@@ -109,19 +48,14 @@ public class Repair implements Serializable {
 		this.description = description;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
+		int result = super.hashCode();
+		long temp;
+		temp = Double.doubleToLongBits(cost);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		return result;
 	}
 
@@ -129,20 +63,19 @@ public class Repair implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Repair other = (Repair) obj;
-
-		return id == other.id;
-	}
-
-	@Override
-	public String toString() {
-		return "Repair [id=" + id + ", created=" + created + ", doneOn=" + doneOn + ", description=" + description
-				+ ", user=" + user.getFirstName() + " " + user.getLastName() + ", product=" + product.getNameProduct()
-				+ ", done=" + done + ", cost=" + cost + "]";
+		if (Double.doubleToLongBits(cost) != Double.doubleToLongBits(other.cost))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		return true;
 	}
 
 }

@@ -1,59 +1,37 @@
 package tn.esprit.consomitounsi.entities.gestionlivraison;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import tn.esprit.consomitounsi.entities.User;
 
 @Entity
-public class Repayment implements Serializable {
+public class Repayment extends ReclamationTreatment implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
 	private double amount;
-	private boolean done;
-	@Temporal(TemporalType.DATE)
-	private Date created;
-	@Temporal(TemporalType.DATE)
-	private Date doneOn;
 
 	private String description;
-
-	@ManyToOne
-	private User user;
 
 	public Repayment() {
 
 	}
 
-	public Repayment(double amount, Date created, String description, User user) {
-		super();
+	public Repayment(double amount, String description, Reclamation rec) {
+		super(rec);
 		this.amount = amount;
-		this.created = created;
 		this.description = description;
-		this.user = user;
+
 	}
 
-	public int getId() {
-		return id;
-	}
+	public Repayment(int id, double amount, String description,  Reclamation rec) {
+		super(id, rec);
 
-	public void setId(int id) {
-		this.id = id;
+		this.amount = amount;
+		this.description = description;
 	}
 
 	public double getAmount() {
@@ -64,30 +42,6 @@ public class Repayment implements Serializable {
 		this.amount = amount;
 	}
 
-	public boolean isDone() {
-		return done;
-	}
-
-	public void setDone(boolean done) {
-		this.done = done;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Date getDoneOn() {
-		return doneOn;
-	}
-
-	public void setDoneOn(Date doneOn) {
-		this.doneOn = doneOn;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -96,19 +50,14 @@ public class Repayment implements Serializable {
 		this.description = description;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
+		int result = super.hashCode();
+		long temp;
+		temp = Double.doubleToLongBits(amount);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		return result;
 	}
 
@@ -116,19 +65,19 @@ public class Repayment implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Repayment other = (Repayment) obj;
-		return id == other.id;
-	}
-
-	@Override
-	public String toString() {
-		return "Repayment [id=" + id + ", amount=" + amount + ", done=" + done + ", created=" + created + ", doneOn="
-				+ doneOn + ", description=" + description + ", user=" + user.getFirstName() + " " + user.getLastName()
-				+ "]";
+		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		return true;
 	}
 
 }

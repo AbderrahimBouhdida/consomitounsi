@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 
 import tn.esprit.consomitounsi.entities.Roles;
 import tn.esprit.consomitounsi.entities.User;
@@ -23,17 +21,11 @@ public class DeliveryMan extends User implements Serializable {
 
 	private String transportation;
 
-	@OneToMany(mappedBy = "deliveryMan", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Bonus> bonus = new HashSet<>();
+	@ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+	private Set<String> availabilities = new HashSet<>();
 
-	@Column
-	private String availabilities;
-
-	@OneToMany(mappedBy = "deliveryMan", fetch = FetchType.EAGER)
-	private Set<Delivery> deliveries = new HashSet<>();
-
-	private String base;
-	
+	@ElementCollection(fetch = FetchType.EAGER, targetClass = String.class)
+	private Set<String> base = new HashSet<>();
 
 	public DeliveryMan() {
 		super();
@@ -41,9 +33,48 @@ public class DeliveryMan extends User implements Serializable {
 
 	}
 
-	public DeliveryMan(String transportation) {
-		super();
+	public DeliveryMan(int id, String firstName, String lastName, String email, String username, String password,
+			String address, String phone, String transportation, Set<String> availabilities, Set<String> base,
+			String img) {
+
+		this.setFirstName(firstName);
+		this.setIdUser(id);
+		this.setAddress(address);
+		this.setEmail(email);
+		this.setImg(img);
+		this.setLastName(lastName);
+		this.setPhone(phone);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.availabilities = availabilities;
+		this.base = base;
 		this.transportation = transportation;
+		this.setRole(Roles.DELEVERYMAN);
+
+	}
+
+	public DeliveryMan(String firstName, String lastName, String email, String username, String password,
+			String address, String phone, String transportation, Set<String> availabilities, Set<String> base,
+			String img) {
+
+		this.setFirstName(firstName);
+		this.setAddress(address);
+		this.setEmail(email);
+		this.setImg(img);
+		this.setLastName(lastName);
+		this.setPhone(phone);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.availabilities = availabilities;
+		this.base = base;
+		this.transportation = transportation;
+		this.setRole(Roles.DELEVERYMAN);
+
+	}
+
+	public DeliveryMan(int id, String img) {
+		this.setIdUser(id);
+		this.setImg(img);
 	}
 
 	public String getTransportation() {
@@ -54,36 +85,20 @@ public class DeliveryMan extends User implements Serializable {
 		this.transportation = transportation;
 	}
 
-	public String getBase() {
+	public Set<String> getBase() {
 		return base;
 	}
 
-	public void setBase(String base) {
+	public void setBase(Set<String> base) {
 		this.base = base;
 	}
 
-	public Set<Bonus> getBonus() {
-		return bonus;
-	}
-
-	public void setBonus(Set<Bonus> bonus) {
-		this.bonus = bonus;
-	}
-
-	public String getAvailabilities() {
+	public Set<String> getAvailabilities() {
 		return availabilities;
 	}
 
-	public void setAvailabilities(String availabilities) {
+	public void setAvailabilities(Set<String> availabilities) {
 		this.availabilities = availabilities;
-	}
-
-	public Set<Delivery> getDeliveries() {
-		return deliveries;
-	}
-
-	public void setDeliveries(Set<Delivery> deliveries) {
-		this.deliveries = deliveries;
 	}
 
 	@Override
@@ -108,28 +123,25 @@ public class DeliveryMan extends User implements Serializable {
 		if (availabilities == null) {
 			if (other.availabilities != null)
 				return false;
-		}
-		else if (!availabilities.equals(other.availabilities))
+		} else if (!availabilities.equals(other.availabilities))
 			return false;
 		if (base == null) {
 			if (other.base != null)
 				return false;
-		} 
-		else if (!base.equals(other.base))
+		} else if (!base.equals(other.base))
 			return false;
 		if (transportation == null) {
 			if (other.transportation != null)
 				return false;
-		} 
-		else if (!transportation.equals(other.transportation))
+		} else if (!transportation.equals(other.transportation))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "DeliveryMan [transportation=" + transportation + ", bonus=" + bonus + ", availabilities="
-				+ availabilities + ", deliveries=" + deliveries + ", base=" + base + "]";
+		return "DeliveryMan [transportation=" + transportation + ", availabilities=" + availabilities + ", base=" + base
+				+ "]";
 	}
 
 }

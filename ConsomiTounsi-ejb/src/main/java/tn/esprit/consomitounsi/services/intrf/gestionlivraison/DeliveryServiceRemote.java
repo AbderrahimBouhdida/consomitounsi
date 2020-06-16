@@ -2,7 +2,6 @@ package tn.esprit.consomitounsi.services.intrf.gestionlivraison;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Remote;
 
@@ -22,9 +21,13 @@ public interface DeliveryServiceRemote {
 
 	public List<Bonus> getAllBonusByDeliveryManId(int deliveryManId);
 
+	public Bonus getActualBonusByDeliveryManId(int deliveryManId, int month);
+
 	public List<Bonus> getAllBonusByYear(int year);
 
 	public List<Bonus> getAllBonus();
+	
+	public boolean isBonusAlready();
 
 	public List<DeliveryMan> getDeliveryMenByBaseAndDay(String base, String day);
 
@@ -46,14 +49,15 @@ public interface DeliveryServiceRemote {
 
 	/* delivery functionalities */
 
-	public void addDelivery(Delivery delivery);
+	public void addDelivery(int billId, Delivery delivery);
 
-	public void assignDeliveryToDeliveryMan(int deliveryManId, int deliveryId);
+	public void assignDeliveryToDeliveryMan(int deliveryManId, int deliveryId, Date date);
 
-	public double shippingCost(String region, double weight, int reduction);
+	public float shippingCost(String region, double weight);
+
 
 	public void validateDelivery(int deliveryId);
-	
+
 	public Delivery getDeliveryById(int id);
 
 	public void deleteDeliveryById(int deliveryId);
@@ -62,9 +66,11 @@ public interface DeliveryServiceRemote {
 
 	public List<Delivery> getAllDeliveriesByState(DeliveryState state);
 
-	public Set<Delivery> getDeliveriesByDeliveryMan(int deliveryManId);
+	public List<Delivery> getDeliveriesByDeliveryMan(int deliveryManId);
 
 	public long numberOfDeliveriesByYear(int year);
+
+	public long numberOfDeliveriesByMonth(int year, int month);
 
 	public List<Delivery> getDeliveriesTaskByDeliveryManId(int deliveryManId);
 
@@ -75,6 +81,10 @@ public interface DeliveryServiceRemote {
 	public long getNumberOfAccomplishedDeliveryByDeliveryManPerMonth(int deliveryManId, int month, int year);
 
 	public long getNumberOfAccomplishedDeliveryByDeliveryManPerYear(int deliveryManId, int year);
+
+	public long getNumberOfAccomplishedDeliveryByDeliveryMan(int deliveryManId);
+
+	public long getNumberOfUnDoneDeliveryByDeliveryMan(int deliveryManId);
 
 	public Date getCurrentDate();
 

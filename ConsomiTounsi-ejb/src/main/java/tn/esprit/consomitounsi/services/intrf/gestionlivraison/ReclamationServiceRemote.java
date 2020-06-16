@@ -59,6 +59,11 @@ public interface ReclamationServiceRemote {
 
 	public long numberOfReclamationByCategoryPerMonth(int categoryId, int month, int year);
 
+	// reclamation Treatment
+
+	public boolean isReclamationTreated(int reclamationId);
+	public List<Reclamation> nonTreated();
+
 	// exchange
 	public String addExchange(Exchange exchange);
 
@@ -66,17 +71,15 @@ public interface ReclamationServiceRemote {
 
 	public void updateExchange(Exchange newExchange);
 
-	public void deleteExchangeByCode(String code);
+	public void deleteExchangeById(int id);
 
 	public List<Exchange> getAllExchanges();
 
-	public List<Exchange> getAllExchangesByState(boolean state);
-
 	public List<Exchange> getAllExchangesByYear(int year);
 
-	public boolean checkExchangeCode(String code);
+	public boolean exchangeCodeExist(String code);
 
-	public boolean exchangeExist(String code);
+	public boolean exchangeExist(int exchangeId);
 
 	public List<Product> getExchangedProductByYear(int year);
 
@@ -102,15 +105,9 @@ public interface ReclamationServiceRemote {
 
 	public void deleteRepaymentById(int repaymentId);
 
-	public boolean repaymentExist(int id);
-
-	public void validateRepayment(int repaymentId, String description);
-
 	public List<Repayment> getAllRepayment();
 
 	public List<Repayment> getAllRepaymentByYear(int year);
-
-	public List<Repayment> getAllRepaymentByState(boolean state);
 
 	public long numberOfRepaymentPerYear(int year);
 
@@ -128,15 +125,9 @@ public interface ReclamationServiceRemote {
 
 	public List<Repair> getRepairByProductId(int id);
 
-	public void validateRepair(int repairId, double cost, String description);
-
-	public boolean repairExist(int id);
-
 	public List<Repair> getAllRepairs();
 
 	public List<Repair> getAllRepairByYear(int year);
-
-	public List<Repair> getAllRepairByState(boolean state);
 
 	public long numberOfRepairByYear(int year);
 

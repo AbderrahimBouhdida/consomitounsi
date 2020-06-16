@@ -1,14 +1,10 @@
 package tn.esprit.consomitounsi.api.gestionlivraison;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
 
 import javax.ejb.EJB;
-import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -19,19 +15,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import tn.esprit.consomitounsi.entities.CartProduct;
+import tn.esprit.consomitounsi.entities.Adress;
+import tn.esprit.consomitounsi.entities.Bill;
 import tn.esprit.consomitounsi.entities.Roles;
-import tn.esprit.consomitounsi.entities.User;
-import tn.esprit.consomitounsi.entities.gestionlivraison.Address;
 import tn.esprit.consomitounsi.entities.gestionlivraison.Delivery;
 import tn.esprit.consomitounsi.entities.gestionlivraison.DeliveryState;
 import tn.esprit.consomitounsi.sec.JWTTokenNeeded;
 import tn.esprit.consomitounsi.sec.Session;
+import tn.esprit.consomitounsi.services.intrf.IBillServiceRemote;
 import tn.esprit.consomitounsi.services.intrf.ICartServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.IUserServicesRemote;
 import tn.esprit.consomitounsi.services.intrf.gestionlivraison.DeliveryServiceRemote;
 
-@JWTTokenNeeded(roles = {Roles.ADMIN, Roles.DELEVERYMAN, Roles.USER})
+@JWTTokenNeeded(roles = { Roles.ADMIN, Roles.DELEVERYMAN, Roles.USER })
 @Path("gestionlivraison/deliveries")
 public class DeliveryRest {
 
@@ -43,6 +39,9 @@ public class DeliveryRest {
 
 	@EJB
 	ICartServicesRemote csr;
+	
+	@EJB
+	IBillServiceRemote bsr;
 
 	@JWTTokenNeeded(roles = Roles.ADMIN)
 	@GET
@@ -88,8 +87,11 @@ public class DeliveryRest {
 	@Path("registered/assign/{idDelivery}/{idDeliveryMan}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response assignDelivery(@PathParam(value = "idDelivery") int deliveryId,
-			@PathParam(value = "idDeliveryMan") int deliveryManId) {
-		dmsr.assignDeliveryToDeliveryMan(deliveryManId, deliveryId);
+			@PathParam(value = "idDeliveryMan") int deliveryManId, String date) throws ParseException {
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date dat = formatter.parse(date);
+		dmsr.assignDeliveryToDeliveryMan(deliveryManId, deliveryId, dat);
 
 		return Response.ok("delivery assigned succesfully to deliveryMan").build();
 	}
@@ -108,86 +110,34 @@ public class DeliveryRest {
 	@Path("deliveryDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response showDeliveryDetail(@HeaderParam("Authorization") String token, JsonObject obj) {
+	public Response showDeliveryDetail(@HeaderParam("Authorization") String token,  Adress address) {
 
-		Address address = new Address();
-
-		address.setCity(obj.getString("city"));
-		address.setName(obj.getString("name"));
-		address.setNumber(obj.getString("number"));
-		address.setRegion(obj.getString("region"));
-		address.setSurname(obj.getString("surname"));
-
-		int reduction = obj.getInt("reduction");
-
-		Date date = dmsr.getCurrentDate();
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
-
-		Calendar start = new GregorianCalendar();
-		start.setTime(calendar.getTime());
-		start.add(Calendar.DATE, 1);
-
-		Calendar end = new GregorianCalendar();
-		end.setTime(calendar.getTime());
-		if (calendar.get(Calendar.DAY_OF_WEEK) <= 3) {
-
-			end.add(Calendar.DATE, 3);
-		} else {
-			end.add(Calendar.DATE, 5);
-		}
-
-		String beginning = start.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " "
-				+ start.get(Calendar.DAY_OF_MONTH) + " "
-				+ start.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-
-		String endDate = end.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()) + " "
-				+ end.get(Calendar.DAY_OF_MONTH) + " "
-				+ end.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-
-		// total weight
-		double totalWeight = 0.0d;
-		User us = userservice.findUserById(Session.getUserId(token));
-		List<CartProduct> items = csr.findActiveCartByUserId(us).getProducts();
-		List<String> itemsList = new ArrayList<>();
-		for (CartProduct item : items) {
-			totalWeight += (item.getProduct().getWeight()) * item.getQuantity();
-			itemsList.add(item.getQuantity() + "x " + item.getProduct().getNameProduct() + " "
-					+ item.getProduct().getWeight() + "kg " + " ");
-		}
-
-		double cost = dmsr.shippingCost(address.getRegion(), totalWeight, reduction);
-
-		String description = "Shipment of " + items.size() + " products : " + " " + itemsList + " "
-				+ "Delivered between " + beginning + " and " + endDate + " " + " COST : " + cost + "DT";
-
-		Delivery delivery = new Delivery();
-		delivery.setAddressInformation(address);
-		delivery.setCost(cost);
-		delivery.setDescription(description);
-
-		return Response.ok(delivery).build();
+		return Response.ok(dmsr.deliveryDetails(Session.getUserId(token), 0, address)).build();
+		
 	}
 
 	@JWTTokenNeeded(roles = Roles.USER)
 	@POST
 	@Path("deliveryDetails/add")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addDelivery(@HeaderParam("Authorization") String token, JsonObject obj) {
+	public Response addDelivery(@HeaderParam("Authorization") String token, Adress address) {
 
-		Delivery deliveryDetails = (Delivery) showDeliveryDetail(token, obj).getEntity();
+		
+		Delivery deliveryDetails = (Delivery) showDeliveryDetail(token, address).getEntity();
 
 		Delivery delivery = new Delivery();
-
-		delivery.setAddressInformation(deliveryDetails.getAddressInformation());
+		
+		Bill bill = new Bill();
+		bill.setShipping(deliveryDetails.getBill().getShipping());
+		
+		int idBill = bsr.addBill(bill);
 		delivery.setCost(deliveryDetails.getCost());
 		delivery.setDescription(deliveryDetails.getDescription());
+		delivery.setItems(deliveryDetails.getItems());
 
-		dmsr.addDelivery(delivery);
+		dmsr.addDelivery(idBill,delivery);
 
 		return Response.ok("delivery added successfully").build();
 	}
-	
-	
 
 }

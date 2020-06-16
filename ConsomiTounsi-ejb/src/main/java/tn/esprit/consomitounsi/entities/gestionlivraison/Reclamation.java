@@ -47,12 +47,18 @@ public class Reclamation implements Serializable {
 
 	}
 
-	public Reclamation(String description, Date created, Product product, User user) {
-		super();
+	public Reclamation(String description, Product product, User user) {
 		this.description = description;
-		this.created = created;
 		this.product = product;
 		this.user = user;
+	}
+
+	public Reclamation(int id, String responseDescription, ReclamationState state, Decision decision) {
+		super();
+		this.id = id;
+		this.responseDescription = responseDescription;
+		this.state = state;
+		this.decision = decision;
 	}
 
 	public int getId() {
